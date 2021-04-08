@@ -11,7 +11,7 @@ export class IncidentService {
 
   constructor() { }
 
-  getIncidente(): Observable<Hero[]> {
+  getIncidente(): Observable<Incident[]> {
     const incidenti = of(INCIDENTI);
     return incidenti;    
   }

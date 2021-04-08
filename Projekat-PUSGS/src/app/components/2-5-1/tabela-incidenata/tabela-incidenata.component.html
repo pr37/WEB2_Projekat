@@ -1,0 +1,14 @@
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Tip</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let incident of incidentiZaPrikaz">
+            <td>{{incident.id}}</td>
+            <td>{{incident.tip}}</td>                        
+        </tr>
+    </tbody>
+</table>

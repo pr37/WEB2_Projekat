@@ -1,4 +1,4 @@
-import { Incident } from '../modeliPodataka/incident';
+import { Incident } from '../modeli-podataka/incident';
 
 export const INCIDENTI: Incident[] = [
   { id: 11, tip: 'Dr Nice' },

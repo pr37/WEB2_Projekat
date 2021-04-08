@@ -1,1 +1,14 @@
-<p>pregled-incidenata works!</p>
+<nav>
+    <a routerLink="/pregled_incidenata">New</a>    
+    <a (click)=getAllIncidente() routerLink="/pregled_incidenata/all">All</a>        
+    <a (click)=getMineIncidente() routerLink="/pregled_incidenata/mine">Mine</a>    
+    <a routerLink="/pregled_incidenata">Filter</a>
+</nav>
+
+<div [hidden]="filtriraniIncidenti.length !== 0">
+    <hr/>
+    <h5 style="text-align: center;">Trenutno nema prijavljenih incidenata.</h5>
+</div>
+<div [hidden]="filtriraniIncidenti.length === 0">
+    <app-tabela-incidenata [incidentiZaPrikaz]="incidenti"></app-tabela-incidenata>
+</div>

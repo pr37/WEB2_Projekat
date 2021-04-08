@@ -10,16 +10,27 @@ import { IncidentService } from '../../../servisi/incident/incident.service';
 })
 export class PregledIncidenataComponent implements OnInit {
 
-  incidenti: Incident[] = [];
+  selektovanaOpcija: string = 'all';
+  incidenti: Incident[] = [];  
+  mojiIncidenti: Incident[] = [];
+  filtriraniIncidenti: Incident[] = [];
+  incidentiZaPrikaz: Incident[] = [];
 
   constructor(private incidentService: IncidentService) { }
 
   ngOnInit(): void {
-    this.getIncidente();
+    this.incidentService.getIncidente().subscribe(incidenti => this.incidenti = incidenti);        
+    this.incidentiZaPrikaz = this.incidenti;
+  }  
+
+  getMineIncidente(): void {      
+    this.incidentiZaPrikaz = [];
+    this.selektovanaOpcija = 'mine';      
   }
 
-  getIncidente(): void {    
-    this.incidentService.getIncidente().subscribe(incidenti => this.incidenti = incidenti);    
+  getAllIncidente(): void {  
+    this.incidentiZaPrikaz = this.incidenti;
+    this.selektovanaOpcija = 'all';      
   }
 
 }
