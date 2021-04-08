@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PocetnaStranicaComponent } from './components/2-1/pocetna-stranica/pocetna-stranica.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PocetnaStranicaComponent
   ],
   imports: [
     BrowserModule,
