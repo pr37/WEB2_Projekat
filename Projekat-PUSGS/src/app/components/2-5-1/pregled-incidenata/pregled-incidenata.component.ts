@@ -10,6 +10,7 @@ import { IncidentService } from '../../../servisi/incident/incident.service';
 })
 export class PregledIncidenataComponent implements OnInit {
 
+  prikaziFilter: boolean = false;
   selektovanaOpcija: string = 'all';
   incidenti: Incident[] = [];  
   mojiIncidenti: Incident[] = [];
@@ -31,6 +32,10 @@ export class PregledIncidenataComponent implements OnInit {
   getAllIncidente(): void {  
     this.incidentiZaPrikaz = this.incidenti;
     this.selektovanaOpcija = 'all';      
+  }
+
+  setFilter(): void{
+    this.prikaziFilter = !this.prikaziFilter;
   }
 
 }

@@ -11,10 +11,12 @@ const routes: Routes = [
     pathMatch: 'full' 
   },
   { 
-    path: 
-    'welcome', component: 
-    PocetnaStranicaComponent 
+    path: 'welcome', component: PocetnaStranicaComponent 
   },
+  {
+    path: 'pregled_incidenata', component: PregledIncidenataComponent
+  }
+  /*
   { 
     path: 'pregled_incidenata', 
     children: [
@@ -23,12 +25,7 @@ const routes: Routes = [
       { path: "mine", component: PregledIncidenataComponent },
     ]     
   },    
-
-  { 
-    path: 'pregled_incidenata', 
-    redirectTo: 'pregled_incidenata/all', 
-    pathMatch: 'full' 
-  },  
+  */
   
 ];
 
