@@ -1,14 +1,22 @@
-<table class="table table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Tip</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let incident of incidentiZaPrikaz">
-            <td>{{incident.id}}</td>
-            <td>{{incident.tip}}</td>                        
-        </tr>
-    </tbody>
-</table>
+<div class="fixed_header">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Datum prijave</th>
+                <th scope="col">Telefon</th>
+                <th scope="col">Status</th>
+                <th scope="col">Adresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let incident of incidentiZaPrikaz">
+                <td>{{incident.id}}</td>
+                <td>{{incident.startDate | date : 'dd.MM.y'}}</td>                        
+                <td>{{incident.phoneNum}}</td>                        
+                <td>{{incident.status}}</td>                        
+                <td>{{incident.adresa}}</td>                                                      
+            </tr>
+        </tbody>
+    </table>
+</div>

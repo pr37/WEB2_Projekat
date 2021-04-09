@@ -1,4 +1,7 @@
 export interface Incident {
     id: number;
-    tip: string;
+    startDate: string;
+    phoneNum: number;
+    status: string;
+    adresa: string;
 }
