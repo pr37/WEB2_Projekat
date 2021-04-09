@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { PocetnaStranicaComponent } from './components/2-1/pocetna-stranica/pocetna-stranica.component';
 import { PregledIncidenataComponent } from './components/2-5-1/pregled-incidenata/pregled-incidenata.component';
+import { NewComponent } from './components/2-5-1/new/new.component';
 
 const routes: Routes = [
   { 
@@ -12,21 +13,14 @@ const routes: Routes = [
   },
   { 
     path: 'welcome', component: PocetnaStranicaComponent 
-  },
-  {
-    path: 'pregled_incidenata', component: PregledIncidenataComponent
-  }
-  /*
+  }, 
   { 
     path: 'pregled_incidenata', 
     children: [
-      { path: '', redirectTo: 'all', pathMatch: 'full' },
-      { path: "all", component: PregledIncidenataComponent },
-      { path: "mine", component: PregledIncidenataComponent },
+      { path: '', component: PregledIncidenataComponent},            
+      { path: 'new', component: NewComponent},
     ]     
-  },    
-  */
-  
+  },      
 ];
 
 @NgModule({

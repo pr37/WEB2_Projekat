@@ -7,6 +7,9 @@ import { PocetnaStranicaComponent } from './components/2-1/pocetna-stranica/poce
 import { PregledIncidenataComponent } from './components/2-5-1/pregled-incidenata/pregled-incidenata.component';
 import { TabelaIncidenataComponent } from './components/2-5-1/tabela-incidenata/tabela-incidenata.component';
 import { FilterComponent } from './components/2-5-1/filter/filter.component';
+import { NewComponent } from './components/2-5-1/new/new.component';
+import { OsnovneInformacijeComponent } from './components/2-5-1/new/opcije/osnovne-informacije/osnovne-informacije.component';
+import { PoziviComponent } from './components/2-5-1/new/opcije/pozivi/pozivi.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { FilterComponent } from './components/2-5-1/filter/filter.component';
     PocetnaStranicaComponent,
     PregledIncidenataComponent,
     TabelaIncidenataComponent,
-    FilterComponent
+    FilterComponent,
+    NewComponent,
+    OsnovneInformacijeComponent,
+    PoziviComponent
   ],
   imports: [
     BrowserModule,
