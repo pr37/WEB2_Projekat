@@ -1,9 +1,18 @@
 <nav>
-    <a routerLink="">Osnovne informacije</a>    
-    <a routerLink="">Oprema1</a>    
-    <a routerLink="">Resenja</a>    
-    <a routerLink="">Pozivi</a>    
-    <a routerLink="">Ekipa</a>    
-    <a routerLink="">Multimedijalni prilozi</a>    
-    <a routerLink="">Oprema2</a>    
+    <a (click)=setIzabranaOpcijaOsnovnaInformacija()>Osnovne informacije</a>    
+    <a (click)=setIzabranaOpcijaOprema1()>Oprema1</a>    
+    <a (click)=setIzabranaOpcijaResenja()>Resenja</a>    
+    <a (click)=setIzabranaOpcijaPozivi()>Pozivi</a>    
+    <a (click)=setIzabranaOpcijaEkipa()>Ekipa</a>    
+    <a (click)=setIzabranaOpcijaMPrilozi()>Multimedijalni prilozi</a>    
+    <a (click)=setIzabranaOpcijaOprema2()>Oprema2</a>    
 </nav>
+
+<div [hidden]="!(izabranaOpcija === 'osnovna_informacija')">    
+    <hr/>
+    <app-osnovne-informacije></app-osnovne-informacije>
+</div>
+<div [hidden]="!(izabranaOpcija === 'pozivi')">    
+    <hr/>
+    <app-pozivi></app-pozivi>
+</div>
