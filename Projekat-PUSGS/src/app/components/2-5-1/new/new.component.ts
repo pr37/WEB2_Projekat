@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 
+import { OsnovneInformacije } from '../../../modeli-podataka/osnovne-informacije';
+
 @Component({
   selector: 'app-new',
   templateUrl: './new.component.html',
   styleUrls: ['./new.component.css']
 })
-export class NewComponent implements OnInit {
+export class NewComponent implements OnInit {  
+  izabranaOpcija: string = 'osnovna_informacija';  
 
-  izabranaOpcija: string = 'osnovna_informacija'; 
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  ngOnInit(): void {         
   }
 
   setIzabranaOpcijaOsnovnaInformacija(): void{

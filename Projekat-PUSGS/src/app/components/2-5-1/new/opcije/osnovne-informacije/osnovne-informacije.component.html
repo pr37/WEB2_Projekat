@@ -1,1 +1,62 @@
-<p>osnovne-informacije works!</p>
+<div class="container">    
+    <form [formGroup]="osnovneInformacijeForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="id">ID</label>
+                <input type="text" id="id" class="form-control" formControlName="id">
+                <div *ngIf="osnovneInformacijeForm.controls.id.invalid">
+                    Please enter id
+                </div>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-sm-6 form-group">
+                <label for="tip">Tip</label>
+                <select class="form-control" formControlName="tip">
+                    <option *ngFor="let option of lisaTipova" [value]="option">{{option}}</option>
+                </select>
+            </div>
+        </div>        
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="prioritet">Prioritet</label>
+                <input type="text" id="prioritet" class="form-control" formControlName="prioritet">
+                <div *ngIf="osnovneInformacijeForm.controls.prioritet.invalid">
+                    Please enter prioritet
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="potvrdjen">Potvrdjen</label>
+                <input type="checkbox" id="potvrdjen" class="form-control" formControlName="potvrdjen">
+                <div *ngIf="osnovneInformacijeForm.controls.potvrdjen.invalid">
+                    Please enter potvrdjen
+                </div>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-sm-6 form-group">
+                <label for="status">Status</label>
+                <select class="form-control" formControlName="status">
+                    <option *ngFor="let option of lisaStatusa" [value]="option">{{option}}</option>
+                </select>
+            </div>
+        </div>   
+
+
+
+
+
+        
+        <div class="row">
+            <div class="col-1">
+                <button [disabled]="!osnovneInformacijeForm.valid" class="btn btn-success" type="submit">Add</button>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-primary" (click)="onClear()" type="button">Clear</button>
+            </div>
+        </div>
+    </form>
+
+</div>
