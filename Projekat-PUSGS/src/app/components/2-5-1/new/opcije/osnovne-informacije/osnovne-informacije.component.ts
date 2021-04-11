@@ -11,8 +11,8 @@ import { OsnovneInformacije } from '../../../../../modeli-podataka/osnovne-infor
 export class OsnovneInformacijeComponent implements OnInit {
   osnovneInformacije: OsnovneInformacije;    
   osnovneInformacijeForm: FormGroup;   
-  lisaTipova = new Array<string>();      
-  lisaStatusa = new Array<string>();        
+  listaTipova = new Array<string>();      
+  listaStatusa = new Array<string>();        
 
   constructor() {  
     this.osnovneInformacije = {} as OsnovneInformacije;      
@@ -37,12 +37,13 @@ export class OsnovneInformacijeComponent implements OnInit {
       'dodeliSebiResavanje' : new FormControl()
     });
 
-    this.lisaTipova.push("option1");
-    this.lisaTipova.push("option2");
-    this.lisaTipova.push("option3");  
-    this.lisaStatusa.push("izbor1");
-    this.lisaStatusa.push("izbor2");
-    this.lisaStatusa.push("izbor3"); 
+    this.listaTipova.push("option1");
+    this.listaTipova.push("option2");
+    this.listaTipova.push("option3");
+
+    this.listaStatusa.push("izbor1");
+    this.listaStatusa.push("izbor2");
+    this.listaStatusa.push("izbor3"); 
   }
 
   ngOnInit(): void { this.initFormOsnovneInformacije(); }

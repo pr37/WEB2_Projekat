@@ -12,6 +12,14 @@
     <hr/>
     <app-osnovne-informacije></app-osnovne-informacije>
 </div>
+<div [hidden]="!(izabranaOpcija === 'oprema1')">    
+    <hr/>
+    <app-oprema></app-oprema>
+</div>
+<div [hidden]="!(izabranaOpcija === 'resenje')">    
+    <hr/>
+    <app-resenje></app-resenje>
+</div>
 <div [hidden]="!(izabranaOpcija === 'pozivi')">    
     <hr/>
     <app-pozivi></app-pozivi>

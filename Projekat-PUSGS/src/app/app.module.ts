@@ -11,6 +11,8 @@ import { FilterComponent } from './components/2-5-1/filter/filter.component';
 import { NewComponent } from './components/2-5-1/new/new.component';
 import { OsnovneInformacijeComponent } from './components/2-5-1/new/opcije/osnovne-informacije/osnovne-informacije.component';
 import { PoziviComponent } from './components/2-5-1/new/opcije/pozivi/pozivi.component';
+import { OpremaComponent } from './components/2-5-1/new/opcije/oprema/oprema.component';
+import { ResenjeComponent } from './components/2-5-1/new/opcije/resenje/resenje.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { PoziviComponent } from './components/2-5-1/new/opcije/pozivi/pozivi.com
     FilterComponent,
     NewComponent,
     OsnovneInformacijeComponent,
-    PoziviComponent
+    PoziviComponent,
+    OpremaComponent,
+    ResenjeComponent
   ],
   imports: [
     BrowserModule,
