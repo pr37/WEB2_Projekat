@@ -74,6 +74,9 @@ export class ResenjeComponent implements OnInit {
     //console.log(this.osnovneInformacijeForm);
   }
 
-  onClear() { this.resenjeForm.reset(); }
+  onClear() { 
+    this.resenjeForm.reset(); 
+    this.listaPoduzroka = [];
+  }
 
 }

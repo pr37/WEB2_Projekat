@@ -80,3 +80,7 @@
     width: 100%;
     padding: .5rem;
   }
+
+  .upozorenje {
+    color: red;
+  }

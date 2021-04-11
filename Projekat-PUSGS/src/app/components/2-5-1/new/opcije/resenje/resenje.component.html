@@ -14,7 +14,7 @@
                 <select class="form-control" formControlName="poduzrok">
                     <option *ngFor="let option of listaPoduzroka" [value]="option">{{option}}</option>
                 </select>
-                <div *ngIf="listaPoduzroka.length === 0">
+                <div class="upozorenje" *ngIf="listaPoduzroka.length === 0">
                     Izaberite uzrok
                 </div>
             </div>
