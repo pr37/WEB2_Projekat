@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { OsnovneInformacije } from '../../../../../modeli-podataka/osnovne-informacije';
@@ -12,7 +12,7 @@ export class OsnovneInformacijeComponent implements OnInit {
   osnovneInformacije: OsnovneInformacije;    
   osnovneInformacijeForm: FormGroup;   
   lisaTipova = new Array<string>();      
-  lisaStatusa = new Array<string>();      
+  lisaStatusa = new Array<string>();        
 
   constructor() {  
     this.osnovneInformacije = {} as OsnovneInformacije;      
@@ -23,13 +23,17 @@ export class OsnovneInformacijeComponent implements OnInit {
       'prioritet': new FormControl(),
       'potvrdjen' : new FormControl(),
       'status' : new FormControl(),
-      'eta' : new FormControl(),
-      'ata' : new FormControl(),
-      'etr' : new FormControl(),
+      'etaDate' : new FormControl(),
+      'etaTime' : new FormControl('13:00'),      
+      'ataDate' : new FormControl(),
+      'ataTime' : new FormControl('13:00'),      
+      'etrDate' : new FormControl(),
+      'etrTime' : new FormControl('13:00'),
       'afektovaniPotrosaci' : new FormControl(),
       'brojPoziva' : new FormControl(),
       'nivoNapona' : new FormControl(),
-      'pvr' : new FormControl(),
+      'pvrDate' : new FormControl(),
+      'pvrTime' : new FormControl('13:00'),
       'dodeliSebiResavanje' : new FormControl()
     });
 
@@ -41,21 +45,14 @@ export class OsnovneInformacijeComponent implements OnInit {
     this.lisaStatusa.push("izbor3"); 
   }
 
-  ngOnInit(): void {      
-    this.initFormOsnovneInformacije();
-  }
+  ngOnInit(): void { this.initFormOsnovneInformacije(); }
 
-  private initFormOsnovneInformacije() {    
-
-  }
+  private initFormOsnovneInformacije() {}
  
   onSubmit() {
     console.log(this.osnovneInformacijeForm.value);
     //console.log(this.osnovneInformacijeForm);
   }
 
-  onClear() {
-    this.osnovneInformacijeForm.reset();
-  }
-
+  onClear() { this.osnovneInformacijeForm.reset(); }
 }

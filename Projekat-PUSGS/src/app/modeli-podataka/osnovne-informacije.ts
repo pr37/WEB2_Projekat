@@ -4,7 +4,7 @@ export interface OsnovneInformacije {
     prioritet: number;
     potvrdjen: boolean;
     status: string;
-    eta: string;
+    eta: string;    
     ata: string;
     etr: string;
     afektovaniPotrosaci: number;

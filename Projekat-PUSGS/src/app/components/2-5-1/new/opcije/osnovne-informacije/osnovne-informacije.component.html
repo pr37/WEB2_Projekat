@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-sm-6 form-group">
                 <label for="prioritet">Prioritet</label>
-                <input type="text" id="prioritet" class="form-control" formControlName="prioritet">
+                <input type="number" id="prioritet" class="form-control" formControlName="prioritet">
                 <div *ngIf="osnovneInformacijeForm.controls.prioritet.invalid">
                     Please enter prioritet
                 </div>
@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-sm-6 form-group">
                 <label for="potvrdjen">Potvrdjen</label>
-                <input type="checkbox" id="potvrdjen" class="form-control" formControlName="potvrdjen">
+                <input type="checkbox" id="potvrdjen" formControlName="potvrdjen">
                 <div *ngIf="osnovneInformacijeForm.controls.potvrdjen.invalid">
                     Please enter potvrdjen
                 </div>
@@ -42,13 +42,97 @@
                     <option *ngFor="let option of lisaStatusa" [value]="option">{{option}}</option>
                 </select>
             </div>
-        </div>   
+        </div>           
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="eta">ETA</label>
+                <input type="date" id="etaDate" class="form-control" formControlName="etaDate">                            
+                <input type="time" id="etaTime" class="form-control" formControlName="etaTime">                
+                <div *ngIf="osnovneInformacijeForm.controls.etaDate.invalid">
+                    Please enter eta
+                </div>
+                <div *ngIf="osnovneInformacijeForm.controls.etaTime.invalid">
+                    Please enter eta
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="ata">ATA</label>
+                <input type="date" id="ataDate" class="form-control" formControlName="ataDate">                            
+                <input type="time" id="ataTime" class="form-control" formControlName="ataTime">                
+                <div *ngIf="osnovneInformacijeForm.controls.ataDate.invalid">
+                    Please enter ata
+                </div>
+                <div *ngIf="osnovneInformacijeForm.controls.ataTime.invalid">
+                    Please enter ata
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="ata">ETR</label>
+                <input type="date" id="etrDate" class="form-control" formControlName="etrDate">                            
+                <input type="time" id="etrTime" class="form-control" formControlName="etrTime">                
+                <div *ngIf="osnovneInformacijeForm.controls.etrDate.invalid">
+                    Please enter etr
+                </div>
+                <div *ngIf="osnovneInformacijeForm.controls.etrTime.invalid">
+                    Please enter etr
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="afektovaniPotrosaci">Broj afektovanih potrosaca</label>
+                <input type="number" id="afektovaniPotrosaci" class="form-control" formControlName="afektovaniPotrosaci">
+                <div *ngIf="osnovneInformacijeForm.controls.afektovaniPotrosaci.invalid">
+                    Please enter afektovaniPotrosaci
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="brojPoziva">Broj poziva</label>
+                <input type="number" id="brojPoziva" class="form-control" formControlName="brojPoziva">
+                <div *ngIf="osnovneInformacijeForm.controls.brojPoziva.invalid">
+                    Please enter brojPoziva
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="nivoNapona">Nivo napona</label>
+                <input type="number" id="nivoNapona" class="form-control" formControlName="nivoNapona">
+                <div *ngIf="osnovneInformacijeForm.controls.nivoNapona.invalid">
+                    Please enter nivoNapona
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="ata">PVR</label>
+                <input type="date" id="pvrDate" class="form-control" formControlName="pvrDate">                            
+                <input type="time" id="pvrTime" class="form-control" formControlName="pvrTime">                
+                <div *ngIf="osnovneInformacijeForm.controls.pvrDate.invalid">
+                    Please enter pvr
+                </div>
+                <div *ngIf="osnovneInformacijeForm.controls.pvrTime.invalid">
+                    Please enter pvr
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="dodeliSebiResavanje">Dodeli sebi resevanje</label>
+                <input type="checkbox" id="dodeliSebiResavanje" formControlName="dodeliSebiResavanje">
+                <div *ngIf="osnovneInformacijeForm.controls.dodeliSebiResavanje.invalid">
+                    Please enter dodeliSebiResavanje
+                </div>
+            </div>
+        </div>
 
 
-
-
-
-        
         <div class="row">
             <div class="col-1">
                 <button [disabled]="!osnovneInformacijeForm.valid" class="btn btn-success" type="submit">Add</button>
