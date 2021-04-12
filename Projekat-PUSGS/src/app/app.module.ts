@@ -25,7 +25,7 @@ import { ResenjeComponent } from './components/2-5-1/new/opcije/resenje/resenje.
     OsnovneInformacijeComponent,
     PoziviComponent,
     OpremaComponent,
-    ResenjeComponent
+    ResenjeComponent,    
   ],
   imports: [
     BrowserModule,

@@ -130,15 +130,14 @@
                     Please enter dodeliSebiResavanje
                 </div>
             </div>
-        </div>
-
+        </div>        
 
         <div class="row">
             <div class="col-1">
-                <button [disabled]="!osnovneInformacijeForm.valid" class="btn btn-success" type="submit">Add</button>
+                <button class="btn btn-primary" (click)="onClear()" type="button">Clear</button>
             </div>
             <div class="col-1">
-                <button class="btn btn-primary" (click)="onClear()" type="button">Clear</button>
+                <button [disabled]="!osnovneInformacijeForm.valid" class="btn btn-success" type="submit">Add</button>
             </div>
         </div>
     </form>

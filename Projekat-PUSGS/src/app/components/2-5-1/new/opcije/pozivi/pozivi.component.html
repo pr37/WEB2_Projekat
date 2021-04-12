@@ -1,1 +1,98 @@
-<p>pozivi works!</p>
+<div [hidden]="prozorNewCall">
+    <nav>
+        <a (click)=setNewCall()>New</a>     
+        <hr/>   
+    </nav>
+    <div class="fixed_header">    
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Id poziva</th>
+                    <th scope="col">Razlog</th>
+                    <th scope="col">Uzrok</th>
+                    <th scope="col">Komentar</th>                
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let poziv of pozivi">
+                    <td>{{poziv.id}}</td>
+                    <td>{{poziv.razlog}}</td>                        
+                    <td>{{poziv.kvar}}</td>                        
+                    <td>{{poziv.komentar}}</td>                        
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div [hidden]="pozivi.length !== 0">    
+        <h5 style="text-align: center;">Trenutno nema prijavljenih poziva.</h5>
+    </div>
+</div>
+
+<div class="container" [hidden]="!prozorNewCall">    
+    <form [formGroup]="pozivForm" (ngSubmit)="onSubmit()">
+        
+        <div class="row" >
+            <div class="col-sm-6 form-group">
+                <label for="razlog">Razlog</label>
+                <select class="form-control" formControlName="razlog">
+                    <option *ngFor="let option of listaRazloga" [value]="option">{{option}}</option>
+                </select>
+            </div>
+        </div>   
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="id">Komentar</label>
+                <input type="text" id="komentar" class="form-control" formControlName="komentar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="id">Uzrok</label>
+                <input type="text" id="uzrok" class="form-control" formControlName="uzrok">
+                <input type="number" id="prioritet" class="form-control" formControlName="prioritet">
+            </div>
+        </div>
+
+
+        <hr/>          
+        <div class="row col-sm-6">                                   
+            <label>Informacije o potrosacu</label>                                
+        </div>        
+        <div class="row col-sm-6">
+            <button class="btn btn-primary" (click)="izaberiPotrosaca()" type="button">Izaberi potrosaca</button>
+        </div>    
+
+        <div class="row">
+            <div class="col-4 form-group">
+                <label for="id">Ime</label>
+                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled>
+            </div>
+            <div class="col-4 form-group">
+                <label for="id">Prezime</label>
+                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled="1<0">
+            </div>
+            <div class="col-4 form-group">
+                <label for="id">Nalog</label>
+                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled="1">
+            </div>
+            <div class="col-8 form-group">
+                <label for="id">Adresa</label>
+                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled="true">
+            </div>
+            <div class="col-4 form-group">
+                <label for="id">Prioritet</label>
+                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled="true">
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-1">
+                <button class="btn btn-primary" (click)="onClear()" type="button">Clear</button>
+            </div>
+            <div class="col-1">
+                <button [disabled]="!pozivForm.valid" class="btn btn-success" type="submit">Add</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -21,8 +21,7 @@ const routes: Routes = [
       { path: '', component: PregledIncidenataComponent},            
       { path: 'new', component: NewComponent},
     ]     
-  },    
-  { path: 'pregled_incidenata/new/osnovne_informacije', component: OsnovneInformacijeComponent}, 
+  },  
 ];
 
 @NgModule({
