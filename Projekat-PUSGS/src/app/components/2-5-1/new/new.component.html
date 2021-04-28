@@ -1,18 +1,17 @@
 <nav>
     <a (click)=setIzabranaOpcijaOsnovnaInformacija()>Osnovne informacije</a>    
-    <a (click)=setIzabranaOpcijaOprema1()>Oprema1</a>    
+    <a (click)=setIzabranaOpcijaOprema()>Oprema</a>    
     <a (click)=setIzabranaOpcijaResenja()>Resenja</a>    
     <a (click)=setIzabranaOpcijaPozivi()>Pozivi</a>    
     <a (click)=setIzabranaOpcijaEkipa()>Ekipa</a>    
-    <a (click)=setIzabranaOpcijaMPrilozi()>Multimedijalni prilozi</a>    
-    <a (click)=setIzabranaOpcijaOprema2()>Oprema2</a>    
+    <a (click)=setIzabranaOpcijaMPrilozi()>Multimedijalni prilozi</a>           
 </nav>
 
 <div [hidden]="!(izabranaOpcija === 'osnovna_informacija')">    
     <hr/>
     <app-osnovne-informacije></app-osnovne-informacije>
 </div>
-<div [hidden]="!(izabranaOpcija === 'oprema1')">    
+<div [hidden]="!(izabranaOpcija === 'oprema')">    
     <hr/>
     <app-oprema></app-oprema>
 </div>

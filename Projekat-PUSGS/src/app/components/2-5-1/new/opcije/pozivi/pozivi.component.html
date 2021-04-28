@@ -64,35 +64,41 @@
 
         <div class="row">
             <div class="col-4 form-group">
-                <label for="id">Ime</label>
-                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled>
+                <label for="ime">Ime</label>
+                <input type="text" id="ime" class="form-control" formControlName="ime">
             </div>
             <div class="col-4 form-group">
-                <label for="id">Prezime</label>
-                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled="1<0">
+                <label for="prezime">Prezime</label>
+                <input type="text" id="prezime" class="form-control" formControlName="prezime">
             </div>
             <div class="col-4 form-group">
-                <label for="id">Nalog</label>
-                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled="1">
+                <label for="nalog">Nalog</label>
+                <input type="text" id="nalog" class="form-control" formControlName="nalog">
             </div>
             <div class="col-8 form-group">
-                <label for="id">Adresa</label>
-                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled="true">
+                <label for="adresa">Adresa</label>
+                <input type="text" id="adresa" class="form-control" formControlName="adresa">
             </div>
             <div class="col-4 form-group">
-                <label for="id">Prioritet</label>
-                <input type="text" id="uzrok" class="form-control" formControlName="uzrok" ng-disabled="true">
+                <label for="prioritetNaloga">Prioritet</label>
+                <input type="text" id="prioritetNaloga" class="form-control" formControlName="prioritetNaloga">
             </div>
         </div>
 
 
         <div class="row">
             <div class="col-1">
-                <button class="btn btn-primary" (click)="onClear()" type="button">Clear</button>
+                <button class="btn btn-primary" (click)="onCancel()" type="button" style="background-color: rgb(245, 43, 43);">Cancel</button>
             </div>
             <div class="col-1">
-                <button [disabled]="!pozivForm.valid" class="btn btn-success" type="submit">Add</button>
+                <button class="btn btn-primary" (click)="onClear()" type="button" style="margin-left: 10px;">Clear</button>
+            </div>
+            <div class="col-1">
+                <button [disabled]="!pozivForm.valid" class="btn btn-success" type="submit" style="margin-left: 10px;">Add</button>
             </div>
         </div>
+
+
+
     </form>
 </div>

@@ -10,6 +10,8 @@ import { OsnovneInformacije } from '../../../modeli-podataka/osnovne-informacije
 export class NewComponent implements OnInit {  
   izabranaOpcija: string = 'osnovna_informacija';  
 
+
+
   constructor() {}
 
   ngOnInit(): void {         
@@ -18,8 +20,8 @@ export class NewComponent implements OnInit {
   setIzabranaOpcijaOsnovnaInformacija(): void{
     this.izabranaOpcija = 'osnovna_informacija';
   }
-  setIzabranaOpcijaOprema1(): void{
-    this.izabranaOpcija = 'oprema1';
+  setIzabranaOpcijaOprema(): void{
+    this.izabranaOpcija = 'oprema';
   }
   setIzabranaOpcijaResenja(): void{
     this.izabranaOpcija = 'resenje';
@@ -32,8 +34,5 @@ export class NewComponent implements OnInit {
   }
   setIzabranaOpcijaMPrilozi(): void{
     this.izabranaOpcija = 'mprilozi';
-  }
-  setIzabranaOpcijaOprema2(): void{
-    this.izabranaOpcija = 'oprema2';
   }
 }

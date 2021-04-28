@@ -25,7 +25,13 @@ export class PoziviComponent implements OnInit {
       'komentar': new FormControl(),
       'uzrok': new FormControl(),
       'prioritet' : new FormControl(),
-      'idPotrosaca' : new FormControl()
+      'idPotrosaca' : new FormControl(),
+
+      'ime' : new FormControl(),
+      'prezime' : new FormControl(),
+      'nalog' : new FormControl(),
+      'adresa' : new FormControl(),
+      'prioritetNaloga' : new FormControl()
     });
 
     this.listaRazloga.push("Nema struje");
@@ -37,7 +43,14 @@ export class PoziviComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pozivService.getPozive().subscribe(pozivi => this.pozivi = pozivi);            
+    this.pozivService.getPozive().subscribe(pozivi => this.pozivi = pozivi);   
+    //readonly/////////////////////////////////////////////////////////////////////
+    this.pozivForm.controls['ime'].disable();
+    this.pozivForm.controls['prezime'].disable();
+    this.pozivForm.controls['nalog'].disable();
+    this.pozivForm.controls['prezime'].disable();
+    this.pozivForm.controls['adresa'].disable();
+    this.pozivForm.controls['prioritetNaloga'].disable();
   }
 
   setNewCall(): void{
@@ -50,6 +63,10 @@ export class PoziviComponent implements OnInit {
 
   onClear(): void{
     
+  }
+
+  onCancel(): void{
+    this.prozorNewCall = false;
   }
 
   izaberiPotrosaca(): void{

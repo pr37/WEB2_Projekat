@@ -50,7 +50,7 @@ export class OsnovneInformacijeComponent implements OnInit {
 
   private initFormOsnovneInformacije() {}
  
-  onSubmit() {
+  onSubmit() {    
     console.log(this.osnovneInformacijeForm.value);
     //console.log(this.osnovneInformacijeForm);
   }

@@ -1,6 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatInputModule} from '@angular/material/input'
+import {MatRippleModule} from '@angular/material/core'; 
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,13 +31,18 @@ import { ResenjeComponent } from './components/2-5-1/new/opcije/resenje/resenje.
     OsnovneInformacijeComponent,
     PoziviComponent,
     OpremaComponent,
-    ResenjeComponent,    
+    ResenjeComponent,      
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,       
+    MatInputModule,    
+    MatRippleModule,
+    MatFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

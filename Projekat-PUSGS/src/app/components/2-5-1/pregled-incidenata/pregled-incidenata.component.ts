@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import { Incident } from '../../../modeli-podataka/incident';
 import { IncidentService } from '../../../servisi/incident/incident.service';
@@ -21,7 +21,7 @@ export class PregledIncidenataComponent implements OnInit {
 
   ngOnInit(): void {
     this.incidentService.getIncidente().subscribe(incidenti => this.incidenti = incidenti);        
-    this.incidentiZaPrikaz = this.incidenti;
+    this.incidentiZaPrikaz = this.incidenti;        
   }  
 
   getMineIncidente(): void {      

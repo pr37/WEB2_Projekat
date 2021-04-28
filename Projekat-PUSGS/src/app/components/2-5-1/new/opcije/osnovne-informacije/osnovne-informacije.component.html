@@ -1,50 +1,34 @@
 <div class="container">    
     <form [formGroup]="osnovneInformacijeForm" (ngSubmit)="onSubmit()">
         <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="id">ID</label>
-                <input type="text" id="id" class="form-control" formControlName="id">
+            <div class="col-sm-3 form-group">                
+                <input type="text" id="id" class="form-control" formControlName="id" placeholder="ID">
                 <div *ngIf="osnovneInformacijeForm.controls.id.invalid">
                     Please enter id
                 </div>
-            </div>
-        </div>
-        <div class="row" >
-            <div class="col-sm-6 form-group">
-                <label for="tip">Tip</label>
-                <select class="form-control" formControlName="tip">
-                    <option *ngFor="let option of listaTipova" [value]="option">{{option}}</option>
-                </select>
-            </div>
-        </div>        
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="prioritet">Prioritet</label>
-                <input type="number" id="prioritet" class="form-control" formControlName="prioritet">
+            </div>                                 
+            <div class="col-sm-3 form-group">                
+                <input type="number" id="prioritet" class="form-control" formControlName="prioritet" placeholder="prioritet">
                 <div *ngIf="osnovneInformacijeForm.controls.prioritet.invalid">
                     Please enter prioritet
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="potvrdjen">Potvrdjen</label>
-                <input type="checkbox" id="potvrdjen" formControlName="potvrdjen">
-                <div *ngIf="osnovneInformacijeForm.controls.potvrdjen.invalid">
-                    Please enter potvrdjen
+            </div>                
+            <div class="col-sm-3 form-group">                
+                <input type="number" id="afektovaniPotrosaci" class="form-control" formControlName="afektovaniPotrosaci" placeholder="afektovanih potrosaca">
+                <div *ngIf="osnovneInformacijeForm.controls.afektovaniPotrosaci.invalid">
+                    Please enter afektovaniPotrosaci
                 </div>
-            </div>
+            </div>  
+            <div class="col-sm-3 form-group">                
+                <input type="number" id="nivoNapona" class="form-control" formControlName="nivoNapona" placeholder="nivo napona">
+                <div *ngIf="osnovneInformacijeForm.controls.nivoNapona.invalid">
+                    Please enter nivoNapona
+                </div>
+            </div>              
         </div>
-        <div class="row" >
-            <div class="col-sm-6 form-group">
-                <label for="status">Status</label>
-                <select class="form-control" formControlName="status">
-                    <option *ngFor="let option of listaStatusa" [value]="option">{{option}}</option>
-                </select>
-            </div>
-        </div>           
-        <div class="row">
-            <div class="col-sm-6 form-group">
+        
+        <div class="row" >               
+            <div class="col-sm-3 form-group">
                 <label for="eta">ETA</label>
                 <input type="date" id="etaDate" class="form-control" formControlName="etaDate">                            
                 <input type="time" id="etaTime" class="form-control" formControlName="etaTime">                
@@ -55,9 +39,7 @@
                     Please enter eta
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
+            <div class="col-sm-3 form-group">
                 <label for="ata">ATA</label>
                 <input type="date" id="ataDate" class="form-control" formControlName="ataDate">                            
                 <input type="time" id="ataTime" class="form-control" formControlName="ataTime">                
@@ -68,9 +50,7 @@
                     Please enter ata
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
+            <div class="col-sm-3 form-group">
                 <label for="ata">ETR</label>
                 <input type="date" id="etrDate" class="form-control" formControlName="etrDate">                            
                 <input type="time" id="etrTime" class="form-control" formControlName="etrTime">                
@@ -81,38 +61,9 @@
                     Please enter etr
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="afektovaniPotrosaci">Broj afektovanih potrosaca</label>
-                <input type="number" id="afektovaniPotrosaci" class="form-control" formControlName="afektovaniPotrosaci">
-                <div *ngIf="osnovneInformacijeForm.controls.afektovaniPotrosaci.invalid">
-                    Please enter afektovaniPotrosaci
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="brojPoziva">Broj poziva</label>
-                <input type="number" id="brojPoziva" class="form-control" formControlName="brojPoziva">
-                <div *ngIf="osnovneInformacijeForm.controls.brojPoziva.invalid">
-                    Please enter brojPoziva
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="nivoNapona">Nivo napona</label>
-                <input type="number" id="nivoNapona" class="form-control" formControlName="nivoNapona">
-                <div *ngIf="osnovneInformacijeForm.controls.nivoNapona.invalid">
-                    Please enter nivoNapona
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
+            <div class="col-sm-3 form-group">
                 <label for="ata">PVR</label>
-                <input type="date" id="pvrDate" class="form-control" formControlName="pvrDate">                            
+                <input type="date" id="pvrDate" class="form-control" formControlName="pvrDate" readonly>                            
                 <input type="time" id="pvrTime" class="form-control" formControlName="pvrTime">                
                 <div *ngIf="osnovneInformacijeForm.controls.pvrDate.invalid">
                     Please enter pvr
@@ -122,15 +73,47 @@
                 </div>
             </div>
         </div>
+
+        <br>
+        
         <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="dodeliSebiResavanje">Dodeli sebi resevanje</label>
-                <input type="checkbox" id="dodeliSebiResavanje" formControlName="dodeliSebiResavanje">
+            <div class="col-sm-4 form-group">                      
+                <label for="tip">Tip</label>
+                <select class="form-control" formControlName="tip">                    
+                    <option value="" disabled selected hidden>tip</option>
+                    <option *ngFor="let option of listaTipova" [value]="option">{{option}}</option>
+                </select>
+            </div>   
+            <div class="col-sm-4 form-group">
+                <label for="status">Status</label>
+                <select class="form-control" formControlName="status">
+                    <option *ngFor="let option of listaStatusa" [value]="option">{{option}}</option>
+                </select>
+            </div>        
+        </div>
+
+        <div class="row"> 
+            <div class="col-sm-4 form-group">                
+                <input type="number" id="brojPoziva" class="form-control" formControlName="brojPoziva" placeholder="broj poziva">
+                <div *ngIf="osnovneInformacijeForm.controls.brojPoziva.invalid">
+                    Please enter brojPoziva
+                </div>
+            </div>     
+            <div class="col-sm-2 form-group" style="border: 1px solid rgb(218, 217, 217);margin-left:15px;height: 38px;">
+                <label for="potvrdjen" style="padding-top:5px;">Potvrdjen</label>
+                <input type="checkbox" id="potvrdjen" formControlName="potvrdjen" style="margin-left:5px;">
+                <div *ngIf="osnovneInformacijeForm.controls.potvrdjen.invalid">
+                    Please enter potvrdjen
+                </div>
+            </div>
+            <div class="col-sm-3 form-group" style="border: 1px solid rgb(218, 217, 217);margin-left:15px;">
+                <label for="dodeliSebiResavanje" style="padding-top:5px;">Dodeli sebi resevanje</label>
+                <input type="checkbox" id="dodeliSebiResavanje" formControlName="dodeliSebiResavanje" style="margin-left:5px;">
                 <div *ngIf="osnovneInformacijeForm.controls.dodeliSebiResavanje.invalid">
                     Please enter dodeliSebiResavanje
                 </div>
             </div>
-        </div>        
+        </div>
 
         <div class="row">
             <div class="col-1">
