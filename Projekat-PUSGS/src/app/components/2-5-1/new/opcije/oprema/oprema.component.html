@@ -1,1 +1,39 @@
-<p>oprema works!</p>
+<nav>
+    <a (click)=addToList()> New </a>
+    <hr/>   
+</nav>
+
+<mat-label>Filter:</mat-label>  
+<mat-form-field>  
+  <input matInput (keyup)="applyFilter($event)" (change)="applyFilter($event)" placeholder="" #input style="border-bottom: 3px solid #d1dce7;">  
+</mat-form-field>
+
+<div class="example-container mat-elevation-z8" >
+    <table mat-table [dataSource]="podaciTabele">            
+      <ng-container matColumnDef="id" sticky>
+        <th mat-header-cell *matHeaderCellDef style="max-width:60px;min-width:60px;"> Id </th>
+        <td mat-cell *matCellDef="let element" style="max-width:60px;min-width:60px;"> {{element.id}} </td>
+      </ng-container>      
+      <ng-container matColumnDef="name" sticky>
+        <th mat-header-cell *matHeaderCellDef style="max-width:100px;min-width:100px;padding-left:10px;"> Name </th>
+        <td mat-cell *matCellDef="let element" style="max-width:100px;min-width:100px;padding-left:10px;"> {{element.name}} </td>
+      </ng-container>            
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"> Type </th>
+        <td mat-cell *matCellDef="let element" style="padding-left:14px;"> {{element.type}} </td>
+      </ng-container>
+      <ng-container matColumnDef="kordinate">
+        <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"> Kordinate </th>
+        <td mat-cell *matCellDef="let element" style="padding-left:14px;"> {{element.kordinate}} </td>
+      </ng-container>
+      <ng-container matColumnDef="adresa">
+        <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"> Adresa </th>
+        <td mat-cell *matCellDef="let element" style="padding-left:14px;"> {{element.adresa}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>      
+    </table>      
+</div>
+    <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
