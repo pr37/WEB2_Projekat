@@ -9,9 +9,7 @@ import { OsnovneInformacije } from '../../../modeli-podataka/osnovne-informacije
 })
 export class NewComponent implements OnInit {  
   izabranaOpcija: string = 'osnovna_informacija';  
-
-
-
+  
   constructor() {}
 
   ngOnInit(): void {         

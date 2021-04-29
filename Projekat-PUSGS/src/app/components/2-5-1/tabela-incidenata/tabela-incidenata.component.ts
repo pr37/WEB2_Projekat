@@ -34,6 +34,7 @@ export class TabelaIncidenataComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() { 
     //this.podaciTabele.paginator = this.paginator;      
     //this.podaciTabele.sort = this.sort;
+    this.podaciTabele.paginator?._changePageSize(5);  
   }
 
   applyFilter(event: Event) {

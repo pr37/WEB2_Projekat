@@ -15,7 +15,7 @@ export class OpremaComponent implements AfterViewInit {
   mojiPodaci = new MatTableDataSource<Oprema>(OPREMA);            
   brojac: number = 0;
 
-  constructor(public dialog: MatDialog) {}
+  constructor() {}
 
   @ViewChild(MatPaginator) set matPaginator( paginator: MatPaginator){
     this.podaciTabele.paginator = paginator;
@@ -44,36 +44,7 @@ export class OpremaComponent implements AfterViewInit {
     this.podaciTabele.data.push(OPREMA[this.brojac]);    
     this.brojac = this.brojac +1;
     this.podaciTabele.filter = '';  
-
   }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '250px',
-      data: {name: this.brojac}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.brojac = this.brojac + 1;
-    });
-  }
-}
-
-@Component({
-  selector: 'dialog-overview-example-dialog',
-  templateUrl: 'dialog-overview-example-dialog.html',
-})
-export class DialogOverviewExampleDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Oprema) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
 }
 
 export interface Oprema {
