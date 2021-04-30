@@ -1,5 +1,5 @@
-<nav>
-    <a (click)=addToList()> New </a>
+<nav>    
+    <button class="btn btn-success" data-toggle="modal" data-target="#izaberiOpremu" (click)="inicijalizujModalTabelu">Izaberi opremu</button>
     <hr/>   
 </nav>
 
@@ -9,7 +9,7 @@
 </mat-form-field>
 
 <div class="example-container mat-elevation-z8" >
-    <table mat-table [dataSource]="podaciTabele">            
+    <table mat-table [dataSource]="podaciTabele" >            
       <ng-container matColumnDef="id" sticky>
         <th mat-header-cell *matHeaderCellDef style="max-width:60px;min-width:60px;"> Id </th>
         <td mat-cell *matCellDef="let element" style="max-width:60px;min-width:60px;"> {{element.id}} </td>
@@ -31,9 +31,83 @@
         <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"> Adresa </th>
         <td mat-cell *matCellDef="let element" style="padding-left:14px;"> {{element.adresa}} </td>
       </ng-container>
+      <ng-container matColumnDef="obrisi">
+        <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"></th>
+        <td mat-cell *matCellDef="let element" style="padding-left:14px;padding-top: 15px;">
+          <button class="btn btn-success" (click)="obrisiOpremu(element)" style="background-color: red;">Obrisi</button>
+        </td>
+      </ng-container>      
+
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>      
     </table>      
+</div>    
+
+<!--MODAL-------------------------------------------------------------------------------------------------------------------------------->
+<div class="modal fade" id="izaberiOpremu" tabindex="-1" role="dialog" aria-labelledby="izaberiOpremu" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="izaberiOpremu">Izaberi ostecenu opremu</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="tab-content">
+            <form class="form">
+
+              <mat-label>Filter:</mat-label>  
+              <mat-form-field>  
+                <input matInput (keyup)="applyModalFilter($event)" (change)="applyModalFilter($event)" placeholder="" #input style="border-bottom: 3px solid #d1dce7;">  
+              </mat-form-field>
+              
+              <div class="example-container mat-elevation-z8" >
+                  <table mat-table [dataSource]="svaOprema">            
+                    <ng-container matColumnDef="id">
+                      <th mat-header-cell *matHeaderCellDef style="max-width:60px;min-width:60px;"> Id </th>
+                      <td mat-cell *matCellDef="let element" style="max-width:60px;min-width:60px;"> {{element.id}} </td>
+                    </ng-container>      
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef style="max-width:100px;min-width:100px;padding-left:10px;"> Name </th>
+                      <td mat-cell *matCellDef="let element" style="max-width:100px;min-width:100px;padding-left:10px;"> {{element.name}} </td>
+                    </ng-container>            
+              
+                    <ng-container matColumnDef="type">
+                      <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"> Type </th>
+                      <td mat-cell *matCellDef="let element" style="padding-left:14px;"> {{element.type}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="kordinate">
+                      <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"> Kordinate </th>
+                      <td mat-cell *matCellDef="let element" style="padding-left:14px;"> {{element.kordinate}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="adresa">
+                      <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"> Adresa </th>
+                      <td mat-cell *matCellDef="let element" style="padding-left:14px;"> {{element.adresa}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="izbor">
+                      <th mat-header-cell *matHeaderCellDef style="padding-left:14px;"></th>
+                      <td mat-cell *matCellDef="let element" style="padding-left:14px;padding-top: 15px;">
+                        <button class="btn btn-success" data-dismiss="modal" (click)="dodajOpremu(element)">Izaberi</button>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedModalColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedModalColumns;"></tr>      
+                  </table>      
+              </div>                  
+              <mat-paginator [pageSizeOptions]="[5]"></mat-paginator>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Odustani</button>            
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
-    <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
+
+

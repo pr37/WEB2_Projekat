@@ -7,6 +7,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatInputModule} from '@angular/material/input'
 import {MatRippleModule} from '@angular/material/core'; 
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +32,7 @@ import { ResenjeComponent } from './components/2-5-1/new/opcije/resenje/resenje.
     OsnovneInformacijeComponent,
     PoziviComponent,
     OpremaComponent,
-    ResenjeComponent,        
+    ResenjeComponent,    
   ],
   imports: [
     BrowserModule,
@@ -42,7 +43,7 @@ import { ResenjeComponent } from './components/2-5-1/new/opcije/resenje/resenje.
     MatPaginatorModule,       
     MatInputModule,    
     MatRippleModule,
-    MatFormFieldModule,    
+    MatFormFieldModule,      
   ],
   providers: [],
   bootstrap: [AppComponent]

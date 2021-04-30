@@ -10,18 +10,36 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
   styleUrls: ['./oprema.component.css']
 })
 export class OpremaComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'type', 'kordinate', 'adresa'];  
+  displayedColumns: string[] = ['id', 'name', 'type', 'kordinate', 'adresa', 'obrisi'];
+  displayedModalColumns:string[] = ['id', 'name', 'type', 'kordinate', 'adresa', 'izbor'];  
   podaciTabele = new MatTableDataSource<Oprema>();          
-  mojiPodaci = new MatTableDataSource<Oprema>(OPREMA);            
+  svaOprema = new MatTableDataSource<Oprema>(OPREMA); 
+  opremaToAdd: Oprema;
   brojac: number = 0;
 
-  constructor() {}
 
-  @ViewChild(MatPaginator) set matPaginator( paginator: MatPaginator){
-    this.podaciTabele.paginator = paginator;
-    this.mojiPodaci.paginator = paginator;
+  constructor() {    
+    this.opremaToAdd = new Oprema();           
   }
   
+  dodajOpremu(element: Oprema): void{
+    if(this.podaciTabele.data.indexOf(element) != -1){
+      alert('izabrana oprema je ved dodata!');
+      return;
+    }
+    this.podaciTabele.data.push(element);
+    this.podaciTabele.filter = '';
+  }
+
+  obrisiOpremu(element: Oprema): void{
+    this.podaciTabele.data.splice(this.podaciTabele.data.indexOf(element), 1);
+    this.podaciTabele.filter = '';
+  }
+
+  @ViewChild(MatPaginator) set matModalPaginator( modalPaginator: MatPaginator){    
+    this.svaOprema.paginator = modalPaginator;    
+  }
+
   /*@ViewChild(MatSort) set matSort( sort: MatSort){
     this.podaciTabele.sort = sort;
     this.mojiPodaci.sort = sort;
@@ -30,29 +48,37 @@ export class OpremaComponent implements AfterViewInit {
   ngAfterViewInit() { 
     //this.podaciTabele.paginator = this.paginator;      
     //this.podaciTabele.sort = this.sort;
-    this.podaciTabele.filter = '';    
+    this.podaciTabele.filter = '';       
+  }
+
+  inicijalizujModalTabelu(){
+    this.svaOprema.filter = '';    
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.podaciTabele.filter = filterValue.trim().toLowerCase();
   }
-
-  addToList(){   
-    if(this.brojac > OPREMA.length -2)
-      return; 
-    this.podaciTabele.data.push(OPREMA[this.brojac]);    
-    this.brojac = this.brojac +1;
-    this.podaciTabele.filter = '';  
+  applyModalFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.svaOprema.filter = filterValue.trim().toLowerCase();
   }
 }
 
-export interface Oprema {
+export class Oprema {
   id: number;
   name: string;
   type: string;  
   kordinate: string;
   adresa: string;  
+  
+  constructor(id: number = 0, name: string = '', type: string = '', kordinate: string = '', adresa: string = ''){
+    this.id = id;
+    this.name = name;
+    this.type = type;
+    this.kordinate = kordinate;
+    this.adresa = adresa;
+  }
 }
 
 const OPREMA: Oprema[] = [  
