@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { PlanoviRadaComponent } from './planovi-rada/planovi-rada.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -23,7 +24,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    PlanoviRadaComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,13 +36,14 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'user-profile', component: UserProfileComponent },
+      { path: 'planovi-rada', component: PlanoviRadaComponent },
     ]),
     BrowserAnimationsModule,
     DemoMaterialModule,
     MatNativeDateModule,
     ReactiveFormsModule,
   ],
-  entryComponents: [UserProfileComponent],
+  entryComponents: [PlanoviRadaComponent], //TODO Login component here
   providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },],
   bootstrap: [AppComponent]
 })

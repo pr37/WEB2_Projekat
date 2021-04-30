@@ -25,11 +25,13 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\material-module.ts" />
+    <None Remove="ClientApp\src\app\planovi-rada\planovi-rada.component.ts" />
     <None Remove="ClientApp\src\app\user-profile\user-profile.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\material-module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\planovi-rada\planovi-rada.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\user-profile\user-profile.component.ts" />
   </ItemGroup>
 
