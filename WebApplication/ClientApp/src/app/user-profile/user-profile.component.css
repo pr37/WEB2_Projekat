@@ -44,6 +44,10 @@ input.example-right-align {
   width: 100%;
 }
 
+.example-30-width {
+  width: 30%;
+}
+
 .example-margin {
   margin: 0 12px;
 }

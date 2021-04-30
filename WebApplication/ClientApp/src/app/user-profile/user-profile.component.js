@@ -27,14 +27,17 @@ var UserProfileComponent = /** @class */ (function () {
             forms_1.Validators.email,
         ]);
         this.matcher = new MyErrorStateMatcher();
+        this.uploading = false;
     }
     UserProfileComponent.prototype.onSelectFile = function (event) {
         var _this = this;
         if (event.target.files && event.target.files[0]) {
+            this.uploading = true;
             var reader = new FileReader();
             reader.readAsDataURL(event.target.files[0]); // read file as data url
             reader.onload = function (event) {
                 _this.url = event.target.result;
+                _this.uploading = false;
             };
         }
     };
