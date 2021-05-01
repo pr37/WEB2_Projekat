@@ -25,13 +25,23 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\material-module.ts" />
+    <None Remove="ClientApp\src\app\new-plan-rada\new-plan-rada.component.ts" />
+    <None Remove="ClientApp\src\app\notifikacije\notifikacije.component.ts" />
     <None Remove="ClientApp\src\app\planovi-rada\planovi-rada.component.ts" />
+    <None Remove="ClientApp\src\app\podesavanja\podesavanja.component.ts" />
+    <None Remove="ClientApp\src\app\potrosaci\potrosaci.component.ts" />
+    <None Remove="ClientApp\src\app\pozivi\pozivi.component.ts" />
     <None Remove="ClientApp\src\app\user-profile\user-profile.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\material-module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\new-plan-rada\new-plan-rada.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\notifikacije\notifikacije.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\planovi-rada\planovi-rada.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\podesavanja\podesavanja.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\potrosaci\potrosaci.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\pozivi\pozivi.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\user-profile\user-profile.component.ts" />
   </ItemGroup>
 

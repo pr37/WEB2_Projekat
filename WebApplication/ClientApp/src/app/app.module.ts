@@ -10,7 +10,12 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { NewPlanRadaComponent } from './new-plan-rada/new-plan-rada.component';
 import { PlanoviRadaComponent } from './planovi-rada/planovi-rada.component';
+import { NotifikacijeComponent } from './notifikacije/notifikacije.component';
+import { PodesavanjaComponent } from './podesavanja/podesavanja.component';
+import { PotrosaciComponent } from './potrosaci/potrosaci.component';
+import { PoziviComponent } from './pozivi/pozivi.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -25,7 +30,12 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     CounterComponent,
     FetchDataComponent,
     UserProfileComponent,
-    PlanoviRadaComponent
+    PlanoviRadaComponent,
+    NewPlanRadaComponent,
+    NotifikacijeComponent,
+    PodesavanjaComponent,
+    PotrosaciComponent,
+    PoziviComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -37,6 +47,11 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'user-profile', component: UserProfileComponent },
       { path: 'planovi-rada', component: PlanoviRadaComponent },
+      { path: 'new-plan-rada', component: NewPlanRadaComponent },
+      { path: 'notifikacije', component: NotifikacijeComponent },
+      { path: 'podesavanja', component: PodesavanjaComponent },
+      { path: 'potrosaci', component: PotrosaciComponent },
+      { path: 'pozivi', component: PoziviComponent },
     ]),
     BrowserAnimationsModule,
     DemoMaterialModule,
