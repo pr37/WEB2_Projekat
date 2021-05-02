@@ -19,6 +19,9 @@ var NewPlanRadaComponent = /** @class */ (function () {
         this.dialog = dialog;
         this.control = new forms_1.FormControl();
         this.svrhe = ['Popravka 123', 'Zamena 22', 'Instalacija ...', 'Provera ...'];
+        this.Status = 'DRAFT';
+        this.CreatedOn = new forms_1.FormControl(new Date());
+        //TODO get values
     }
     NewPlanRadaComponent.prototype.openDialog = function () {
         var _this = this;

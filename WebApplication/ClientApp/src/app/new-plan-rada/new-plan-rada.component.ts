@@ -5,6 +5,7 @@ import { startWith, map } from 'rxjs/operators';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
+
 export interface DialogData {
   selectedCrew: string;
 }
@@ -18,7 +19,7 @@ export interface DialogData {
 export class NewPlanRadaComponent implements OnInit{
 
  // Status: string;
-  Status : 'DRAFT';
+  Status : string;
   IncidentID: 'TestID';
   CreatedBy: string;
   PhoneNo: string;
@@ -28,8 +29,14 @@ export class NewPlanRadaComponent implements OnInit{
   Notes: string;
   Address: string;
   crewID: string;
+  CreatedOn: FormControl;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {
+    this.Status = 'DRAFT';
+    this.CreatedOn = new FormControl(new Date());
+    //TODO get values
+
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
