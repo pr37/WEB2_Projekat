@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { NewPlanRadaComponent } from './new-plan-rada/new-plan-rada.component';
+import { NewPlanRadaComponent, DialogOverviewExampleDialog } from './new-plan-rada/new-plan-rada.component';
 import { PlanoviRadaComponent } from './planovi-rada/planovi-rada.component';
 import { NotifikacijeComponent } from './notifikacije/notifikacije.component';
 import { PodesavanjaComponent } from './podesavanja/podesavanja.component';
@@ -35,7 +35,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     NotifikacijeComponent,
     PodesavanjaComponent,
     PotrosaciComponent,
-    PoziviComponent
+    PoziviComponent,
+    DialogOverviewExampleDialog
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

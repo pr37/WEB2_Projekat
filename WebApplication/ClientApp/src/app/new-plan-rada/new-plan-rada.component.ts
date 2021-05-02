@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+
+export interface DialogData {
+  selectedCrew: string;
+}
 
 @Component({
   selector: 'new-plan-rada',
@@ -20,6 +26,22 @@ export class NewPlanRadaComponent implements OnInit{
   Purpose: string;
   Details: string;
   Notes: string;
+  Address: string;
+  crewID: string;
+
+  constructor(public dialog: MatDialog) { }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+     
+      data: { options: ['crew1','crew2'] }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.crewID = result;
+    });
+  }
 
   control = new FormControl();
   svrhe: string[] = ['Popravka 123', 'Zamena 22', 'Instalacija ...', 'Provera ...'];
@@ -39,5 +61,28 @@ export class NewPlanRadaComponent implements OnInit{
 
   private _normalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
+  }
+}
+
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog-overview-example-dialog.html',
+  styleUrls: ['./new-plan-rada.component.css']
+})
+export class DialogOverviewExampleDialog {
+  crewID: string;
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  }
+
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  confirmSelection(): void {
+    this.dialogRef.close(this.crewID);
   }
 }

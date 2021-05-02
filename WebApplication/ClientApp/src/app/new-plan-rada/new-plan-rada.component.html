@@ -48,6 +48,7 @@
               <mat-option value="Neplaniran">Neplaniran rad</mat-option>
             </mat-select>
           </mat-form-field>
+
         </div>
 
         <div class="example-container">
@@ -104,9 +105,9 @@
           </mat-form-field>
           <mat-form-field class="example-30-width">
             <mat-label>Field crew:</mat-label>
-            <input matInput disabled value="{{FieldCrewID}}">
+            <input matInput disabled value="{{crewID}}">
           </mat-form-field>
-          <button mat-icon-button aria-label="Show field crew">
+          <button mat-icon-button (click)="openDialog()" aria-label="Show field crew">
             <mat-icon>more_vert</mat-icon>
           </button>
         </div>
@@ -126,33 +127,32 @@
           </mat-form-field>
         </div>
 
-        <div class="example-container">
-            <div>
-              <mat-form-field>
-                <mat-label>Svrha:</mat-label>
-                <textarea matInput [matAutocomplete]="auto" [formControl]="control" value="{{Purpose}}"></textarea>
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let svrha of filteredSvrhe | async" [value]="svrha">
-                    {{svrha}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </div>
+        <mat-form-field class="example-360-width">
+          <mat-label>Address:</mat-label>
+          <input matInput value="{{Address}}">
+        </mat-form-field>
 
-            <div>
-              <mat-form-field>
-                <mat-label>Detalji:</mat-label>
-                <textarea matInput value="{{Details}}"></textarea>
-              </mat-form-field>
-            </div>
-          </div>
-            <div>
-              <mat-form-field>
-                <mat-label>Beleske:</mat-label>
-                <textarea matInput value="{{Notes}}"></textarea>
-              </mat-form-field>
-            </div>
-        
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Svrha:</mat-label>
+            <textarea matInput [matAutocomplete]="auto" [formControl]="control" value="{{Purpose}}"></textarea>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let svrha of filteredSvrhe | async" [value]="svrha">
+                {{svrha}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Detalji:</mat-label>
+            <textarea matInput value="{{Details}}"></textarea>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Beleske:</mat-label>
+            <textarea matInput value="{{Notes}}"></textarea>
+          </mat-form-field>
+        </div>
+
       </form>
 
     </mat-sidenav-content>
