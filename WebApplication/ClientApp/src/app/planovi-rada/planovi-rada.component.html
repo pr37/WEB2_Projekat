@@ -12,31 +12,44 @@
         <mat-button-toggle value="bold">All</mat-button-toggle>
         <mat-button-toggle value="italic">Mine</mat-button-toggle>
       </mat-button-toggle-group>
-      
+
     </div>
 
     <div class="example-button-row">
-      <button mat-stroked-button color="accent">Search</button>
 
       <mat-form-field appearance="legacy">
         <mat-label></mat-label>
-        <input matInput placeholder="Placeholder">
+        <input matInput (keyup)="applySearch($event.target.value)" placeholder="Placeholder">
         <mat-icon matSuffix>search</mat-icon>
         <mat-hint>Enter search value</mat-hint>
       </mat-form-field>
     </div>
 
     <div class="example-button-row">
-      <button mat-stroked-button color="accent">Filter</button>
+      <mat-form-field appearance="fill">
+        <mat-label>Filter statusa</mat-label>
+        <mat-select [(value)]="selectedStatus" (selectionChange)="applyFilterStatus()">
+          <mat-option value="">None</mat-option>
+          <mat-option value="OK">OK</mat-option>
+          <mat-option value="DRAFT">DRAFT</mat-option>
+          <mat-option value="APPROVED">APPROVED</mat-option>
+          <mat-option value="OBSOLETE">OBSOLETE</mat-option>
+          <mat-option value="TEMPORARY">TEMPORARY</mat-option>
+          <mat-option value="REPLACED">REPLACED</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <mat-form-field appearance="legacy">
-        <mat-label></mat-label>
-        <input matInput placeholder="Placeholder">
-        <mat-icon matSuffix>filter_b_and_w</mat-icon>
-        <mat-hint>Enter filtering value</mat-hint>
+    </div>
+    <div class="example-button-row">
+      <mat-form-field appearance="fill">
+        <mat-label>Filter tipa plana</mat-label>
+        <mat-select [(value)]="selectedType" (selectionChange)="applyFilterType()">
+          <mat-option value="">None</mat-option>
+          <mat-option value="Planirani">Planirani</mat-option>
+          <mat-option value="Neplaniran">Neplaniran</mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
-
   </section>
 
   <mat-divider></mat-divider>
@@ -74,6 +87,17 @@
       <ng-container matColumnDef="Address">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
         <td mat-cell *matCellDef="let element"> {{element.Address}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Company">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Company </th>
+        <td mat-cell *matCellDef="let element"> {{element.Company}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -1,10 +1,162 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title></title>
 </head>
 <body>
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="side" opened>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" color="accent">Basic information</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" color="accent">History of state changes</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" color="accent">Multimedia attachments</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" color="accent">Equipment</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" color="accent">Switching instructions</button>
+        </div>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <form class="example-form">
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Created by:</mat-label>
+            <input matInput disabled value="{{CreatedBy}}">
+          </mat-form-field>
 
+          <mat-form-field appearance="fill">
+            <mat-label>Tip rada</mat-label>
+            <mat-select>
+              <mat-option value="Planirani">Planiran rad</mat-option>
+              <mat-option value="Neplaniran">Neplaniran rad</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="example-container">
+          <mat-form-field class="example-30-width">
+            <mat-label>Status:</mat-label>
+            <input matInput disabled value="{{Status}}">
+          </mat-form-field>
+
+          <mat-form-field class="example-30-width">
+            <mat-label>Phone No:</mat-label>
+            <input matInput value="{{PhoneNo}}">
+          </mat-form-field>
+        </div>
+
+
+        <div class="example-container">
+          <mat-form-field appearance="fill" class="example-30-width">
+            <mat-label>Date created on</mat-label>
+            <input matInput disabled [matDatepicker]="picker3">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="example-30-width">
+            <mat-label>Work Request ID:</mat-label>
+            <input matInput disabled value="{{WorkRequestID}}">
+          </mat-form-field>
+          <button mat-icon-button aria-label="Show work request">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+
+        <div class="example-container">
+          <mat-form-field class="example-30-width">
+            <mat-label>Company:</mat-label>
+            <input matInput value="{{Company}}">
+          </mat-form-field>
+          <mat-form-field class="example-30-width">
+            <mat-label>Incident ID:</mat-label>
+            <input matInput disabled value="{{IncidentID}}">
+          </mat-form-field>
+          <button mat-icon-button aria-label="Show incident">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+        </div>
+
+        <div class="example-container">
+          <mat-form-field appearance="fill" class="example-30-width">
+            <mat-label>Tip na cemu se radi?</mat-label>
+            <mat-select>
+              <mat-option value="">??</mat-option>
+              <mat-option value="">Equipment</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-30-width">
+            <mat-label>Field crew:</mat-label>
+            <input matInput disabled value="{{FieldCrewID}}">
+          </mat-form-field>
+          <button mat-icon-button aria-label="Show field crew">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+
+        <div class="example-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Start date</mat-label>
+            <input matInput [matDatepicker]="picker1">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>End date</mat-label>
+            <input matInput [matDatepicker]="picker2">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="example-container">
+            <div>
+              <mat-form-field>
+                <mat-label>Svrha:</mat-label>
+                <textarea matInput [matAutocomplete]="auto" [formControl]="control" value="{{Purpose}}"></textarea>
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let svrha of filteredSvrhe | async" [value]="svrha">
+                    {{svrha}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <mat-form-field>
+                <mat-label>Detalji:</mat-label>
+                <textarea matInput value="{{Details}}"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+            <div>
+              <mat-form-field>
+                <mat-label>Beleske:</mat-label>
+                <textarea matInput value="{{Notes}}"></textarea>
+              </mat-form-field>
+            </div>
+        
+      </form>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+ 
 </body>
 </html>

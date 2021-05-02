@@ -14,9 +14,24 @@ var table_1 = require("@angular/material/table");
 var sort_1 = require("@angular/material/sort");
 var PlanoviRadaComponent = /** @class */ (function () {
     function PlanoviRadaComponent() {
-        this.displayedColumns = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address'];
+        this.displayedColumns = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address', 'Company', 'Type'];
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
     }
+    PlanoviRadaComponent.prototype.applySearch = function (filterValue) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
+    };
+    PlanoviRadaComponent.prototype.applyFilterStatus = function () {
+        this.selectedStatus = this.selectedStatus.trim(); // Remove whitespace
+        this.selectedStatus = this.selectedStatus.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+        this.dataSource.filter = this.selectedStatus;
+    };
+    PlanoviRadaComponent.prototype.applyFilterType = function () {
+        this.selectedType = this.selectedType.trim(); // Remove whitespace
+        this.selectedType = this.selectedType.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+        this.dataSource.filter = this.selectedType;
+    };
     PlanoviRadaComponent.prototype.ngAfterViewInit = function () {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -38,10 +53,9 @@ var PlanoviRadaComponent = /** @class */ (function () {
 }());
 exports.PlanoviRadaComponent = PlanoviRadaComponent;
 var ELEMENT_DATA = [
-    { ID: '231', StartDate: '24.4.2021.', PhoneNo: '012434234', Status: 'OK', Address: 'Maje Gojkovic 123' },
-    { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321' },
-    { ID: '1aw3', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321' },
-    { ID: '1aw3', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321' },
-    { ID: '1aw3', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321' },
+    { ID: '231', StartDate: '24.4.2021.', PhoneNo: '012434234', Status: 'OK', Address: 'Maje Gojkovic 123', Company: 'ARRT', Type: 'Planirani' },
+    { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Planirani' },
+    { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
+    { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'REPLACED', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
 ];
 //# sourceMappingURL=planovi-rada.component.js.map
