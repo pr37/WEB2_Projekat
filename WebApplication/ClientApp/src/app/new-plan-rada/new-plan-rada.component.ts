@@ -67,6 +67,9 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
   url: string;
   public uploading: boolean;
 
+  equipments: string[];
+  equipmentState: string;
+
   constructor(public dialog: MatDialog) {
     this.uploading = false;
 
@@ -81,6 +84,8 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     //TODO get values
     this.images = ['https://material.angular.io/assets/img/examples/shiba2.jpg'];
     this.allWorkPlanIDs = ['test1', 'test2'];
+    this.equipments = ['test1', 'test2'];
+    this.equipmentState = 'NOT ADDED';
   }
 
   showBasic(): void {
@@ -123,6 +128,13 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     this.ShowInstructions = true;
   }
 
+  addEquipment(): void {
+
+  }
+
+  removeEquipment(): void {
+
+  }
   
   onSelectFile(event) { // called each time file input changes
     if (event.target.files && event.target.files[0]) {

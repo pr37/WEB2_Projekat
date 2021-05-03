@@ -43,6 +43,8 @@ var NewPlanRadaComponent = /** @class */ (function () {
         //TODO get values
         this.images = ['https://material.angular.io/assets/img/examples/shiba2.jpg'];
         this.allWorkPlanIDs = ['test1', 'test2'];
+        this.equipments = ['test1', 'test2'];
+        this.equipmentState = 'NOT ADDED';
     }
     NewPlanRadaComponent.prototype.ngAfterViewInit = function () {
         this.dataSource.paginator = this.paginator;
@@ -81,6 +83,10 @@ var NewPlanRadaComponent = /** @class */ (function () {
         this.ShowMultimedia = false;
         this.ShowEquipment = false;
         this.ShowInstructions = true;
+    };
+    NewPlanRadaComponent.prototype.addEquipment = function () {
+    };
+    NewPlanRadaComponent.prototype.removeEquipment = function () {
     };
     NewPlanRadaComponent.prototype.onSelectFile = function (event) {
         var _this = this;
