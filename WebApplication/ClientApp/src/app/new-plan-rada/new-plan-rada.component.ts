@@ -5,6 +5,7 @@ import { startWith, map } from 'rxjs/operators';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 export interface DialogData {
@@ -77,7 +78,8 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
   instructions: Array<{ id: string, text: string, executed: string, validated: string, equipment: string }>;
   adresaElementa: string;
 
-  constructor(public dialog: MatDialog) {
+
+  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {
     this.uploading = false;
 
     this.ShowBasic = true;
@@ -98,6 +100,10 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     this.instructions.push({ id: "1a", text: "set this to that", executed: "UNEXECUTED", equipment: "testEqp", validated: "NOT VALIDATED" });
     this.instructions.push({ id: "2a", text: "set this to that", executed: "EXECUTED", equipment: "testEqp2", validated: "NOT VALIDATED" });
 
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 
   showBasic(): void {
@@ -183,11 +189,20 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
   executeInstruction(id): void {
     for (var i = 0; i < this.instructions.length; i++) {
 
-      if (this.instructions[i].id === id) {
+      if (this.instructions[i].id === id && this.instructions[i].validated === "VALIDATED") {
 
         this.instructions[i].executed = "EXECUTED";
       }
     }
+
+    for (var i = 0; i < this.instructions.length; i++) {
+
+      if (this.instructions[i].executed !== "EXECUTED") {
+        return;
+      }
+    }
+    this.Status = 'COMPLETED';
+
     //TODO update db
   }
 

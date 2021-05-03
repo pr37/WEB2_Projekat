@@ -26,8 +26,9 @@ var ELEMENT_DATA = [
     { UserID: 'asd22', ChangedDate: 'test' }
 ];
 var NewPlanRadaComponent = /** @class */ (function () {
-    function NewPlanRadaComponent(dialog) {
+    function NewPlanRadaComponent(dialog, _snackBar) {
         this.dialog = dialog;
+        this._snackBar = _snackBar;
         this.displayedColumns = ['UserID', 'ChangedDate'];
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
         this.control = new forms_1.FormControl();
@@ -52,6 +53,9 @@ var NewPlanRadaComponent = /** @class */ (function () {
     }
     NewPlanRadaComponent.prototype.ngAfterViewInit = function () {
         this.dataSource.paginator = this.paginator;
+    };
+    NewPlanRadaComponent.prototype.openSnackBar = function (message, action) {
+        this._snackBar.open(message, action);
     };
     NewPlanRadaComponent.prototype.showBasic = function () {
         this.ShowBasic = true;
@@ -122,10 +126,16 @@ var NewPlanRadaComponent = /** @class */ (function () {
     };
     NewPlanRadaComponent.prototype.executeInstruction = function (id) {
         for (var i = 0; i < this.instructions.length; i++) {
-            if (this.instructions[i].id === id) {
+            if (this.instructions[i].id === id && this.instructions[i].validated === "VALIDATED") {
                 this.instructions[i].executed = "EXECUTED";
             }
         }
+        for (var i = 0; i < this.instructions.length; i++) {
+            if (this.instructions[i].executed !== "EXECUTED") {
+                return;
+            }
+        }
+        this.Status = 'COMPLETED';
         //TODO update db
     };
     NewPlanRadaComponent.prototype.deleteInstruction = function (id) {
