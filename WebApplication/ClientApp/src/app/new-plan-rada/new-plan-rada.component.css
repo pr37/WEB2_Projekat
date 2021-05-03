@@ -14,6 +14,10 @@ body {
     width: 460px;
 }
 
+table {
+  width: 100%;
+}
+
 .example-container .mat-form-field {
   width: 220px;
 }
@@ -109,4 +113,9 @@ input.example-right-align {
   display: flex;
   justify-content: center;
   width: 120px;
+}
+
+.example-card {
+  max-width: 300px;
+  max-height: 300px;
 }
