@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Add new instruction</h2>
+<div mat-dialog-content>
+  <mat-form-field class="example-full-width">
+    <mat-label>Instruction text</mat-label>
+    <input matInput [(ngModel)]='text'>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-select [(value)]="equipmentID">
+      <mat-option [value]="test">None</mat-option>
+      <mat-option *ngFor="let eqp of data.equipments" [value]="eqp">{{eqp}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <div class="example-button-row">
+    <button mat-raised-button color="accent" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button color="accent" (click)="addInstruction(equipmentID)">Add</button>
+  </div>
+</div>

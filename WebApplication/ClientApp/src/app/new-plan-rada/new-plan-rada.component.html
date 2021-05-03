@@ -46,7 +46,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Tip rada</mat-label>
-              <mat-select>
+              <mat-select [(value)]="TypeRada">
                 <mat-option value="Planirani">Planiran rad</mat-option>
                 <mat-option value="Neplaniran">Neplaniran rad</mat-option>
               </mat-select>
@@ -62,7 +62,7 @@
 
             <mat-form-field class="example-30-width">
               <mat-label>Phone No:</mat-label>
-              <input matInput value="{{PhoneNo}}">
+              <input matInput name="phone" [(ngModel)]='PhoneNo'>
             </mat-form-field>
           </div>
 
@@ -86,7 +86,7 @@
           <div class="example-container">
             <mat-form-field class="example-30-width">
               <mat-label>Company:</mat-label>
-              <input matInput value="{{Company}}">
+              <input matInput name="company" [(ngModel)]='Company'>
             </mat-form-field>
             <mat-form-field class="example-30-width">
               <mat-label>Incident ID:</mat-label>
@@ -101,7 +101,7 @@
           <div class="example-container">
             <mat-form-field appearance="fill" class="example-30-width">
               <mat-label>Tip na cemu se radi?</mat-label>
-              <mat-select>
+              <mat-select [(value)]="TypeNaCemu">
                 <mat-option value="">??</mat-option>
                 <mat-option value="">Equipment</mat-option>
               </mat-select>
@@ -118,13 +118,13 @@
           <div class="example-container">
             <mat-form-field appearance="fill">
               <mat-label>Start date</mat-label>
-              <input matInput [matDatepicker]="picker1">
+              <input matInput [matDatepicker]="picker1" name="startdate" [(ngModel)]='FromDate'>
               <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>End date</mat-label>
-              <input matInput [matDatepicker]="picker2">
+              <input matInput [matDatepicker]="picker2" name="enddate" [(ngModel)]='ToDate'>
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
@@ -132,13 +132,13 @@
 
           <mat-form-field class="example-360-width">
             <mat-label>Address:</mat-label>
-            <input matInput value="{{Address}}">
+            <input matInput name="addy" [(ngModel)]='Address'>
           </mat-form-field>
 
           <div class="example-container">
             <mat-form-field>
               <mat-label>Svrha:</mat-label>
-              <textarea matInput [matAutocomplete]="auto" [formControl]="control" value="{{Purpose}}"></textarea>
+              <textarea matInput [matAutocomplete]="auto" [formControl]="control" name="purpose" [(ngModel)]='Purpose'></textarea>
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let svrha of filteredSvrhe | async" [value]="svrha">
                   {{svrha}}
@@ -148,15 +148,18 @@
 
             <mat-form-field>
               <mat-label>Detalji:</mat-label>
-              <textarea matInput value="{{Details}}"></textarea>
+              <textarea matInput name="details" [(ngModel)]='Details'></textarea>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Beleske:</mat-label>
-              <textarea matInput value="{{Notes}}"></textarea>
+              <textarea matInput name="notes" [(ngModel)]='Notes'></textarea>
             </mat-form-field>
           </div>
 
         </form>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="addNewWorkPlan()" color="accent">Add new work plan</button>
+        </div>
       </div>
 
       <div *ngIf="ShowHistory">
@@ -164,9 +167,9 @@
           <mat-card-title>Change document state</mat-card-title>
           <mat-card-subtitle>Change it by approving it or denying it.</mat-card-subtitle>
           <mat-card-actions>
-            <button mat-button>APPROVE</button>
-            <button mat-button>DENY</button>
-            <button mat-button>CANCEL</button>
+            <button mat-button (click)="approveDocument()">APPROVE</button>
+            <button mat-button (click)="denyDocument()">DENY</button>
+            <button mat-button (click)="cancelDocument()">CANCEL</button>
           </mat-card-actions>
           </mat-card>
           <mat-card class="example-card">
@@ -226,6 +229,16 @@
       </div>
 
       <div *ngIf="ShowInstructions">
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="addNewInstructionDialog()" color="accent">Add new instruction</button>
+          <button mat-raised-button class="button-full-width" (click)="deleteAllInstructions()" color="accent">Delete all instructions</button>
+          <button mat-raised-button class="button-full-width" (click)="validateInstructions()" color="accent">Validate</button>
+        </div>
+
+        <mat-card *ngFor="let instr of instructions">ID: {{instr.id}} --- {{instr.text}} ----- {{instr.equipment}} ----- {{instr.validated}} ----- {{instr.executed}}
+        <button mat-raised-button  (click)="executeInstruction(instr.id)" color="accent">Execute</button>
+        <button mat-raised-button  (click)="deleteInstruction(instr.id)" color="accent">Delete</button>
+        </mat-card>
 
       </div>
     </mat-sidenav-content>

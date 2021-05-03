@@ -51,6 +51,8 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
 
   Status : string;
   IncidentID: 'TestID';
+  TypeRada: string;
+  TypeNaCemu: string;
   CreatedBy: string;
   PhoneNo: string;
   Company: string;
@@ -60,6 +62,8 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
   Address: string;
   crewID: string;
   CreatedOn: FormControl;
+  FromDate: Date;
+  ToDate: Date;
 
   images: string[];
   copyToWorkPlanID: string;
@@ -69,6 +73,9 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
 
   equipments: string[];
   equipmentState: string;
+
+  instructions: Array<{ id: string, text: string, executed: string, validated: string, equipment: string }>;
+  adresaElementa: string;
 
   constructor(public dialog: MatDialog) {
     this.uploading = false;
@@ -80,12 +87,17 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     this.ShowInstructions = false;
 
     this.Status = 'DRAFT';
+    this.Address = '';
     this.CreatedOn = new FormControl(new Date());
     //TODO get values
     this.images = ['https://material.angular.io/assets/img/examples/shiba2.jpg'];
     this.allWorkPlanIDs = ['test1', 'test2'];
     this.equipments = ['test1', 'test2'];
     this.equipmentState = 'NOT ADDED';
+    this.instructions = new Array();
+    this.instructions.push({ id: "1a", text: "set this to that", executed: "UNEXECUTED", equipment: "testEqp", validated: "NOT VALIDATED" });
+    this.instructions.push({ id: "2a", text: "set this to that", executed: "EXECUTED", equipment: "testEqp2", validated: "NOT VALIDATED" });
+
   }
 
   showBasic(): void {
@@ -128,12 +140,97 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     this.ShowInstructions = true;
   }
 
+  addNewWorkPlan(): void {
+    //Status: string;
+    //IncidentID: 'TestID';
+    //TypeRada: string;
+    //TypeNaCemu: string;
+    //CreatedBy: string;
+    //PhoneNo: string;
+    //Company: string;
+    //Purpose: string;
+    //Details: string;
+    //Notes: string;
+    //Address: string;
+    //crewID: string;
+    //CreatedOn: FormControl;
+    //FromDate: Date;
+    //ToDate: Date;
+    console.log(this.Status + " " + this.IncidentID + " " + this.TypeRada + " " + this.TypeNaCemu + " " + this.PhoneNo + " " + this.CreatedBy + " " + this.Company + " " + this.Purpose
+      + " " + this.Details + " " + this.Notes + " " + this.Address + " "+  this.FromDate + " "+ this.ToDate)
+  }
+
+  approveDocument(): void {
+    this.Status = 'APPROVED';
+  }
+
+  denyDocument(): void {
+    this.Status = 'DENIED';
+  }
+
+  cancelDocument(): void {
+    this.Status = 'CANCELED';
+  }
+
   addEquipment(): void {
 
   }
 
   removeEquipment(): void {
 
+  }
+
+  executeInstruction(id): void {
+    for (var i = 0; i < this.instructions.length; i++) {
+
+      if (this.instructions[i].id === id) {
+
+        this.instructions[i].executed = "EXECUTED";
+      }
+    }
+    //TODO update db
+  }
+
+  deleteInstruction(id): void {
+    for (var i = 0; i < this.instructions.length; i++) {
+
+      if (this.instructions[i].id === id) {
+
+        this.instructions.splice(i,1);
+      }
+    }
+    //TODO update db
+  }
+
+  validateInstructions(): void {
+    this.adresaElementa = "test" //TODO GET
+                                  //TODO nalog za rad-plan rada-adrese
+    if (this.Address === this.adresaElementa) {
+
+      for (var i = 0; i < this.instructions.length; i++) {
+        this.instructions[i].validated = "VALIDATED";
+      }
+    }
+  }
+
+  deleteAllInstructions(): void {
+      this.instructions.splice(0, this.instructions.length);
+      //TODO update db
+  }
+
+  addNewInstructionDialog(): void {
+    const dialogRef = this.dialog.open(InstructionDialog, {
+
+      data: {
+        equipments: this.equipments
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.instructions.push({ id: "2a", text: result[0].text, executed: "UNEXECUTED", equipment: result[0].eqp, validated: "NOT VALIDATED" });
+      //TODO send to server and refresh collection -- get id
+    });
   }
   
   onSelectFile(event) { // called each time file input changes
@@ -274,5 +371,35 @@ export class ImageDialog {
     //TODO
     console.log(this.workPlanID);
     this.dialogRef.close(this.workPlanID);
+  }
+}
+
+
+export interface InstructionDialogData {
+  
+}
+
+@Component({
+  selector: 'instruction-dialog',
+  templateUrl: 'instruction-dialog.html',
+  styleUrls: ['./new-plan-rada.component.css']
+})
+export class InstructionDialog {
+  text: string;
+  equipmentID: string;
+  obj: [{ text: string, eqp: string }];
+  constructor(
+    public dialogRef: MatDialogRef<InstructionDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: InstructionDialogData) {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  addInstruction(equipmentID): void {
+    this.obj = [{ text: this.text, eqp: equipmentID }];
+    console.log(this.text);
+    this.dialogRef.close(this.obj);
   }
 }

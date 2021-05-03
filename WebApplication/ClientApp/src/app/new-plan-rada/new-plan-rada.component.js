@@ -9,7 +9,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ImageDialog = exports.DialogOverviewExampleDialog = exports.NewPlanRadaComponent = void 0;
+exports.InstructionDialog = exports.ImageDialog = exports.DialogOverviewExampleDialog = exports.NewPlanRadaComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var operators_1 = require("rxjs/operators");
@@ -39,12 +39,16 @@ var NewPlanRadaComponent = /** @class */ (function () {
         this.ShowEquipment = false;
         this.ShowInstructions = false;
         this.Status = 'DRAFT';
+        this.Address = '';
         this.CreatedOn = new forms_1.FormControl(new Date());
         //TODO get values
         this.images = ['https://material.angular.io/assets/img/examples/shiba2.jpg'];
         this.allWorkPlanIDs = ['test1', 'test2'];
         this.equipments = ['test1', 'test2'];
         this.equipmentState = 'NOT ADDED';
+        this.instructions = new Array();
+        this.instructions.push({ id: "1a", text: "set this to that", executed: "UNEXECUTED", equipment: "testEqp", validated: "NOT VALIDATED" });
+        this.instructions.push({ id: "2a", text: "set this to that", executed: "EXECUTED", equipment: "testEqp2", validated: "NOT VALIDATED" });
     }
     NewPlanRadaComponent.prototype.ngAfterViewInit = function () {
         this.dataSource.paginator = this.paginator;
@@ -84,9 +88,79 @@ var NewPlanRadaComponent = /** @class */ (function () {
         this.ShowEquipment = false;
         this.ShowInstructions = true;
     };
+    NewPlanRadaComponent.prototype.addNewWorkPlan = function () {
+        //Status: string;
+        //IncidentID: 'TestID';
+        //TypeRada: string;
+        //TypeNaCemu: string;
+        //CreatedBy: string;
+        //PhoneNo: string;
+        //Company: string;
+        //Purpose: string;
+        //Details: string;
+        //Notes: string;
+        //Address: string;
+        //crewID: string;
+        //CreatedOn: FormControl;
+        //FromDate: Date;
+        //ToDate: Date;
+        console.log(this.Status + " " + this.IncidentID + " " + this.TypeRada + " " + this.TypeNaCemu + " " + this.PhoneNo + " " + this.CreatedBy + " " + this.Company + " " + this.Purpose
+            + " " + this.Details + " " + this.Notes + " " + this.Address + " " + this.FromDate + " " + this.ToDate);
+    };
+    NewPlanRadaComponent.prototype.approveDocument = function () {
+        this.Status = 'APPROVED';
+    };
+    NewPlanRadaComponent.prototype.denyDocument = function () {
+        this.Status = 'DENIED';
+    };
+    NewPlanRadaComponent.prototype.cancelDocument = function () {
+        this.Status = 'CANCELED';
+    };
     NewPlanRadaComponent.prototype.addEquipment = function () {
     };
     NewPlanRadaComponent.prototype.removeEquipment = function () {
+    };
+    NewPlanRadaComponent.prototype.executeInstruction = function (id) {
+        for (var i = 0; i < this.instructions.length; i++) {
+            if (this.instructions[i].id === id) {
+                this.instructions[i].executed = "EXECUTED";
+            }
+        }
+        //TODO update db
+    };
+    NewPlanRadaComponent.prototype.deleteInstruction = function (id) {
+        for (var i = 0; i < this.instructions.length; i++) {
+            if (this.instructions[i].id === id) {
+                this.instructions.splice(i, 1);
+            }
+        }
+        //TODO update db
+    };
+    NewPlanRadaComponent.prototype.validateInstructions = function () {
+        this.adresaElementa = "test"; //TODO GET
+        //TODO nalog za rad-plan rada-adrese
+        if (this.Address === this.adresaElementa) {
+            for (var i = 0; i < this.instructions.length; i++) {
+                this.instructions[i].validated = "VALIDATED";
+            }
+        }
+    };
+    NewPlanRadaComponent.prototype.deleteAllInstructions = function () {
+        this.instructions.splice(0, this.instructions.length);
+        //TODO update db
+    };
+    NewPlanRadaComponent.prototype.addNewInstructionDialog = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(InstructionDialog, {
+            data: {
+                equipments: this.equipments
+            }
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            console.log(result);
+            _this.instructions.push({ id: "2a", text: result[0].text, executed: "UNEXECUTED", equipment: result[0].eqp, validated: "NOT VALIDATED" });
+            //TODO send to server and refresh collection -- get id
+        });
     };
     NewPlanRadaComponent.prototype.onSelectFile = function (event) {
         var _this = this;
@@ -218,4 +292,28 @@ var ImageDialog = /** @class */ (function () {
     return ImageDialog;
 }());
 exports.ImageDialog = ImageDialog;
+var InstructionDialog = /** @class */ (function () {
+    function InstructionDialog(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+    }
+    InstructionDialog.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    InstructionDialog.prototype.addInstruction = function (equipmentID) {
+        this.obj = [{ text: this.text, eqp: equipmentID }];
+        console.log(this.text);
+        this.dialogRef.close(this.obj);
+    };
+    InstructionDialog = __decorate([
+        core_1.Component({
+            selector: 'instruction-dialog',
+            templateUrl: 'instruction-dialog.html',
+            styleUrls: ['./new-plan-rada.component.css']
+        }),
+        __param(1, core_1.Inject(dialog_1.MAT_DIALOG_DATA))
+    ], InstructionDialog);
+    return InstructionDialog;
+}());
+exports.InstructionDialog = InstructionDialog;
 //# sourceMappingURL=new-plan-rada.component.js.map
