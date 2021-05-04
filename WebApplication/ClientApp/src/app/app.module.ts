@@ -14,7 +14,7 @@ import { NewPlanRadaComponent, DialogOverviewExampleDialog, ImageDialog, Instruc
 import { PlanoviRadaComponent } from './planovi-rada/planovi-rada.component';
 import { NotifikacijeComponent } from './notifikacije/notifikacije.component';
 import { PodesavanjaComponent } from './podesavanja/podesavanja.component';
-import { PotrosaciComponent } from './potrosaci/potrosaci.component';
+import { PotrosaciComponent, NewPotrosacDialog } from './potrosaci/potrosaci.component';
 import { PoziviComponent } from './pozivi/pozivi.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -38,7 +38,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     PoziviComponent,
     DialogOverviewExampleDialog,
     ImageDialog,
-    InstructionDialog
+    InstructionDialog,
+    NewPotrosacDialog
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

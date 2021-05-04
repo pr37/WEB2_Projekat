@@ -10,7 +10,32 @@ exports.PodesavanjaComponent = void 0;
 var core_1 = require("@angular/core");
 var PodesavanjaComponent = /** @class */ (function () {
     function PodesavanjaComponent() {
+        this.NewPassword = '';
+        this.hide = true;
+        //TODO get values
+        //TODO get set notifications
+        this.isAdmin = true;
+        this.streets = [];
+        this.streets.push('asd');
+        this.streets.push('dsa');
+        this.streets.push('wer');
     }
+    PodesavanjaComponent.prototype.changePassword = function () {
+        //TODO get user id, newpwd, send to DB
+    };
+    PodesavanjaComponent.prototype.setPriority = function () {
+        console.log(this.Street + " " + this.Priority);
+    };
+    PodesavanjaComponent.prototype.setNotifications = function () {
+        console.log(this.Error + " " + this.Warning);
+        //TODO send this to DB and implement in notifications
+    };
+    PodesavanjaComponent.prototype.hideFields = function () {
+        //TODO send to DB and implement in new document
+    };
+    PodesavanjaComponent.prototype.resetDefault = function () {
+        //TODO all notifications, all fields
+    };
     PodesavanjaComponent = __decorate([
         core_1.Component({
             selector: 'podesavanja',
