@@ -1,2 +1,23 @@
-﻿body {
+body {
+}
+
+.example-sidenav-content {
+  
+  height: 100%;
+  }
+.example-container {
+  width: 1000px;
+  height: 600px;
+  margin: 10px;
+  border: 1px solid #555;
+}
+
+.button-full-width {
+  width: 100%;
+  margin-bottom: 6px;
+  margin-top: 4px;
+}
+
+.card-temp {
+    width: 100%;
 }
