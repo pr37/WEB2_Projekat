@@ -10,7 +10,11 @@ exports.PoziviComponent = void 0;
 var core_1 = require("@angular/core");
 var PoziviComponent = /** @class */ (function () {
     function PoziviComponent() {
+        //TODO get user
+        this.signedIn = true;
     }
+    PoziviComponent.prototype.addCall = function () {
+    };
     PoziviComponent = __decorate([
         core_1.Component({
             selector: 'pozivi',

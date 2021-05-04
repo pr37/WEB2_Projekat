@@ -1,10 +1,50 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title></title>
 </head>
 <body>
+  <div *ngIf="signedIn==false">
+    <mat-form-field class="example-full-width">
+      <mat-label>Ime i Prezime</mat-label>
+      <input matInput [(ngModel)]='imePrezime'>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Problem</mat-label>
+      <input matInput [(ngModel)]='Problem'>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Adresa</mat-label>
+      <input matInput [(ngModel)]='Adresa'>
+    </mat-form-field>
+  </div>
 
+
+  <div *ngIf="signedIn">
+    <mat-form-field class="example-full-width">
+      <mat-label>Ime i Prezime</mat-label>
+      <input matInput disabled value="{{ImePrezimeUser}}">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Problem</mat-label>
+      <input matInput [(ngModel)]='Problem'>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Adresa</mat-label>
+      <input matInput disabled value="{{AdresaUser}}">
+    </mat-form-field>
+
+  </div>
+
+  <div>
+    <div class="example-button-row">
+      <button mat-raised-button class="button-full-width" (click)="addCall()" color="accent">Dodaj poziv</button>
+    </div>
+  </div>
+  
+  <div name="mapa">
+    
+  </div>
 </body>
 </html>
