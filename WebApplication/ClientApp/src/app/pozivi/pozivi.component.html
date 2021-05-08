@@ -5,20 +5,23 @@
     <title></title>
 </head>
 <body>
-  <div *ngIf="signedIn==false">
-    <mat-form-field class="example-full-width">
-      <mat-label>Ime i Prezime</mat-label>
-      <input matInput [(ngModel)]='imePrezime'>
-    </mat-form-field>
+  <div>
+    <mat-card>Anonimno prijavi:</mat-card>
     <mat-form-field class="example-full-width">
       <mat-label>Problem</mat-label>
       <input matInput [(ngModel)]='Problem'>
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Adresa</mat-label>
-      <input matInput [(ngModel)]='Adresa'>
+      <input matInput [(ngModel)]='Adresa' (keydown.enter)="$event.preventDefault()" #search>
     </mat-form-field>
   </div>
+  <div>
+    <div class="example-button-row">
+      <button mat-raised-button class="button-full-width" (click)="addCallAonimously()" color="accent">Dodaj poziv anonimno</button>
+    </div>
+  </div>
+
 
 
   <div *ngIf="signedIn">
@@ -34,17 +37,27 @@
       <mat-label>Adresa</mat-label>
       <input matInput disabled value="{{AdresaUser}}">
     </mat-form-field>
-
-  </div>
-
-  <div>
-    <div class="example-button-row">
-      <button mat-raised-button class="button-full-width" (click)="addCall()" color="accent">Dodaj poziv</button>
+    <div>
+      <div class="example-button-row">
+        <button mat-raised-button class="button-full-width" (click)="addCall()" color="accent">Dodaj poziv</button>
+      </div>
     </div>
   </div>
-  
+
+
   <div name="mapa">
-    
+    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" #gm>
+      <agm-marker *ngFor="let poziv of Pozivi" [latitude]="poziv.lat" [longitude]="poziv.lon" [markerDraggable]="false" [iconUrl]="icon" (mouseOver)="onMouseOver(infoWindow,gm)">
+        <agm-info-window [disableAutoPan]="false" #infoWindow>
+
+          <div>
+            {{poziv.problem}}
+          </div>
+
+        </agm-info-window>
+
+      </agm-marker>
+    </agm-map>
   </div>
 </body>
 </html>

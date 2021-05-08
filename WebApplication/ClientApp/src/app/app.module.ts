@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -61,6 +62,10 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     DemoMaterialModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBv89UcmQax_QW7OguLyUw6Qa2gXPe8E5Q',
+      libraries: ['places']
+    })
   ],
   entryComponents: [PlanoviRadaComponent], //TODO Login component here
   providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },],
