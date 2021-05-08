@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -26,7 +27,7 @@ namespace Models
             Detalji = detalji;
             Beleske = beleske;
         }
-
+        [Key]
         public string PlanRadaID { get; set; }
         public string UserID { get; set; }
         public string CreatedBy { get; set; }

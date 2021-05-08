@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
     public class User
     {
-        public User(string userID, string ime, string prezime, string username, string email, DateTime dateOfBirth, string address, string role, bool isAdmin, byte[] image, string imageUrl)
+        public User(string userID, string ime, string prezime, string username, string email, DateTime dateOfBirth, string address, string role, string requestedRole, bool isAdmin, byte[] image, string imageUrl)
         {
             UserID = userID;
             Ime = ime;
@@ -16,11 +17,12 @@ namespace Models
             DateOfBirth = dateOfBirth;
             Address = address;
             Role = role;
+            RequestedRole = requestedRole;
             this.isAdmin = isAdmin;
             Image = image;
             ImageUrl = imageUrl;
         }
-
+        [Key]
         public string UserID { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }
@@ -29,6 +31,7 @@ namespace Models
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
         public string Role { get; set; }
+        public string RequestedRole { get; set; }
         public bool isAdmin { get; set; }
         public byte[] Image { get; set; }
         public string ImageUrl { get; set; }

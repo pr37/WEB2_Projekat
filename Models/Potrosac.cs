@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -16,7 +17,7 @@ namespace Models
             TipPotrosaca = tipPotrosaca;
             Deleted = deleted;
         }
-
+        [Key]
         public string PotrosacID { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }

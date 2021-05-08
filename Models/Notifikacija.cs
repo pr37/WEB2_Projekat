@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -18,7 +19,7 @@ namespace Models
             TiedTo = tiedTo;
             Read = read;
         }
-
+        [Key]
         public string NotifikacijaID { get; set; }
         public string ForUserID { get; set; }
         public string Text { get; set; }

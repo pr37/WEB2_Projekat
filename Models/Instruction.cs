@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -17,6 +18,7 @@ namespace Models
             Deleted = deleted;
         }
 
+        [Key]
         public string InstructionID { get; set; }
         public string PlanRadaID { get; set; }
         public string Text { get; set; }

@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Repositories;
 
 namespace WebApplication
 {
@@ -26,6 +28,7 @@ namespace WebApplication
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer("Server=.\\SQLExpress;Database=WEB2DB;Trusted_Connection=True;MultipleActiveResultSets=true"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

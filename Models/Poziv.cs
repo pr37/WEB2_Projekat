@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -14,7 +15,7 @@ namespace Models
             UserID = userID;
             Problem = problem;
         }
-
+        [Key]
         public string PozivID { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
