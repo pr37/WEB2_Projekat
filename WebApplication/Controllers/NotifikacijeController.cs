@@ -8,20 +8,17 @@ using Models;
 
 namespace WebApplication.Controllers
 {
-    public class NotifikacijeController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class NotifikacijeController : ControllerBase
     {
         private readonly ApplicationContext _context;
         public NotifikacijeController(ApplicationContext context)
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpPost]
-        [Route("AddNotification")]
         public async Task<IActionResult> Add(Notifikacija notifikacija)
         {
 
@@ -31,5 +28,12 @@ namespace WebApplication.Controllers
 
             return NoContent();
         }
+
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Notifikacija>>> Get(string userID)
+        //{
+        //    return Ok(_context.NotifikacijeTB.Where(x => x.ForUserID.Equals(userID)));
+        //}
+
     }
 }

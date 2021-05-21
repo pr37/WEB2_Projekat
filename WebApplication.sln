@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{DD803B34-2B1A-4353-A491-ABD73FF1A40F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "WebApplication\WebApplication.csproj", "{DD803B34-2B1A-4353-A491-ABD73FF1A40F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLayer", "BusinessLayer", "{8F915FE9-EF66-4DA7-85B6-8C8C970EBE2A}"
 EndProject
@@ -15,17 +15,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PresentationLayer", "Presen
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceLayer", "ServiceLayer", "{DC9472C6-4332-4F3D-A41A-6AA5C7E1AD95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRepositories", "IRepositories\IRepositories.csproj", "{66A04A5A-FE45-4D6B-992F-696CE6506F8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IRepositories", "IRepositories\IRepositories.csproj", "{66A04A5A-FE45-4D6B-992F-696CE6506F8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{C6CF8E1E-3E2A-4543-B55A-A9ADC7D497CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{C6CF8E1E-3E2A-4543-B55A-A9ADC7D497CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{B2A9706D-39BF-4582-B3E1-2BCC421D7E1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{B2A9706D-39BF-4582-B3E1-2BCC421D7E1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IServices", "IServices\IServices.csproj", "{919C66A1-29A7-499D-9A47-87D35E4856F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IServices", "IServices\IServices.csproj", "{919C66A1-29A7-499D-9A47-87D35E4856F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{93482193-694B-4AE9-B105-2B2D0CEED93F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{93482193-694B-4AE9-B105-2B2D0CEED93F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationLib", "WebApplicationLib\WebApplicationLib.csproj", "{48CC8ADB-6955-4CB0-9D72-C71F2D010171}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplicationLib", "WebApplicationLib\WebApplicationLib.csproj", "{48CC8ADB-6955-4CB0-9D72-C71F2D010171}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActualServer", "ActualServer\ActualServer.csproj", "{10A59052-7B07-48DE-BEC8-F1C76F5F99DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{48CC8ADB-6955-4CB0-9D72-C71F2D010171}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48CC8ADB-6955-4CB0-9D72-C71F2D010171}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48CC8ADB-6955-4CB0-9D72-C71F2D010171}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10A59052-7B07-48DE-BEC8-F1C76F5F99DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A59052-7B07-48DE-BEC8-F1C76F5F99DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A59052-7B07-48DE-BEC8-F1C76F5F99DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A59052-7B07-48DE-BEC8-F1C76F5F99DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{919C66A1-29A7-499D-9A47-87D35E4856F8} = {EF0C553D-D0CD-41B6-957C-85A216EDD89A}
 		{93482193-694B-4AE9-B105-2B2D0CEED93F} = {EF0C553D-D0CD-41B6-957C-85A216EDD89A}
 		{48CC8ADB-6955-4CB0-9D72-C71F2D010171} = {DC9472C6-4332-4F3D-A41A-6AA5C7E1AD95}
+		{10A59052-7B07-48DE-BEC8-F1C76F5F99DB} = {9D5380EA-E8B8-40BF-B048-A038DDA8141E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D10C6EF7-3AFF-4611-9C61-F514AB1B04DD}

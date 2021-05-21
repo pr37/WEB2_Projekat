@@ -44,13 +44,13 @@
       </div>
     </mat-sidenav>
     <mat-sidenav-content class="example-sidenav-content">
-      <mat-card *ngFor="let notif of unreadNotifications" [ngStyle]="{color:notif.color}"  (click)="markRead(notif.id)">
-        {{notif.text}} -----
+      <mat-card *ngFor="let notif of unreadNotifications" [ngStyle]="{color:notif.color}" (click)="markRead(notif.id)">
         <mat-icon *ngIf="notif.icon == 'warning'">warning</mat-icon>
         <mat-icon *ngIf="notif.icon == 'done_all'">done_all</mat-icon>
         <mat-icon *ngIf="notif.icon == 'notification_important'">notification_important</mat-icon>
         <mat-icon *ngIf="notif.icon == 'error'">error</mat-icon>
-        ----- {{notif.timestamp}}
+        ----- {{notif.text}}
+        ----- {{notif.timestamp  | date:'medium'}}
         <button mat-raised-button *ngIf="notif.tied" (click)="routeTo(notif.tiedTo)" color="accent">Open</button>
       </mat-card>
     </mat-sidenav-content>
