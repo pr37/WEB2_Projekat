@@ -4,11 +4,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HttpClient, HttpHeaders, HttpClientJsonpModule } from '@angular/common/http';
+import { Notification, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { BackendServiceService } from '../backend-service.service';
+import { FormGroup,  FormControlName } from '@angular/forms';
 
 @Component({
   selector: 'potrosaci',
   templateUrl: './potrosaci.component.html',
-  styleUrls: ['./potrosaci.component.css']
+  styleUrls: ['./potrosaci.component.css'],
+  providers: [BackendServiceService]
 })
 
 export class PotrosaciComponent implements AfterViewInit, OnInit {
@@ -24,8 +30,45 @@ export class PotrosaciComponent implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private http: HttpClient,
+    private backendService: BackendServiceService) {
+    this.getPotrosaci().subscribe(
+      (res: any) => {
+        console.log(res);
+        res.forEach(not => ELEMENT_DATA.push({ ID: not.potrosacID, Ime: not.ime, Prezime: not.prezime, Adresa: not.adresa, PhoneNo: not.phoneNo, Tip: not.tipPotrosaca, Prioritet: '0' }));
+        this.ngOnInit();
+      },
+      err => {
+        console.log("Err: " + err);
+        alert(err);
+      }
+    )
 
+  }
+  potrosacForm = new FormGroup({
+    ime: new FormControl('', [Validators.required]),
+    prezime: new FormControl(),
+    adresa: new FormControl(),
+    phoneNo: new FormControl(),
+    tipPotrosaca: new FormControl()
+  });
+
+  getPotrosaci() {
+    return this.http.get('https://localhost:44301/Potrosaci/get');
+  }
+
+  editPotrosac(id,ime, prezime, asresa, phoneno, tip) {
+    return this.http.put('https://localhost:44301/Potrosaci/edit/' + id +'/' + ime + '/' + prezime + '/' + asresa + '/' + phoneno + '/' + tip, null);
+  }
+
+  deletePotrosac(id: string) {
+    return this.http.put('https://localhost:44301/Potrosaci/delete/' + id ,id);
+  }
+
+  addPotrosac(ime,prezime,asresa,phoneno,tip) {
+    let headers = new Headers({ "X-Requested-With": "XMLHttpRequest", "Content-Type": 'application/json' });
+    // return this.http.put('https://localhost:44301/Potrosaci/add', potrosac);
+    return this.http.put('https://localhost:44301/Potrosaci/add/' + ime + '/' + prezime + '/' + asresa + '/' + phoneno + '/' + tip, null);
   }
 
   openDialog(): void {
@@ -42,9 +85,40 @@ export class PotrosaciComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       //TODO send to server and refresh collection -- get id
-      ELEMENT_DATA.push({ ID: 'tbd', Ime: result[0].ime, Prezime: result[0].prezime, Adresa: result[0].adresa, PhoneNo: result[0].phoneno, Tip: result[0].tip, Prioritet: '0' });
+      var body = {
+        Ime: result[0].ime,
+        Prezime: result[0].prezime,
+        Adresa: result[0].adresa,
+        PhoneNo: result[0].phoneNo,
+        TipPotrosaca: result[0].tipPotrosaca
+      }
+      console.log(body);
+      this.addPotrosac(result[0].ime, result[0].prezime, result[0].adresa, result[0].phoneNo, result[0].tipPotrosaca).subscribe(
+        (res: any) => {
+          console.log(res);
+          //this.ngOnInit();
+          ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
+          this.getPotrosaci().subscribe(
+            (res: any) => {
+              console.log(res);
+              res.forEach(not => ELEMENT_DATA.push({ ID: not.potrosacID, Ime: not.ime, Prezime: not.prezime, Adresa: not.adresa, PhoneNo: not.phoneNo, Tip: not.tipPotrosaca, Prioritet: '0' }));
+              this.ngOnInit();
+            },
+            err => {
+              console.log("Err: " + err);
+              alert(err);
+            }
+          )
+        },
+        err => {
+          console.log("Err: " + err);
+          alert(err);
+        }
+      )
+      
+      //ELEMENT_DATA.push({ ID: 'tbd', Ime: result[0].ime, Prezime: result[0].prezime, Adresa: result[0].adresa, PhoneNo: result[0].phoneno, Tip: result[0].tip, Prioritet: '0' });
       this.ngOnInit();
     });
   }
@@ -54,18 +128,50 @@ export class PotrosaciComponent implements AfterViewInit, OnInit {
 
       data: {
         tipovi: ['Rezidentalni', 'Komercijalni'],
-        ime: ime,
-        prezime: prz,
-        adresa: adr,
-        phoneno: phn,
-        tip: tp
+        Ime: ime,
+        Prezime: prz,
+        Adresa: adr,
+        PhoneNo: phn,
+        TipPotrosaca: tp
       }
     });
 
+    
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      var body = {
+        PotrosacID: ID,
+        Ime: result[0].ime,
+        Prezime: result[0].prezime,
+        Adresa: result[0].adresa,
+        PhoneNo: result[0].phoneNo,
+        TipPotrosaca: result[0].tipPotrosaca
+      }
+      this.editPotrosac(ID, result[0].ime, result[0].prezime, result[0].adresa, result[0].phoneNo, result[0].tipPotrosaca).subscribe(
+        (res: any) => {
+          console.log(res);
+          //this.ngOnInit();
+          ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
+          this.getPotrosaci().subscribe(
+            (res: any) => {
+              console.log(res);
+              res.forEach(not => ELEMENT_DATA.push({ ID: not.potrosacID, Ime: not.ime, Prezime: not.prezime, Adresa: not.adresa, PhoneNo: not.phoneNo, Tip: not.tipPotrosaca, Prioritet: '0' }));
+              this.ngOnInit();
+            },
+            err => {
+              console.log("Err: " + err);
+              alert(err);
+            }
+          )
+        },
+        err => {
+          console.log("Err: " + err);
+          alert(err);
+        }
+      )
+      
       //TODO send to server and refresh collection -- get id
-      ELEMENT_DATA.push({ ID: 'tbd', Ime: result[0].ime, Prezime: result[0].prezime, Adresa: result[0].adresa, PhoneNo: result[0].phoneno, Tip: result[0].tip, Prioritet: '0' });
+     // ELEMENT_DATA.push({ ID: 'tbd', Ime: result[0].ime, Prezime: result[0].prezime, Adresa: result[0].adresa, PhoneNo: result[0].phoneno, Tip: result[0].tip, Prioritet: '0' });
       this.ngOnInit();
     });
   }
@@ -78,7 +184,18 @@ export class PotrosaciComponent implements AfterViewInit, OnInit {
       }
     }
     this.ngOnInit();
+    this.deletePotrosac(ID).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.ngOnInit();
+      },
+      err => {
+        console.log("Err: " + err);
+        alert(err);
+      }
+    )
   }
+
 }
 
 export interface PotrosaciTabela {
@@ -92,17 +209,17 @@ export interface PotrosaciTabela {
 }
 
 const ELEMENT_DATA: PotrosaciTabela[] = [
-  { ID: '231', Ime: 'ana', Prezime: 'Anic', Adresa: 'addy1', Prioritet: '2', PhoneNo: '123123', Tip: 'Rezidentalni' },
-  { ID: '331', Ime: 'ana', Prezime: 'Anic', Adresa: 'addy1', Prioritet: '2', PhoneNo: '123123', Tip: 'Komercijalni' },
+ // { ID: '231', Ime: 'ana', Prezime: 'Anic', Adresa: 'addy1', Prioritet: '2', PhoneNo: '123123', Tip: 'Rezidentalni' },
+  //{ ID: '331', Ime: 'ana', Prezime: 'Anic', Adresa: 'addy1', Prioritet: '2', PhoneNo: '123123', Tip: 'Komercijalni' },
 ]
 
 
 export interface PotrosacDialogData {
-  ime: string;
-  prezime: string;
-  adresa: string;
-  phoneno: string;
-  tip: string;
+  Ime: string;
+  Prezime: string;
+  Adresa: string;
+  PhoneNo: string;
+  TipPotrosaca: string;
 }
 
 @Component({
@@ -116,15 +233,15 @@ export class NewPotrosacDialog {
   adresa: string;
   phoneno: string;
   tipp: string;
-  obj: [{ ime: string, prezime: string, adresa:string, phoneno:string, tip:string }];
+  obj: [{ ime: string, prezime: string, adresa:string, phoneNo:string, tipPotrosaca:string }];
   constructor(
     public dialogRef: MatDialogRef<NewPotrosacDialog>,
     @Inject(MAT_DIALOG_DATA) public data: PotrosacDialogData) {
-    this.ime = data.ime;
-    this.prezime = data.prezime;
-    this.adresa = data.adresa;
-    this.phoneno = data.phoneno;
-    this.tipp = data.tip;
+    this.ime = data.Ime;
+    this.prezime = data.Prezime;
+    this.adresa = data.Adresa;
+    this.phoneno = data.PhoneNo;
+    this.tipp = data.TipPotrosaca;
   }
 
   onNoClick(): void {
@@ -132,7 +249,7 @@ export class NewPotrosacDialog {
   }
 
   addPotrosac(tipp): void {
-    this.obj = [{ ime: this.ime, prezime: this.prezime, adresa: this.adresa, phoneno: this.phoneno, tip: tipp }];
+    this.obj = [{ ime: this.ime, prezime: this.prezime, adresa: this.adresa, phoneNo: this.phoneno, tipPotrosaca: tipp }];
   
     this.dialogRef.close(this.obj);
   }
