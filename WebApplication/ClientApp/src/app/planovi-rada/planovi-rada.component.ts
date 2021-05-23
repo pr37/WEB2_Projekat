@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { AfterViewInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { HttpClient, HttpHeaders, HttpClientJsonpModule } from '@angular/common/http';
+import { Notification, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { BackendServiceService } from '../backend-service.service';
 
 @Component({
   selector: 'planovi-rada',
@@ -11,9 +15,58 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./planovi-rada.component.css']
 })
 
-export class PlanoviRadaComponent implements AfterViewInit{
+export class PlanoviRadaComponent implements AfterViewInit, OnInit{
   displayedColumns: string[] = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address', 'Company','Type'];
   dataSource = new MatTableDataSource<PlanRadaTabela>(ELEMENT_DATA);
+  ngOnInit() {
+    this.dataSource = new MatTableDataSource<PlanRadaTabela>(ELEMENT_DATA);
+  }
+  constructor(private http: HttpClient,
+    private backendService: BackendServiceService) {
+    this.getPlanovi().subscribe(
+      (res: any) => {
+        console.log(res);
+        res.forEach(not => ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }));
+        this.ngOnInit();
+      },
+      err => {
+        console.log("Err: " + err);
+        alert(err);
+      }
+    )
+
+  }
+
+  showAll() {
+    ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
+    this.getPlanovi().subscribe(
+      (res: any) => {
+        console.log(res);
+        res.forEach(not => ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }));
+        this.ngOnInit();
+      },
+      err => {
+        console.log("Err: " + err);
+        alert(err);
+      }
+    )
+  }
+
+  showMine() {
+    //TODO get logged in users id
+    ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
+    this.getMine('marko').subscribe(
+      (res: any) => {
+        console.log(res);
+        res.forEach(not => ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }));
+        this.ngOnInit();
+      },
+      err => {
+        console.log("Err: " + err);
+        alert(err);
+      }
+    )
+  }
 
   applySearch(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
@@ -42,6 +95,14 @@ export class PlanoviRadaComponent implements AfterViewInit{
     this.dataSource.sort = this.sort;
   }
 
+  getPlanovi() {
+    return this.http.get('https://localhost:44301/PlanoviRada/getall');
+  }
+
+  getMine(id: string) {
+    return this.http.get('https://localhost:44301/PlanoviRada/getmy/'+id);
+  }
+
 }
 
 export interface PlanRadaTabela {
@@ -55,8 +116,8 @@ export interface PlanRadaTabela {
 }
 
 const ELEMENT_DATA: PlanRadaTabela[] = [
-  { ID: '231', StartDate: '24.4.2021.', PhoneNo: '012434234', Status: 'OK', Address: 'Maje Gojkovic 123', Company: 'ARRT' , Type: 'Planirani'},
-  { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Planirani'},
-  { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
-  { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'REPLACED', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
+  //{ ID: '231', StartDate: '24.4.2021.', PhoneNo: '012434234', Status: 'OK', Address: 'Maje Gojkovic 123', Company: 'ARRT' , Type: 'Planirani'},
+  //{ ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Planirani'},
+ // { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
+  //{ ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'REPLACED', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
   ]

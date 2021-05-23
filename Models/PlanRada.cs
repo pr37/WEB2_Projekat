@@ -29,6 +29,7 @@ namespace Models
         }
         [Key]
         public string PlanRadaID { get; set; }
+        public string Status { get; set; }
         public string UserID { get; set; }
         public string CreatedBy { get; set; }
         public DateTime DateCreatedOn { get; set; }

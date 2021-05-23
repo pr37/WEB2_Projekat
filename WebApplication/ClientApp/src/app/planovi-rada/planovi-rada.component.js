@@ -13,10 +13,49 @@ var paginator_1 = require("@angular/material/paginator");
 var table_1 = require("@angular/material/table");
 var sort_1 = require("@angular/material/sort");
 var PlanoviRadaComponent = /** @class */ (function () {
-    function PlanoviRadaComponent() {
+    function PlanoviRadaComponent(http, backendService) {
+        var _this = this;
+        this.http = http;
+        this.backendService = backendService;
         this.displayedColumns = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address', 'Company', 'Type'];
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
+        this.getPlanovi().subscribe(function (res) {
+            console.log(res);
+            res.forEach(function (not) { return ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }); });
+            _this.ngOnInit();
+        }, function (err) {
+            console.log("Err: " + err);
+            alert(err);
+        });
     }
+    PlanoviRadaComponent.prototype.ngOnInit = function () {
+        this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
+    };
+    PlanoviRadaComponent.prototype.showAll = function () {
+        var _this = this;
+        ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
+        this.getPlanovi().subscribe(function (res) {
+            console.log(res);
+            res.forEach(function (not) { return ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }); });
+            _this.ngOnInit();
+        }, function (err) {
+            console.log("Err: " + err);
+            alert(err);
+        });
+    };
+    PlanoviRadaComponent.prototype.showMine = function () {
+        var _this = this;
+        //TODO get logged in users id
+        ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
+        this.getMine('marko').subscribe(function (res) {
+            console.log(res);
+            res.forEach(function (not) { return ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }); });
+            _this.ngOnInit();
+        }, function (err) {
+            console.log("Err: " + err);
+            alert(err);
+        });
+    };
     PlanoviRadaComponent.prototype.applySearch = function (filterValue) {
         filterValue = filterValue.trim(); // Remove whitespace
         filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
@@ -36,6 +75,12 @@ var PlanoviRadaComponent = /** @class */ (function () {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
     };
+    PlanoviRadaComponent.prototype.getPlanovi = function () {
+        return this.http.get('https://localhost:44301/PlanoviRada/getall');
+    };
+    PlanoviRadaComponent.prototype.getMine = function (id) {
+        return this.http.get('https://localhost:44301/PlanoviRada/getmy/' + id);
+    };
     __decorate([
         core_2.ViewChild(paginator_1.MatPaginator)
     ], PlanoviRadaComponent.prototype, "paginator", void 0);
@@ -53,9 +98,9 @@ var PlanoviRadaComponent = /** @class */ (function () {
 }());
 exports.PlanoviRadaComponent = PlanoviRadaComponent;
 var ELEMENT_DATA = [
-    { ID: '231', StartDate: '24.4.2021.', PhoneNo: '012434234', Status: 'OK', Address: 'Maje Gojkovic 123', Company: 'ARRT', Type: 'Planirani' },
-    { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Planirani' },
-    { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
-    { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'REPLACED', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
+//{ ID: '231', StartDate: '24.4.2021.', PhoneNo: '012434234', Status: 'OK', Address: 'Maje Gojkovic 123', Company: 'ARRT' , Type: 'Planirani'},
+//{ ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Planirani'},
+// { ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'DRAFT', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
+//{ ID: '123', StartDate: '26.4.2021.', PhoneNo: '012434354', Status: 'REPLACED', Address: 'Aleka Vucica 321', Company: 'A33', Type: 'Neplaniran' },
 ];
 //# sourceMappingURL=planovi-rada.component.js.map
