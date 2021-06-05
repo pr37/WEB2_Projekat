@@ -19,40 +19,51 @@ var NotifikacijeComponent = /** @class */ (function () {
         this.httpOptions = {
             headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
         };
+        this.userLoggedIn = this.isLoggedIn();
         //TODO get all notifications and filter into unreadNotifications
-        this.unreadNotifications = new Array();
-        this.tempNotifications = new Array();
-        this.allNotifications = new Array();
-        this.getNotifications("2").subscribe(function (res) {
-            console.log("ffffffff");
-            console.log(res);
-            res.forEach(function (not) { return _this.allNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo, read: not.read }); });
-        }, function (err) {
-            console.log("Err: " + err);
-            alert(err);
-        });
-        this.getUnreadNotifications("2").subscribe(function (res) {
-            console.log("Got unread notifications");
-            console.log(res);
-            res.forEach(function (not) { return _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
-            res.forEach(function (not) { return _this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
-        }, function (err) {
-            console.log("Err: " + err);
-            alert(err);
-        });
-        //this.testnotif.forEach(not => console.log(not));
-        //notifs.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }))
-        //this.unreadNotifications.push({ id:'1',text: 'testtttttt', color: 'red', icon: 'error', timestamp: '21.10.1998.', tied:false,tiedTo:'' })
-        //this.unreadNotifications.push({ id:'2',text: 'testtttttt', color: 'red', icon: 'error', timestamp: '21.10.1998.', tied:false,tiedTo:'' })
-        //this.unreadNotifications.push({ id: '3',text: 'testtttttt', color: 'blue', icon: 'notification_important', timestamp: '21.10.1998.', tied:true,tiedTo:'smth' })
-        //this.unreadNotifications.push({ id: '4',text: 'testtttttt', color: 'blue', icon: 'notification_important', timestamp: '21.10.1998.', tied:true,tiedTo:'smth' })
-        //this.unreadNotifications.push({ id: '5',text: 'testtttttt', color: 'yellow', icon: 'warning', timestamp: '21.10.1998.', tied:true,tiedTo:'smth' })
-        //this.unreadNotifications.push({ id: '6',text: 'testtttttt', color: 'yellow', icon: 'warning', timestamp: '21.10.1998.', tied:true,tiedTo:'smth' })
-        //this.unreadNotifications.push({ id: '7', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
-        //this.unreadNotifications.push({ id: '8', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
-        //this.unreadNotifications.push({ id: '9', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
-        this.unreadNotifications.forEach(function (val) { return _this.tempNotifications.push(Object.assign({}, val)); });
+        if (this.userLoggedIn) {
+            this.unreadNotifications = new Array();
+            this.tempNotifications = new Array();
+            this.allNotifications = new Array();
+            this.getNotifications("2").subscribe(function (res) {
+                console.log("ffffffff");
+                console.log(res);
+                res.forEach(function (not) { return _this.allNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo, read: not.read }); });
+            }, function (err) {
+                console.log("Err: " + err);
+                alert(err);
+            });
+            this.getUnreadNotifications("2").subscribe(function (res) {
+                console.log("Got unread notifications");
+                console.log(res);
+                res.forEach(function (not) { return _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
+                res.forEach(function (not) { return _this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
+            }, function (err) {
+                console.log("Err: " + err);
+                alert(err);
+            });
+            //this.testnotif.forEach(not => console.log(not));
+            //notifs.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }))
+            //this.unreadNotifications.push({ id:'1',text: 'testtttttt', color: 'red', icon: 'error', timestamp: '21.10.1998.', tied:false,tiedTo:'' })
+            //this.unreadNotifications.push({ id:'2',text: 'testtttttt', color: 'red', icon: 'error', timestamp: '21.10.1998.', tied:false,tiedTo:'' })
+            //this.unreadNotifications.push({ id: '3',text: 'testtttttt', color: 'blue', icon: 'notification_important', timestamp: '21.10.1998.', tied:true,tiedTo:'smth' })
+            //this.unreadNotifications.push({ id: '4',text: 'testtttttt', color: 'blue', icon: 'notification_important', timestamp: '21.10.1998.', tied:true,tiedTo:'smth' })
+            //this.unreadNotifications.push({ id: '5',text: 'testtttttt', color: 'yellow', icon: 'warning', timestamp: '21.10.1998.', tied:true,tiedTo:'smth' })
+            //this.unreadNotifications.push({ id: '6',text: 'testtttttt', color: 'yellow', icon: 'warning', timestamp: '21.10.1998.', tied:true,tiedTo:'smth' })
+            //this.unreadNotifications.push({ id: '7', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
+            //this.unreadNotifications.push({ id: '8', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
+            //this.unreadNotifications.push({ id: '9', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
+            this.unreadNotifications.forEach(function (val) { return _this.tempNotifications.push(Object.assign({}, val)); });
+        }
     }
+    NotifikacijeComponent.prototype.isLoggedIn = function () {
+        if (localStorage.getItem('currentUser')) {
+            console.log('user is logged in');
+            return true;
+        }
+        console.log('user is not logged in');
+        return false;
+    };
     NotifikacijeComponent.prototype.getNotifications = function (id) {
         return this.http.get('https://localhost:44301/Notifikacije/' + id);
     };

@@ -19,17 +19,28 @@ var PlanoviRadaComponent = /** @class */ (function () {
         this.backendService = backendService;
         this.displayedColumns = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address', 'Company', 'Type'];
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
-        this.getPlanovi().subscribe(function (res) {
-            console.log(res);
-            res.forEach(function (not) { return ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }); });
-            _this.ngOnInit();
-        }, function (err) {
-            console.log("Err: " + err);
-            alert(err);
-        });
+        this.userLoggedIn = this.isLoggedIn();
+        if (this.userLoggedIn) {
+            this.getPlanovi().subscribe(function (res) {
+                console.log(res);
+                res.forEach(function (not) { return ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }); });
+                _this.ngOnInit();
+            }, function (err) {
+                console.log("Err: " + err);
+                alert(err);
+            });
+        }
     }
     PlanoviRadaComponent.prototype.ngOnInit = function () {
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
+    };
+    PlanoviRadaComponent.prototype.isLoggedIn = function () {
+        if (localStorage.getItem('currentUser')) {
+            console.log('user is logged in');
+            return true;
+        }
+        console.log('user is not logged in');
+        return false;
     };
     PlanoviRadaComponent.prototype.showAll = function () {
         var _this = this;

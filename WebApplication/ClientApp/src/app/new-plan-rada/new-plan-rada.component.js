@@ -26,9 +26,11 @@ var ELEMENT_DATA = [
     { UserID: 'asd22', ChangedDate: 'test' }
 ];
 var NewPlanRadaComponent = /** @class */ (function () {
-    function NewPlanRadaComponent(dialog, _snackBar) {
+    function NewPlanRadaComponent(dialog, _snackBar, http, backendService) {
         this.dialog = dialog;
         this._snackBar = _snackBar;
+        this.http = http;
+        this.backendService = backendService;
         this.displayedColumns = ['UserID', 'ChangedDate'];
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
         this.control = new forms_1.FormControl();
@@ -50,9 +52,18 @@ var NewPlanRadaComponent = /** @class */ (function () {
         this.instructions = new Array();
         this.instructions.push({ id: "1a", text: "set this to that", executed: "UNEXECUTED", equipment: "testEqp", validated: "NOT VALIDATED" });
         this.instructions.push({ id: "2a", text: "set this to that", executed: "EXECUTED", equipment: "testEqp2", validated: "NOT VALIDATED" });
+        this.userLoggedIn = this.isLoggedIn();
     }
     NewPlanRadaComponent.prototype.ngAfterViewInit = function () {
         this.dataSource.paginator = this.paginator;
+    };
+    NewPlanRadaComponent.prototype.isLoggedIn = function () {
+        if (localStorage.getItem('currentUser')) {
+            console.log('user is logged in');
+            return true;
+        }
+        console.log('user is not logged in');
+        return false;
     };
     NewPlanRadaComponent.prototype.openSnackBar = function (message, action) {
         this._snackBar.open(message, action);
@@ -110,6 +121,10 @@ var NewPlanRadaComponent = /** @class */ (function () {
         //ToDate: Date;
         console.log(this.Status + " " + this.IncidentID + " " + this.TypeRada + " " + this.TypeNaCemu + " " + this.PhoneNo + " " + this.CreatedBy + " " + this.Company + " " + this.Purpose
             + " " + this.Details + " " + this.Notes + " " + this.Address + " " + this.FromDate + " " + this.ToDate);
+    };
+    NewPlanRadaComponent.prototype.addNew = function (createdby, status, datecreated, company, tipnacemu, startdate, enddate, adresa, svrha, beleske) {
+        //add/{createdby}/{status}/{datecreated}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}
+        return this.http.get('https://localhost:44301/PlanoviRada/add');
     };
     NewPlanRadaComponent.prototype.approveDocument = function () {
         this.Status = 'APPROVED';

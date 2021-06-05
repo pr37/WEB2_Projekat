@@ -21,19 +21,31 @@ export class PlanoviRadaComponent implements AfterViewInit, OnInit{
   ngOnInit() {
     this.dataSource = new MatTableDataSource<PlanRadaTabela>(ELEMENT_DATA);
   }
+  userLoggedIn: boolean;
+  isLoggedIn() {
+    if (localStorage.getItem('currentUser')) {
+      console.log('user is logged in');
+      return true;
+    }
+    console.log('user is not logged in');
+    return false;
+  }
   constructor(private http: HttpClient,
     private backendService: BackendServiceService) {
-    this.getPlanovi().subscribe(
-      (res: any) => {
-        console.log(res);
-        res.forEach(not => ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }));
-        this.ngOnInit();
-      },
-      err => {
-        console.log("Err: " + err);
-        alert(err);
-      }
-    )
+    this.userLoggedIn = this.isLoggedIn();
+    if (this.userLoggedIn) {
+      this.getPlanovi().subscribe(
+        (res: any) => {
+          console.log(res);
+          res.forEach(not => ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }));
+          this.ngOnInit();
+        },
+        err => {
+          console.log("Err: " + err);
+          alert(err);
+        }
+      )
+    }
 
   }
 

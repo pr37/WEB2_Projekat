@@ -14,7 +14,7 @@ import { MapsAPILoader } from '@agm/core';
 })
 
 export class PoziviComponent {
-  signedIn: boolean;
+  userLoggedIn: boolean;
   imePrezime: string;
   Problem: string;
   Adresa: string;
@@ -28,11 +28,20 @@ export class PoziviComponent {
 
   constructor(private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) {
-    //TODO get user
-    this.signedIn = false;
-    //TODO get pozivvi
-    this.Pozivi = new Array();
+    this.userLoggedIn = this.isLoggedIn();
+    if (this.userLoggedIn) {
+      //TODO get pozivvi
+      this.Pozivi = new Array();
+    }
 
+  }
+  isLoggedIn() {
+    if (localStorage.getItem('currentUser')) {
+      console.log('user is logged in');
+      return true;
+    }
+    console.log('user is not logged in');
+    return false;
   }
 
   latitude: number;

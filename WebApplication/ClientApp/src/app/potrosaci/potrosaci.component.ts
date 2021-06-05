@@ -20,7 +20,7 @@ import { FormGroup,  FormControlName } from '@angular/forms';
 export class PotrosaciComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['ID', 'Ime', 'Prezime', 'Adresa', 'Prioritet', 'PhoneNo', 'Tip', 'Edit', 'Delete'];
   dataSource = new MatTableDataSource<PotrosaciTabela>(ELEMENT_DATA);
-
+  userLoggedIn: boolean;
   ngOnInit() {
     this.dataSource = new MatTableDataSource<PotrosaciTabela>(ELEMENT_DATA);
   }
@@ -43,7 +43,15 @@ export class PotrosaciComponent implements AfterViewInit, OnInit {
         alert(err);
       }
     )
-
+    this.userLoggedIn = this.isLoggedIn();
+  }
+  isLoggedIn() {
+    if (localStorage.getItem('currentUser')) {
+      console.log('user is logged in');
+      return true;
+    }
+    console.log('user is not logged in');
+    return false;
   }
   potrosacForm = new FormGroup({
     ime: new FormControl('', [Validators.required]),

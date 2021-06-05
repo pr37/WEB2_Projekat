@@ -6,6 +6,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient, HttpHeaders, HttpClientJsonpModule } from '@angular/common/http';
+import { Notification, of } from 'rxjs';
+import { catchError,  tap } from 'rxjs/operators';
+import { BackendServiceService } from '../backend-service.service';
 
 
 export interface DialogData {
@@ -78,8 +82,18 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
   instructions: Array<{ id: string, text: string, executed: string, validated: string, equipment: string }>;
   adresaElementa: string;
 
+  userLoggedIn: boolean;
+  isLoggedIn() {
+    if (localStorage.getItem('currentUser')) {
+      console.log('user is logged in');
+      return true;
+    }
+    console.log('user is not logged in');
+    return false;
+  }
 
-  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {
+  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private http: HttpClient,
+    private backendService: BackendServiceService) {
     this.uploading = false;
 
     this.ShowBasic = true;
@@ -100,6 +114,7 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     this.instructions.push({ id: "1a", text: "set this to that", executed: "UNEXECUTED", equipment: "testEqp", validated: "NOT VALIDATED" });
     this.instructions.push({ id: "2a", text: "set this to that", executed: "EXECUTED", equipment: "testEqp2", validated: "NOT VALIDATED" });
 
+    this.userLoggedIn = this.isLoggedIn();
   }
 
   openSnackBar(message: string, action: string) {
@@ -164,6 +179,11 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     //ToDate: Date;
     console.log(this.Status + " " + this.IncidentID + " " + this.TypeRada + " " + this.TypeNaCemu + " " + this.PhoneNo + " " + this.CreatedBy + " " + this.Company + " " + this.Purpose
       + " " + this.Details + " " + this.Notes + " " + this.Address + " "+  this.FromDate + " "+ this.ToDate)
+  }
+
+  addNew(createdby:string,status:string,datecreated:string,company:string,tipnacemu:string,startdate:string,enddate:string,adresa:string,svrha:string,beleske:string,) {
+    //add/{createdby}/{status}/{datecreated}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}
+    return this.http.get('https://localhost:44301/PlanoviRada/add');
   }
 
   approveDocument(): void {

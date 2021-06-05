@@ -4,19 +4,20 @@
     <meta charset="utf-8" />
     <title>Profile</title>
 </head>
-<body>
+<body *ngIf="userLoggedIn">
   <form class="example-form">
 
     <mat-form-field class="example-full-width">
       <mat-label>Username</mat-label>
-      <input matInput value="user1">
+      <input matInput [(ngModel)]="Username" name="username">
+      <mat-hint *ngIf="fieldValidation('username')">Username is required.</mat-hint>
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
       <mat-label>Email</mat-label>
-      <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
-             placeholder="Ex. pat@example.com">
-      <mat-hint>Errors appear instantly!</mat-hint>
+      <input type="email" matInput [formControl]="emailFormControl" [(ngModel)]="Email" [errorStateMatcher]="matcher"
+             placeholder="Ex. pat@example.com" name="mail">
+      <mat-hint>Email is valid.</mat-hint>
       <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
         Please enter a valid email address
       </mat-error>
@@ -30,13 +31,15 @@
         <td>
           <mat-form-field class="example-full-width">
             <mat-label>First name</mat-label>
-            <input matInput>
+            <input matInput [(ngModel)]="Name" name="firstname">
+            <mat-hint *ngIf="fieldValidation('firstname')">First name is required.</mat-hint>
           </mat-form-field>
         </td>
         <td>
           <mat-form-field class="example-full-width">
             <mat-label>Last Name</mat-label>
-            <input matInput>
+            <input matInput [(ngModel)]="Lastname" name="last">
+            <mat-hint *ngIf="fieldValidation('lastname')">Last name is required.</mat-hint>
           </mat-form-field>
         </td>
       </tr>
@@ -44,37 +47,38 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Date of birth</mat-label>
-      <input matInput [matDatepicker]="picker">
+      <input matInput [(ngModel)]="DateBirth" [matDatepicker]="picker" name="date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
       <mat-label>Address</mat-label>
-      <input matInput value="addy">
+      <input matInput [(ngModel)]="Address" name="adresa">
+      <mat-hint *ngIf="fieldValidation('address')">Address is required.</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Role</mat-label>
-      <mat-select>
-        <mat-option value="one">First option</mat-option>
-        <mat-option value="two">Second option</mat-option>
+      <mat-select [(ngModel)]="Role" name="rola">
+        <mat-option value="admin">Admin</mat-option>
+        <mat-option value="power_user">Power user</mat-option>
+        <mat-option value="user">User</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-checkbox class="example-margin">Request role approval</mat-checkbox>
   </form>
 
-  <img [src]="url" height="200"> <br />
+  <img [src]="url" alt="User image" height="200"> <br />
   <mat-progress-bar *ngIf="uploading" mode="indeterminate" class="example-30-width"></mat-progress-bar>
-  <input type='file' (change)="onSelectFile($event)">
+  <input type='file' (change)="uploadFile($event.target.files)">
 
 
   <mat-divider></mat-divider>
   <section>
     <div class="example-button-row">
-      <button mat-flat-button color="primary">Cancel</button>
-      <button mat-flat-button color="accent">Apply change</button>
+      <button mat-flat-button color="primary" (click)="DisposeChanges()">Cancel</button>
+      <button mat-flat-button color="accent" (click)="Apply()">Apply change</button>
     </div>
   </section>
   <mat-divider></mat-divider>

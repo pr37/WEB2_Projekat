@@ -40,12 +40,21 @@ var PotrosaciComponent = /** @class */ (function () {
             console.log("Err: " + err);
             alert(err);
         });
+        this.userLoggedIn = this.isLoggedIn();
     }
     PotrosaciComponent.prototype.ngOnInit = function () {
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
     };
     PotrosaciComponent.prototype.ngAfterViewInit = function () {
         this.dataSource.paginator = this.paginator;
+    };
+    PotrosaciComponent.prototype.isLoggedIn = function () {
+        if (localStorage.getItem('currentUser')) {
+            console.log('user is logged in');
+            return true;
+        }
+        console.log('user is not logged in');
+        return false;
     };
     PotrosaciComponent.prototype.getPotrosaci = function () {
         return this.http.get('https://localhost:44301/Potrosaci/get');

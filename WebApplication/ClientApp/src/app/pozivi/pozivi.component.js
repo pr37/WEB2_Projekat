@@ -13,11 +13,20 @@ var PoziviComponent = /** @class */ (function () {
     function PoziviComponent(mapsAPILoader, ngZone) {
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
-        //TODO get user
-        this.signedIn = false;
-        //TODO get pozivvi
-        this.Pozivi = new Array();
+        this.userLoggedIn = this.isLoggedIn();
+        if (this.userLoggedIn) {
+            //TODO get pozivvi
+            this.Pozivi = new Array();
+        }
     }
+    PoziviComponent.prototype.isLoggedIn = function () {
+        if (localStorage.getItem('currentUser')) {
+            console.log('user is logged in');
+            return true;
+        }
+        console.log('user is not logged in');
+        return false;
+    };
     PoziviComponent.prototype.onMouseOver = function (infoWindow, gm) {
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
