@@ -19,6 +19,17 @@ var NotifikacijeComponent = /** @class */ (function () {
         this.httpOptions = {
             headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
         };
+        this.getPodesavanja().subscribe(function (res) {
+            console.log('PODESAVANJA:' + res.hideRequiredFields);
+            //this.HideFields = res.hideRequiredFields;
+            _this.ErrorsVisible = res.errorVisible;
+            _this.InfoVisible = res.infoVisible;
+            _this.WarningVisible = res.warningVisible;
+            _this.SuccessVisible = res.successVisible;
+        }, function (err) {
+            console.log("Err: " + err);
+            alert('Could not get podesavanja.');
+        });
         this.userLoggedIn = this.isLoggedIn();
         //TODO get all notifications and filter into unreadNotifications
         if (this.userLoggedIn) {
@@ -36,8 +47,40 @@ var NotifikacijeComponent = /** @class */ (function () {
             this.getUnreadNotifications("2").subscribe(function (res) {
                 console.log("Got unread notifications");
                 console.log(res);
-                res.forEach(function (not) { return _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
                 res.forEach(function (not) { return _this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
+                for (var _i = 0, res_1 = res; _i < res_1.length; _i++) {
+                    var not = res_1[_i];
+                    if (!_this.ErrorsVisible) {
+                        if (not.icon !== 'error') {
+                            _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                        }
+                    }
+                    else if (!_this.InfoVisible) {
+                        if (not.icon !== 'notification_important') {
+                            _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                        }
+                    }
+                    else if (!_this.ErrorsVisible && !_this.InfoVisible) {
+                        if (not.icon !== 'error' && not.icon !== 'notification_important') {
+                            _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                        }
+                    }
+                    else if (!_this.SuccessVisible) {
+                        if (not.icon !== 'done_all') {
+                            _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                        }
+                    }
+                    else if (!_this.WarningVisible) {
+                        if (not.icon !== 'warning') {
+                            _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                        }
+                    }
+                    else {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                // res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
+                // res.forEach(not => this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
             }, function (err) {
                 console.log("Err: " + err);
                 alert(err);
@@ -54,8 +97,27 @@ var NotifikacijeComponent = /** @class */ (function () {
             //this.unreadNotifications.push({ id: '8', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
             //this.unreadNotifications.push({ id: '9', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
             this.unreadNotifications.forEach(function (val) { return _this.tempNotifications.push(Object.assign({}, val)); });
+            if (!this.ErrorsVisible) {
+                // alert('aa');
+                this.allNotifications = this.allNotifications.filter(function (i) { return i.icon !== 'error'; });
+                console.log('hmmmm: ' + this.allNotifications);
+                this.unreadNotifications = this.unreadNotifications.filter(function (i) { return i.icon !== 'error'; });
+                this.tempNotifications = this.tempNotifications.filter(function (i) { return i.icon !== 'error'; });
+            }
         }
     }
+    NotifikacijeComponent.prototype.getPodesavanja = function () {
+        return this.http.get('https://localhost:44301/Podesavanja/getPodesavanja');
+    };
+    NotifikacijeComponent.prototype.ngOnInit = function () {
+        if (!this.ErrorsVisible) {
+            this.allNotifications = this.allNotifications.filter(function (i) { return i.icon != 'error'; });
+            console.log('hmmmm: ' + this.unreadNotifications.length);
+            this.unreadNotifications = this.unreadNotifications.filter(function (i) { return i.icon !== 'error'; });
+            console.log('hmmmm: ' + this.unreadNotifications.length);
+            this.tempNotifications = this.tempNotifications.filter(function (i) { return i.icon !== 'error'; });
+        }
+    };
     NotifikacijeComponent.prototype.isLoggedIn = function () {
         if (localStorage.getItem('currentUser')) {
             console.log('user is logged in');
@@ -114,11 +176,43 @@ var NotifikacijeComponent = /** @class */ (function () {
         this.getNotifications("2").subscribe(function (res) {
             console.log("Got all notifications");
             console.log(res);
-            res.forEach(function (not) { return _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
+            for (var _i = 0, res_2 = res; _i < res_2.length; _i++) {
+                var not = res_2[_i];
+                if (!_this.ErrorsVisible) {
+                    if (not.icon !== 'error') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else if (!_this.InfoVisible) {
+                    if (not.icon !== 'notification_important') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else if (!_this.ErrorsVisible && !_this.InfoVisible) {
+                    if (not.icon !== 'error' && not.icon !== 'notification_important') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else if (!_this.SuccessVisible) {
+                    if (not.icon !== 'done_all') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else if (!_this.WarningVisible) {
+                    if (not.icon !== 'warning') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else {
+                    _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                }
+            }
+            //res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
         }, function (err) {
             console.log("Err: " + err);
             alert(err);
         });
+        // this.ngOnInit();
     };
     NotifikacijeComponent.prototype.showUnread = function () {
         var _this = this;
@@ -126,13 +220,51 @@ var NotifikacijeComponent = /** @class */ (function () {
         this.getUnreadNotifications("2").subscribe(function (res) {
             console.log("Got unread notifications");
             console.log(res);
-            res.forEach(function (not) { return _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
-            res.forEach(function (not) { return _this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }); });
+            for (var _i = 0, res_3 = res; _i < res_3.length; _i++) {
+                var not = res_3[_i];
+                if (!_this.ErrorsVisible) {
+                    if (not.icon !== 'error') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else if (!_this.InfoVisible) {
+                    if (not.icon !== 'notification_important') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else if (!_this.ErrorsVisible && !_this.InfoVisible) {
+                    if (not.icon !== 'error' && not.icon !== 'notification_important') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else if (!_this.SuccessVisible) {
+                    if (not.icon !== 'done_all') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else if (!_this.WarningVisible) {
+                    if (not.icon !== 'warning') {
+                        _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                    }
+                }
+                else {
+                    _this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+                }
+            }
+            // res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
+            // res.forEach(not => this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
         }, function (err) {
             console.log("Err: " + err);
             alert(err);
         });
         // this.tempNotifications.forEach(val => this.unreadNotifications.push((<any>Object).assign({}, val)));
+        if (!this.ErrorsVisible) {
+            // alert('aa');
+            this.allNotifications = this.allNotifications.filter(function (i) { return i.icon !== 'error'; });
+            console.log('hmmmm: ' + this.allNotifications);
+            this.unreadNotifications = this.unreadNotifications.filter(function (i) { return i.icon !== 'error'; });
+            this.tempNotifications = this.tempNotifications.filter(function (i) { return i.icon !== 'error'; });
+        }
     };
     NotifikacijeComponent.prototype.showError = function () {
         var _this = this;

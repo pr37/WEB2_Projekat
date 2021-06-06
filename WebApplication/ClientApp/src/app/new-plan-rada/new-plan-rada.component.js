@@ -16,17 +16,10 @@ var operators_1 = require("rxjs/operators");
 var dialog_1 = require("@angular/material/dialog");
 var paginator_1 = require("@angular/material/paginator");
 var table_1 = require("@angular/material/table");
-var ELEMENT_DATA = [
-    { UserID: 'asd22', ChangedDate: 'test' },
-    { UserID: 'asd22', ChangedDate: 'test' },
-    { UserID: 'asd22', ChangedDate: 'test' },
-    { UserID: 'asd22', ChangedDate: 'test' },
-    { UserID: 'asd22', ChangedDate: 'test' },
-    { UserID: 'asd22', ChangedDate: 'test' },
-    { UserID: 'asd22', ChangedDate: 'test' }
-];
+var ELEMENT_DATA = [];
 var NewPlanRadaComponent = /** @class */ (function () {
     function NewPlanRadaComponent(dialog, _snackBar, http, backendService) {
+        var _this = this;
         this.dialog = dialog;
         this._snackBar = _snackBar;
         this.http = http;
@@ -35,15 +28,71 @@ var NewPlanRadaComponent = /** @class */ (function () {
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
         this.control = new forms_1.FormControl();
         this.svrhe = ['Popravka 123', 'Zamena 22', 'Instalacija ...', 'Provera ...'];
+        this.HideFields = false;
+        this.SelectedPlanRadaId = '';
+        this.Notes = '';
+        this.CreatedBy = localStorage.getItem('currentUser');
+        this.CreatedOn = new forms_1.FormControl(new Date());
+        this.Status = 'DRAFT';
+        this.Address = '';
+        this.SelectedPlanRadaId = localStorage.getItem('selectedPlan');
+        if (this.SelectedPlanRadaId != '') {
+            this.getPlanRada().subscribe(function (res) {
+                console.log(res);
+                _this.CreatedBy = res.createdBy;
+                _this.Status = res.status;
+                _this.CreatedOn.setValue(res.dateCreatedOn);
+                _this.Company = res.company;
+                _this.TypeNaCemu = res.tipNaCemu;
+                _this.FromDate = res.startDate;
+                _this.ToDate = res.endDate;
+                _this.TypeRada = res.tipRada;
+                _this.WorkRequestID = res.workRequestID;
+                _this.IncidentID = res.incidentID;
+                _this.crewID = res.fieldCrew;
+                _this.Address = res.address;
+                _this.Purpose = res.svrha;
+                _this.Details = res.detalji;
+                _this.Notes = res.beleske;
+                _this.PhoneNo = res.phoneNo;
+            }, function (err) {
+                console.log("Err: " + err);
+                alert(err);
+            });
+            this.getPodesavanja().subscribe(function (res) {
+                console.log(res);
+                _this.HideFields = res.hideRequiredFields;
+            }, function (err) {
+                console.log("Err: " + err);
+                alert('Could not get podesavanja.');
+            });
+            this.getHistory().subscribe(function (res) {
+                console.log(res);
+                res.forEach(function (h) { return ELEMENT_DATA.push({ UserID: h.userID, ChangedDate: h.changedDate }); });
+            }, function (err) {
+                console.log("Err: " + err);
+                alert(err);
+            });
+        }
+        else {
+            this.CreatedBy = localStorage.getItem('currentUser');
+            this.CreatedOn = new forms_1.FormControl(new Date());
+            this.Status = 'DRAFT';
+            this.Address = '';
+            this.getPodesavanja().subscribe(function (res) {
+                console.log(res);
+                _this.HideFields = res.hideRequiredFields;
+            }, function (err) {
+                console.log("Err: " + err);
+                alert('Could not get podesavanja.');
+            });
+        }
         this.uploading = false;
         this.ShowBasic = true;
         this.ShowHistory = false;
         this.ShowMultimedia = false;
         this.ShowEquipment = false;
         this.ShowInstructions = false;
-        this.Status = 'DRAFT';
-        this.Address = '';
-        this.CreatedOn = new forms_1.FormControl(new Date());
         //TODO get values
         this.images = ['https://material.angular.io/assets/img/examples/shiba2.jpg'];
         this.allWorkPlanIDs = ['test1', 'test2'];
@@ -104,27 +153,53 @@ var NewPlanRadaComponent = /** @class */ (function () {
         this.ShowInstructions = true;
     };
     NewPlanRadaComponent.prototype.addNewWorkPlan = function () {
-        //Status: string;
-        //IncidentID: 'TestID';
-        //TypeRada: string;
-        //TypeNaCemu: string;
-        //CreatedBy: string;
-        //PhoneNo: string;
-        //Company: string;
-        //Purpose: string;
-        //Details: string;
-        //Notes: string;
-        //Address: string;
-        //crewID: string;
-        //CreatedOn: FormControl;
-        //FromDate: Date;
-        //ToDate: Date;
         console.log(this.Status + " " + this.IncidentID + " " + this.TypeRada + " " + this.TypeNaCemu + " " + this.PhoneNo + " " + this.CreatedBy + " " + this.Company + " " + this.Purpose
             + " " + this.Details + " " + this.Notes + " " + this.Address + " " + this.FromDate + " " + this.ToDate);
+        this.addNew().subscribe(function (res) {
+            console.log(res);
+            alert('Uspesno dodat plan rada.');
+        }, function (err) {
+            console.log("Err: " + err);
+            alert('Ne mogu da dodam plan rada.');
+        });
     };
-    NewPlanRadaComponent.prototype.addNew = function (createdby, status, datecreated, company, tipnacemu, startdate, enddate, adresa, svrha, beleske) {
+    NewPlanRadaComponent.prototype.addNew = function () {
         //add/{createdby}/{status}/{datecreated}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}
-        return this.http.get('https://localhost:44301/PlanoviRada/add');
+        var userid = localStorage.getItem('currentUser');
+        return this.http.put('https://localhost:44301/PlanoviRada/add/' + userid + '/' + this.CreatedBy + '/' + this.Status + '/' + this.CreatedOn.value.toISOString() + '/' +
+            this.Company + '/' + this.TypeNaCemu + '/' + this.FromDate.toISOString() + '/' + this.ToDate.toISOString() + '/' + this.Address + '/' + this.Purpose + '/' +
+            this.Notes + '/' + this.Details + '/' + this.TypeRada + '/' + this.PhoneNo, null);
+    };
+    NewPlanRadaComponent.prototype.editWorkPlan = function () {
+        this.editPlanRada().subscribe(function (res) {
+            console.log(res);
+            alert('Uspesno editovan plan rada.');
+        }, function (err) {
+            console.log("Err: " + err);
+            alert('Ne mogu da editujem plan rada.');
+        });
+    };
+    NewPlanRadaComponent.prototype.editPlanRada = function () {
+        //add/{createdby}/{status}/{datecreated}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}
+        var userid = localStorage.getItem('currentUser');
+        console.log(this.FromDate);
+        var fdate = this.FromDate.toDateString();
+        var tdate = this.ToDate.toDateString();
+        return this.http.put('https://localhost:44301/PlanoviRada/editPlanrada/' + this.CreatedBy + '/' + this.Status + '/' +
+            this.Company + '/' + this.TypeNaCemu + '/' + fdate + '/' + tdate + '/' + this.Address + '/' + this.Purpose + '/' +
+            this.Notes + '/' + this.Details + '/' + this.TypeRada + '/' + this.PhoneNo, null);
+    };
+    NewPlanRadaComponent.prototype.getPodesavanja = function () {
+        return this.http.get('https://localhost:44301/Podesavanja/getPodesavanja');
+    };
+    NewPlanRadaComponent.prototype.getPlanRada = function () {
+        //getone/{id}
+        return this.http.get('https://localhost:44301/PlanoviRada/getone/' + this.SelectedPlanRadaId);
+    };
+    NewPlanRadaComponent.prototype.getHistory = function () {
+        ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
+        console.log(this.SelectedPlanRadaId);
+        return this.http.get('https://localhost:44301/PlanoviRada/gethistory/' + this.SelectedPlanRadaId);
     };
     NewPlanRadaComponent.prototype.approveDocument = function () {
         this.Status = 'APPROVED';

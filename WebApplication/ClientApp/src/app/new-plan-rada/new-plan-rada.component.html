@@ -102,8 +102,8 @@
             <mat-form-field appearance="fill" class="example-30-width">
               <mat-label>Tip na cemu se radi?</mat-label>
               <mat-select [(value)]="TypeNaCemu">
-                <mat-option value="">??</mat-option>
-                <mat-option value="">Equipment</mat-option>
+                <mat-option value="NonEquipment">NonEquipment</mat-option>
+                <mat-option value="Equipment">Equipment</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="example-30-width">
@@ -148,17 +148,18 @@
 
             <mat-form-field>
               <mat-label>Detalji:</mat-label>
-              <textarea matInput name="details" [(ngModel)]='Details'></textarea>
+              <textarea matInput name="details"  [(ngModel)]='Details'></textarea>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field *ngIf="HideFields">
               <mat-label>Beleske:</mat-label>
-              <textarea matInput name="notes" [(ngModel)]='Notes'></textarea>
+              <textarea matInput name="notes"  [(ngModel)]='Notes'></textarea>
             </mat-form-field>
           </div>
 
         </form>
         <div class="example-button-row">
           <button mat-raised-button class="button-full-width" (click)="addNewWorkPlan()" color="accent">Add new work plan</button>
+          <button mat-raised-button class="button-full-width" (click)="editWorkPlan()" color="accent">Edit work plan</button>
         </div>
       </div>
 
@@ -189,7 +190,7 @@
               <!-- Weight Column -->
               <ng-container matColumnDef="ChangedDate">
                 <th mat-header-cell *matHeaderCellDef> ChangedDate </th>
-                <td mat-cell *matCellDef="let element"> {{element.ChangedDate}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.ChangedDate | date:'shortDate'}} </td>
               </ng-container>
 
 
@@ -235,7 +236,7 @@
           <button mat-raised-button class="button-full-width" (click)="validateInstructions()" color="accent">Validate</button>
         </div>
 
-        <mat-card *ngFor="let instr of instructions">ID: {{instr.id}} --- {{instr.text}} ----- {{instr.equipment}} ----- {{instr.validated}} ----- {{instr.executed}}
+        <mat-card *ngFor="let instr of instructions" [ngStyle]="{color:ValidatedColor}">ID: {{instr.id}} --- {{instr.text}} ----- {{instr.equipment}} ----- {{instr.validated}} ----- {{instr.executed}}
         <button mat-raised-button  (click)="executeInstruction(instr.id)" color="accent">Execute</button>
         <button mat-raised-button  (click)="deleteInstruction(instr.id)" color="accent">Delete</button>
         </mat-card>

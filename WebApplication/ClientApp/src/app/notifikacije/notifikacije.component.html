@@ -19,22 +19,22 @@
       </div>
       <div>
         <div class="example-button-row">
-          <button mat-raised-button class="button-full-width" (click)="showError()" color="accent">Errors <mat-icon>error</mat-icon></button>
+          <button mat-raised-button class="button-full-width" (click)="showError()" *ngIf="ErrorsVisible" color="accent">Errors <mat-icon>error</mat-icon></button>
         </div>
       </div>
       <div>
         <div class="example-button-row">
-          <button mat-raised-button class="button-full-width" (click)="showInfo()" color="accent">Info <mat-icon>notification_important</mat-icon></button>
+          <button mat-raised-button class="button-full-width" (click)="showInfo()" *ngIf="InfoVisible" color="accent">Info <mat-icon>notification_important</mat-icon></button>
         </div>
       </div>
       <div>
         <div class="example-button-row">
-          <button mat-raised-button class="button-full-width" (click)="showSuccess()" color="accent">Success <mat-icon>done_all</mat-icon></button>
+          <button mat-raised-button class="button-full-width" (click)="showSuccess()"  *ngIf="SuccessVisible" color="accent">Success <mat-icon>done_all</mat-icon></button>
         </div>
       </div>
       <div>
         <div class="example-button-row">
-          <button mat-raised-button class="button-full-width" (click)="showWarning()" color="accent">Warning <mat-icon>warning</mat-icon></button>
+          <button mat-raised-button class="button-full-width" (click)="showWarning()"  *ngIf="WarningVisible" color="accent">Warning <mat-icon>warning</mat-icon></button>
         </div>
       </div>
       <div>

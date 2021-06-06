@@ -18,7 +18,7 @@ import { FormGroup,  FormControlName } from '@angular/forms';
 })
 
 export class PotrosaciComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['ID', 'Ime', 'Prezime', 'Adresa', 'Prioritet', 'PhoneNo', 'Tip', 'Edit', 'Delete'];
+  displayedColumns: string[] = ['ID', 'Ime', 'Prezime', 'Adresa', 'PhoneNo', 'Tip', 'Edit', 'Delete'];
   dataSource = new MatTableDataSource<PotrosaciTabela>(ELEMENT_DATA);
   userLoggedIn: boolean;
   ngOnInit() {
@@ -35,6 +35,7 @@ export class PotrosaciComponent implements AfterViewInit, OnInit {
     this.getPotrosaci().subscribe(
       (res: any) => {
         console.log(res);
+        ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
         res.forEach(not => ELEMENT_DATA.push({ ID: not.potrosacID, Ime: not.ime, Prezime: not.prezime, Adresa: not.adresa, PhoneNo: not.phoneNo, Tip: not.tipPotrosaca, Prioritet: '0' }));
         this.ngOnInit();
       },

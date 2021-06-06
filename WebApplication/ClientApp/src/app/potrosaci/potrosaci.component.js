@@ -23,7 +23,7 @@ var PotrosaciComponent = /** @class */ (function () {
         this.dialog = dialog;
         this.http = http;
         this.backendService = backendService;
-        this.displayedColumns = ['ID', 'Ime', 'Prezime', 'Adresa', 'Prioritet', 'PhoneNo', 'Tip', 'Edit', 'Delete'];
+        this.displayedColumns = ['ID', 'Ime', 'Prezime', 'Adresa', 'PhoneNo', 'Tip', 'Edit', 'Delete'];
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
         this.potrosacForm = new forms_2.FormGroup({
             ime: new forms_1.FormControl('', [forms_1.Validators.required]),
@@ -34,6 +34,7 @@ var PotrosaciComponent = /** @class */ (function () {
         });
         this.getPotrosaci().subscribe(function (res) {
             console.log(res);
+            ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
             res.forEach(function (not) { return ELEMENT_DATA.push({ ID: not.potrosacID, Ime: not.ime, Prezime: not.prezime, Adresa: not.adresa, PhoneNo: not.phoneNo, Tip: not.tipPotrosaca, Prioritet: '0' }); });
             _this.ngOnInit();
         }, function (err) {

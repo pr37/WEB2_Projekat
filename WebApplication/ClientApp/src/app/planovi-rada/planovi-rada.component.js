@@ -13,16 +13,18 @@ var paginator_1 = require("@angular/material/paginator");
 var table_1 = require("@angular/material/table");
 var sort_1 = require("@angular/material/sort");
 var PlanoviRadaComponent = /** @class */ (function () {
-    function PlanoviRadaComponent(http, backendService) {
+    function PlanoviRadaComponent(http, backendService, router) {
         var _this = this;
         this.http = http;
         this.backendService = backendService;
-        this.displayedColumns = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address', 'Company', 'Type'];
+        this.router = router;
+        this.displayedColumns = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address', 'Company', 'Type', 'Edit'];
         this.dataSource = new table_1.MatTableDataSource(ELEMENT_DATA);
         this.userLoggedIn = this.isLoggedIn();
         if (this.userLoggedIn) {
             this.getPlanovi().subscribe(function (res) {
                 console.log(res);
+                ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
                 res.forEach(function (not) { return ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }); });
                 _this.ngOnInit();
             }, function (err) {
@@ -42,6 +44,14 @@ var PlanoviRadaComponent = /** @class */ (function () {
         console.log('user is not logged in');
         return false;
     };
+    PlanoviRadaComponent.prototype.edit = function (planId) {
+        localStorage.setItem('selectedPlan', planId);
+        this.router.navigate(['/new-plan-rada']);
+    };
+    PlanoviRadaComponent.prototype.goDoAdd = function () {
+        localStorage.setItem('selectedPlan', '');
+        this.router.navigate(['/new-plan-rada']);
+    };
     PlanoviRadaComponent.prototype.showAll = function () {
         var _this = this;
         ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
@@ -58,7 +68,8 @@ var PlanoviRadaComponent = /** @class */ (function () {
         var _this = this;
         //TODO get logged in users id
         ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
-        this.getMine('marko').subscribe(function (res) {
+        var id = localStorage.getItem('currentUser');
+        this.getMine(id).subscribe(function (res) {
             console.log(res);
             res.forEach(function (not) { return ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }); });
             _this.ngOnInit();
@@ -66,6 +77,9 @@ var PlanoviRadaComponent = /** @class */ (function () {
             console.log("Err: " + err);
             alert(err);
         });
+    };
+    PlanoviRadaComponent.prototype.getUser = function (id) {
+        return this.http.get('https://localhost:44301/Podesavanja/user/' + id);
     };
     PlanoviRadaComponent.prototype.applySearch = function (filterValue) {
         filterValue = filterValue.trim(); // Remove whitespace

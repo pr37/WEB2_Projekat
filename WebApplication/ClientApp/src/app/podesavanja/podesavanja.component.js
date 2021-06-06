@@ -101,9 +101,15 @@ var PodesavanjaComponent = /** @class */ (function () {
         });
         this.streets = [];
         this.getUlice().subscribe(function (res) {
+            var unique;
             _this.streets.splice(0, _this.streets.length);
-            console.log(res);
             res.forEach(function (st) { return _this.streets.push(st); });
+            // res.forEach(st => this.streets.push(st));
+            var distinct = [];
+            distinct = _this.streets.filter(function (n, i) { return _this.streets.indexOf(n) === i; });
+            console.log('DISTINCT:' + distinct);
+            _this.streets.splice(0, _this.streets.length);
+            distinct.forEach(function (st) { return _this.streets.push(st); });
         }, function (err) {
             console.log("Err: " + err);
             alert('Could not get user.');
@@ -218,6 +224,7 @@ var PodesavanjaComponent = /** @class */ (function () {
         console.log(this.Warning);
         this.addPodesavanja().subscribe(function (res) {
             console.log(res);
+            alert('Settings are changed.');
         }, function (err) {
             console.log("Err: " + err);
             alert('Could not set new settings.');

@@ -8,6 +8,7 @@ import { HttpClient, HttpHeaders, HttpClientJsonpModule } from '@angular/common/
 import { Notification, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { BackendServiceService } from '../backend-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'planovi-rada',
@@ -16,7 +17,7 @@ import { BackendServiceService } from '../backend-service.service';
 })
 
 export class PlanoviRadaComponent implements AfterViewInit, OnInit{
-  displayedColumns: string[] = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address', 'Company','Type'];
+  displayedColumns: string[] = ['ID', 'StartDate', 'PhoneNo', 'Status', 'Address', 'Company','Type', 'Edit'];
   dataSource = new MatTableDataSource<PlanRadaTabela>(ELEMENT_DATA);
   ngOnInit() {
     this.dataSource = new MatTableDataSource<PlanRadaTabela>(ELEMENT_DATA);
@@ -31,12 +32,13 @@ export class PlanoviRadaComponent implements AfterViewInit, OnInit{
     return false;
   }
   constructor(private http: HttpClient,
-    private backendService: BackendServiceService) {
+    private backendService: BackendServiceService, private router: Router) {
     this.userLoggedIn = this.isLoggedIn();
     if (this.userLoggedIn) {
       this.getPlanovi().subscribe(
         (res: any) => {
           console.log(res);
+          ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
           res.forEach(not => ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }));
           this.ngOnInit();
         },
@@ -47,6 +49,16 @@ export class PlanoviRadaComponent implements AfterViewInit, OnInit{
       )
     }
 
+  }
+
+  edit(planId) {
+    localStorage.setItem('selectedPlan', planId);
+    this.router.navigate(['/new-plan-rada']);
+  }
+
+  goDoAdd() {
+    localStorage.setItem('selectedPlan', '');
+    this.router.navigate(['/new-plan-rada']);
   }
 
   showAll() {
@@ -67,7 +79,8 @@ export class PlanoviRadaComponent implements AfterViewInit, OnInit{
   showMine() {
     //TODO get logged in users id
     ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
-    this.getMine('marko').subscribe(
+    var id = localStorage.getItem('currentUser');
+    this.getMine(id).subscribe(
       (res: any) => {
         console.log(res);
         res.forEach(not => ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }));
@@ -79,6 +92,12 @@ export class PlanoviRadaComponent implements AfterViewInit, OnInit{
       }
     )
   }
+
+  getUser(id: string) {
+    return this.http.get('https://localhost:44301/Podesavanja/user/' + id);
+  }
+
+ 
 
   applySearch(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace

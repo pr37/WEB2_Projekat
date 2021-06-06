@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,13 +16,32 @@ import { catchError, map, tap } from 'rxjs/operators';
   providers: [BackendServiceService]
 })
 
-export class NotifikacijeComponent {
+export class NotifikacijeComponent implements OnInit{
   allNotifications: Array<{ id: string, text: string, color: string, icon: string, timestamp: string, tied: boolean, tiedTo: string, read: boolean }>;
   unreadNotifications: Array<{ id:string,text: string, color: string, icon: string, timestamp: string, tied: boolean, tiedTo: string }>;
   tempNotifications: Array<{ id: string, text: string, color: string, icon: string, timestamp: string, tied: boolean, tiedTo: string }>;
   userLoggedIn: boolean;
   private heroesUrl = 'api/Notifications';  // URL to web api
+  ErrorsVisible: boolean;
+  InfoVisible: boolean;
+  SuccessVisible: boolean;
+  WarningVisible: boolean;
 
+  getPodesavanja() {
+    return this.http.get('https://localhost:44301/Podesavanja/getPodesavanja');
+  }
+
+  ngOnInit() {
+    if (!this.ErrorsVisible) {
+
+      this.allNotifications = this.allNotifications.filter(i => i.icon != 'error');
+      console.log('hmmmm: ' + this.unreadNotifications.length);
+      this.unreadNotifications = this.unreadNotifications.filter(i => i.icon !== 'error');
+      console.log('hmmmm: ' + this.unreadNotifications.length);
+      this.tempNotifications = this.tempNotifications.filter(i => i.icon !== 'error');
+      
+    }
+  }
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -39,6 +58,22 @@ export class NotifikacijeComponent {
   got_notifs: any;
   constructor(private http: HttpClient,
     private backendService: BackendServiceService) {
+
+    this.getPodesavanja().subscribe(
+      (res: any) => {
+        console.log('PODESAVANJA:' + res.hideRequiredFields);
+        //this.HideFields = res.hideRequiredFields;
+        this.ErrorsVisible = res.errorVisible;
+        this.InfoVisible = res.infoVisible;
+        this.WarningVisible = res.warningVisible;
+        this.SuccessVisible = res.successVisible;
+      },
+      err => {
+        console.log("Err: " + err);
+        alert('Could not get podesavanja.');
+      }
+    )
+
     this.userLoggedIn = this.isLoggedIn();
     //TODO get all notifications and filter into unreadNotifications
     if (this.userLoggedIn) {
@@ -60,14 +95,46 @@ export class NotifikacijeComponent {
         (res: any) => {
           console.log("Got unread notifications");
           console.log(res);
-          res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
           res.forEach(not => this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
+
+          for (let not of res) {
+            if (!this.ErrorsVisible) {
+              if (not.icon !== 'error') {
+                this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+              }
+            } else if (!this.InfoVisible) {
+              if (not.icon !== 'notification_important') {
+                this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+              }
+            } else if (!this.ErrorsVisible && !this.InfoVisible) {
+              if (not.icon !== 'error' && not.icon !== 'notification_important') {
+                this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+
+              }
+            } else if (!this.SuccessVisible) {
+              if (not.icon !== 'done_all') {
+                this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+              }
+            } else if (!this.WarningVisible) {
+              if (not.icon !== 'warning') {
+                this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+              }
+            } else {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+
+            }
+          } 
+         // res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
+         // res.forEach(not => this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
         },
         err => {
           console.log("Err: " + err);
           alert(err);
         }
       )
+
+    
+
       //this.testnotif.forEach(not => console.log(not));
       //notifs.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }))
       //this.unreadNotifications.push({ id:'1',text: 'testtttttt', color: 'red', icon: 'error', timestamp: '21.10.1998.', tied:false,tiedTo:'' })
@@ -80,6 +147,14 @@ export class NotifikacijeComponent {
       //this.unreadNotifications.push({ id: '8', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
       //this.unreadNotifications.push({ id: '9', text: 'testtttttt', color: 'green', icon: 'done_all', timestamp: '21.10.1998.', tied: true, tiedTo: 'smth' })
       this.unreadNotifications.forEach(val => this.tempNotifications.push((<any>Object).assign({}, val)));
+
+      if (!this.ErrorsVisible) {
+       // alert('aa');
+        this.allNotifications = this.allNotifications.filter(i => i.icon !== 'error');
+        console.log('hmmmm: ' + this.allNotifications);
+        this.unreadNotifications = this.unreadNotifications.filter(i => i.icon !== 'error');
+        this.tempNotifications = this.tempNotifications.filter(i => i.icon !== 'error');
+      }
     }
   }
 
@@ -148,13 +223,41 @@ export class NotifikacijeComponent {
       (res: any) => {
         console.log("Got all notifications");
         console.log(res);
-        res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
-      },
+        for (let not of res) {
+          if (!this.ErrorsVisible) {
+            if (not.icon !== 'error') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+            }
+          } else if (!this.InfoVisible) {
+            if (not.icon !== 'notification_important') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+            }
+          } else if (!this.ErrorsVisible && !this.InfoVisible) {
+            if (not.icon !== 'error' && not.icon !== 'notification_important') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+
+            }
+          } else if (!this.SuccessVisible) {
+            if (not.icon !== 'done_all') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+            }
+          } else if (!this.WarningVisible) {
+            if (not.icon !== 'warning') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+            }
+          } else {
+            this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+
+          }
+        } 
+        //res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
+       },
       err => {
         console.log("Err: " + err);
         alert(err);
       }
     )
+   // this.ngOnInit();
   }
 
   showUnread(): void {
@@ -164,8 +267,35 @@ export class NotifikacijeComponent {
       (res: any) => {
         console.log("Got unread notifications");
         console.log(res);
-        res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
-        res.forEach(not => this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
+        for (let not of res) {
+          if (!this.ErrorsVisible) {
+            if (not.icon !== 'error') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+            }
+          } else if (!this.InfoVisible) {
+            if (not.icon !== 'notification_important') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+            }
+          } else if (!this.ErrorsVisible && !this.InfoVisible) {
+            if (not.icon !== 'error' && not.icon !== 'notification_important') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+
+            }
+          } else if (!this.SuccessVisible) {
+            if (not.icon !== 'done_all') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+            }
+          } else if (!this.WarningVisible) {
+            if (not.icon !== 'warning') {
+              this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+            }
+          } else {
+            this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo });
+
+          }
+        } 
+       // res.forEach(not => this.unreadNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
+       // res.forEach(not => this.tempNotifications.push({ id: not.notifikacijaID, text: not.text, color: not.color, icon: not.icon, timestamp: not.timeStamp, tied: not.tied, tiedTo: not.tiedTo }));
       },
       err => {
         console.log("Err: " + err);
@@ -173,6 +303,13 @@ export class NotifikacijeComponent {
       }
     )
    // this.tempNotifications.forEach(val => this.unreadNotifications.push((<any>Object).assign({}, val)));
+    if (!this.ErrorsVisible) {
+      // alert('aa');
+      this.allNotifications = this.allNotifications.filter(i => i.icon !== 'error');
+      console.log('hmmmm: ' + this.allNotifications);
+      this.unreadNotifications = this.unreadNotifications.filter(i => i.icon !== 'error');
+      this.tempNotifications = this.tempNotifications.filter(i => i.icon !== 'error');
+    }
   }
 
   showError(): void {

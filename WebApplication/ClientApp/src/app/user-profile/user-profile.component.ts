@@ -40,6 +40,7 @@ export class UserProfileComponent implements  OnInit{
   userImage: any;
   userLoggedIn: boolean;
   loggedInId: string;
+  SendImage: boolean;
   isLoggedIn() {
     if (localStorage.getItem('currentUser')) {
       return true;
@@ -102,6 +103,7 @@ export class UserProfileComponent implements  OnInit{
   }
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
+    this.SendImage = false;
     this.userLoggedIn = this.isLoggedIn();
     this.loggedInId = localStorage.getItem('currentUser');
     this.ngOnInit();
@@ -116,7 +118,13 @@ export class UserProfileComponent implements  OnInit{
   }
 
   editUser() {
-    return this.http.post('https://localhost:44301/Podesavanja/edit/' + this.loggedInId + '/' + this.Username + '/' + this.Email + '/' + this.Name + '/' + this.Lastname + '/' + this.DateBirth.toString() + '/' + this.Address + '/' + this.Role, this.fileImgFormData);
+    var isimg;
+    if (this.SendImage) {
+      isimg = 'send';
+    } else {
+      isimg = 'not';
+    }
+    return this.http.post('https://localhost:44301/Podesavanja/edit/' + this.loggedInId + '/' + this.Username + '/' + this.Email + '/' + this.Name + '/' + this.Lastname + '/' + this.DateBirth.toString() + '/' + this.Address + '/' + this.Role  , this.fileImgFormData);
   }
 
   DisposeChanges() {
@@ -146,6 +154,7 @@ export class UserProfileComponent implements  OnInit{
     if (files.length === 0) {
       return;
     }
+    this.SendImage = true;
     let fileToUpload = <File>files[0];
     this.fileImgFormData = new FormData();
     this.fileImgFormData.append('file', fileToUpload, fileToUpload.name);
@@ -166,7 +175,7 @@ export class UserProfileComponent implements  OnInit{
     if (event.target.files && event.target.files[0]) {
       this.uploading = true;
       var reader = new FileReader();
-
+      this.SendImage = true;
       reader.readAsDataURL(event.target.files[0]); // read file as data url
 
       reader.onload = (event) => { // called once readAsDataURL is completed

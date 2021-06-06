@@ -7,7 +7,7 @@
 <body *ngIf="userLoggedIn">
   <section>
     <div class="example-button-row">
-      <button mat-raised-button [routerLink]="['/new-plan-rada']">Add new</button>
+      <button mat-raised-button (click)="goDoAdd()">Add new</button>
       <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
         <mat-button-toggle value="bold" (click)="showAll()">All</mat-button-toggle>
         <mat-button-toggle value="italic" (click)="showMine()">Mine</mat-button-toggle>
@@ -98,6 +98,11 @@
       <ng-container matColumnDef="Type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
         <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
+        <td mat-cell *matCellDef="let element"><button mat-raised-button (click)="edit(element.ID)">Edit</button> </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

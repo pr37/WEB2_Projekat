@@ -149,9 +149,8 @@ namespace ActualServer.Controllers
                     p.Prioritet = prio;
                     _context.Entry(p).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     _context.Update(p);
-                    var upd = await _context.SaveChangesAsync();
-                    await _context.SaveChangesAsync();
-                    return Ok();
+                     _context.SaveChanges();
+                   // return Ok();
                 }
             }
             if (poz != null)
@@ -160,10 +159,9 @@ namespace ActualServer.Controllers
                 _context.Entry(poz).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 _context.Update(poz);
                 var upd = await _context.SaveChangesAsync();
-                await _context.SaveChangesAsync();
-                return Ok();
+               // return Ok();
             }
-            return NotFound();
+            return Ok();
         }
 
 
@@ -173,45 +171,53 @@ namespace ActualServer.Controllers
         public async Task<IActionResult> EditUser(string id,string username,string email,string ime,string prezime,string datum,string address,string role)
         {
             User modified = _context.UsersTB.Find(id);
-           
-            if (modified.Username != username)
+            /*
+             if (modified.Username != username)
+             {
+                 if (_context.UsersTB.First(x => x.Username == username) == null)
+                 {
+                     modified.Username = username;
+                 }
+                 else
+                 {
+                     return Conflict();
+                 }
+             }
+             if (modified.Email != email)
+             {
+                 if (_context.UsersTB.First(x => x.Email == email) == null)
+                 {
+                     modified.Email = email;
+                 }
+                 else
+                 {
+                     return Conflict();
+                 }
+             } */
+            try
             {
-                if (_context.UsersTB.First(x => x.Username == username) == null)
-                {
-                    modified.Username = username;
-                }
-                else
-                {
-                    return Conflict();
-                }
+                modified.Username = username;
+                modified.Email = email;
+
+                modified.Ime = ime;
+                modified.Prezime = prezime;
+                modified.DateOfBirth = DateTime.Parse(datum);
+                modified.Address = address;
+                modified.RequestedRole = role;
+
+                var file = Request.Form.Files[0];
+                MemoryStream ms = new MemoryStream();
+                file.CopyTo(ms);
+                modified.Image = ms.ToArray();
+
+                _context.Entry(modified).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.Update(modified);
+                await _context.SaveChangesAsync();
+                return Ok();
+            } catch (Exception e)
+            {
+                return Conflict();
             }
-            if (modified.Email != email)
-            {
-                if (_context.UsersTB.First(x => x.Email == email) == null)
-                {
-                    modified.Email = email;
-                }
-                else
-                {
-                    return Conflict();
-                }
-            } 
-
-            modified.Ime = ime;
-            modified.Prezime = prezime;
-            modified.DateOfBirth = DateTime.Parse(datum);
-            modified.Address = address;
-            modified.RequestedRole = role;
-            
-            var file = Request.Form.Files[0];
-            MemoryStream ms = new MemoryStream();
-            file.CopyTo(ms);
-            modified.Image = ms.ToArray();
-
-            _context.Entry(modified).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.Update(modified);
-            await _context.SaveChangesAsync();
-            return Ok();
         }
     }
 }

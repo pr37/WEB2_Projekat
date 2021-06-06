@@ -18,17 +18,10 @@ export interface DialogData {
 
 export interface Element {
   UserID: string;
-  ChangedDate: string;
+  ChangedDate: Date;
 }
 
 const ELEMENT_DATA: Element[] = [
-  { UserID: 'asd22', ChangedDate : 'test' },
-  { UserID: 'asd22', ChangedDate : 'test' },
-  { UserID: 'asd22', ChangedDate : 'test' },
-  { UserID: 'asd22', ChangedDate : 'test' },
-  { UserID: 'asd22', ChangedDate : 'test' },
-  { UserID: 'asd22', ChangedDate : 'test' },
-  { UserID: 'asd22', ChangedDate : 'test' }
 ];
 
 @Component({
@@ -54,6 +47,9 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
   ShowEquipment: boolean;
   ShowInstructions: boolean;
 
+  HideFields: boolean;
+
+  SelectedPlanRadaId: string;
   Status : string;
   IncidentID: 'TestID';
   TypeRada: string;
@@ -66,10 +62,11 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
   Notes: string;
   Address: string;
   crewID: string;
+  WorkRequestID: string;
   CreatedOn: FormControl;
   FromDate: Date;
   ToDate: Date;
-
+  //svrha: string;
   images: string[];
   copyToWorkPlanID: string;
   allWorkPlanIDs: string[];
@@ -94,6 +91,100 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
 
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private http: HttpClient,
     private backendService: BackendServiceService) {
+    this.HideFields = false;
+    this.SelectedPlanRadaId = '';
+    this.Notes = '';
+    this.CreatedBy = localStorage.getItem('currentUser');
+    this.CreatedOn = new FormControl(new Date());
+    this.Status = 'DRAFT';
+    this.Address = '';
+    this.SelectedPlanRadaId = localStorage.getItem('selectedPlan');
+    if (this.SelectedPlanRadaId != '') {
+      this.getPlanRada().subscribe(
+        (res: any) => {
+          console.log(res);
+          this.CreatedBy = res.createdBy;
+          this.Status = res.status;
+          this.CreatedOn.setValue(res.dateCreatedOn);
+          this.Company = res.company;
+          this.TypeNaCemu = res.tipNaCemu;
+          this.FromDate = res.startDate;
+          this.ToDate = res.endDate;
+          this.TypeRada = res.tipRada;
+          this.WorkRequestID = res.workRequestID;
+          this.IncidentID = res.incidentID;
+          this.crewID = res.fieldCrew;
+          this.Address = res.address;
+          this.Purpose = res.svrha;
+          this.Details = res.detalji;
+          this.Notes = res.beleske;
+          this.PhoneNo = res.phoneNo;
+        },
+        err => {
+          console.log("Err: " + err);
+          alert(err);
+        }
+      )
+
+      this.getPodesavanja().subscribe(
+        (res: any) => {
+          console.log(res);
+          this.HideFields = res.hideRequiredFields;
+        },
+        err => {
+          console.log("Err: " + err);
+          alert('Could not get podesavanja.');
+        }
+      )
+      this.getHistory().subscribe(
+        (res: any) => {
+          console.log(res);
+          res.forEach(h => ELEMENT_DATA.push({ UserID: h.userID, ChangedDate: h.changedDate }))
+        },
+        err => {
+          console.log("Err: " + err);
+          alert(err);
+        }
+      )
+
+      this.getInstructions().subscribe(
+        (res: any) => {
+          console.log(res);
+          this.instructions.slice(0, this.instructions.length);
+          res.forEach(x => this.instructions.push({ id: x.instructionID, text: x.text, executed: ("EXECUTED: " + x.executed), equipment: x.equipment, validated: (" VALIDATED: " + x.validated) }));
+        },
+        err => {
+          console.log("Err: " + err);
+        }
+      )
+
+      this.getImages().subscribe(
+        (res: any) => {
+          console.log(res);
+          res.forEach(h => this.images.push(h));
+        },
+        err => {
+          console.log("Err: " + err);
+          alert(err);
+        }
+      )
+    } else {
+      this.CreatedBy = localStorage.getItem('currentUser');
+      this.CreatedOn = new FormControl(new Date());
+      this.Status = 'DRAFT';
+      this.Address = '';
+      this.getPodesavanja().subscribe(
+        (res: any) => {
+          console.log(res);
+          this.HideFields = res.hideRequiredFields;
+        },
+        err => {
+          console.log("Err: " + err);
+          alert('Could not get podesavanja.');
+        }
+      )
+    }
+
     this.uploading = false;
 
     this.ShowBasic = true;
@@ -102,19 +193,21 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     this.ShowEquipment = false;
     this.ShowInstructions = false;
 
-    this.Status = 'DRAFT';
-    this.Address = '';
-    this.CreatedOn = new FormControl(new Date());
+   
+    
     //TODO get values
     this.images = ['https://material.angular.io/assets/img/examples/shiba2.jpg'];
     this.allWorkPlanIDs = ['test1', 'test2'];
     this.equipments = ['test1', 'test2'];
     this.equipmentState = 'NOT ADDED';
     this.instructions = new Array();
-    this.instructions.push({ id: "1a", text: "set this to that", executed: "UNEXECUTED", equipment: "testEqp", validated: "NOT VALIDATED" });
-    this.instructions.push({ id: "2a", text: "set this to that", executed: "EXECUTED", equipment: "testEqp2", validated: "NOT VALIDATED" });
-
+   // this.instructions.push({ id: "1a", text: "set this to that", executed: "UNEXECUTED", equipment: "testEqp", validated: "NOT VALIDATED" });
+   // this.instructions.push({ id: "2a", text: "set this to that", executed: "EXECUTED", equipment: "testEqp2", validated: "NOT VALIDATED" });
+   
     this.userLoggedIn = this.isLoggedIn();
+
+   
+
   }
 
   openSnackBar(message: string, action: string) {
@@ -162,28 +255,77 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
   }
 
   addNewWorkPlan(): void {
-    //Status: string;
-    //IncidentID: 'TestID';
-    //TypeRada: string;
-    //TypeNaCemu: string;
-    //CreatedBy: string;
-    //PhoneNo: string;
-    //Company: string;
-    //Purpose: string;
-    //Details: string;
-    //Notes: string;
-    //Address: string;
-    //crewID: string;
-    //CreatedOn: FormControl;
-    //FromDate: Date;
-    //ToDate: Date;
+    if (this.PhoneNo == '' || this.Company == '' || this.Address == '' || this.Purpose == '' || this.Details == '') {
+      alert('Fill all required fields.');
+      return;
+    }
     console.log(this.Status + " " + this.IncidentID + " " + this.TypeRada + " " + this.TypeNaCemu + " " + this.PhoneNo + " " + this.CreatedBy + " " + this.Company + " " + this.Purpose
-      + " " + this.Details + " " + this.Notes + " " + this.Address + " "+  this.FromDate + " "+ this.ToDate)
+      + " " + this.Details + " " + this.Notes + " " + this.Address + " " + this.FromDate + " " + this.ToDate);
+
+    this.addNew().subscribe(
+      (res: any) => {
+        console.log(res);
+        alert('Uspesno dodat plan rada.');
+      },
+      err => {
+        console.log("Err: " + err);
+        alert('Ne mogu da dodam plan rada.');
+      }
+    )
   }
 
-  addNew(createdby:string,status:string,datecreated:string,company:string,tipnacemu:string,startdate:string,enddate:string,adresa:string,svrha:string,beleske:string,) {
+  addNew() {
     //add/{createdby}/{status}/{datecreated}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}
-    return this.http.get('https://localhost:44301/PlanoviRada/add');
+    var userid = localStorage.getItem('currentUser');
+    return this.http.put('https://localhost:44301/PlanoviRada/add/' + userid + '/' + this.CreatedBy + '/' + this.Status + '/' + this.CreatedOn.value.toISOString() + '/' +
+      this.Company + '/' + this.TypeNaCemu + '/' + this.FromDate.toISOString() + '/' + this.ToDate.toISOString() + '/' + this.Address + '/' + this.Purpose + '/' +
+      this.Notes + '/' + this.Details + '/' + this.TypeRada + '/' + this.PhoneNo,null);
+  }
+
+  editWorkPlan() {
+    if (this.PhoneNo == '' || this.Company == '' || this.Address == '' || this.Purpose == '' || this.Details == '') {
+      alert('Fill all required fields.');
+      return;
+    }
+    this.editPlanRada().subscribe(
+      (res: any) => {
+        console.log(res);
+        alert('Uspesno editovan plan rada.');
+      },
+      err => {
+        console.log("Err: " + err);
+        alert('Ne mogu da editujem plan rada.');
+      }
+    )
+  }
+
+  editPlanRada() {
+    //editPlanrada/{planid}/{createdby}/{status}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}
+    var planif = localStorage.getItem('selectedPlan');
+    var userid = localStorage.getItem('currentUser');
+    console.log(this.FromDate);
+    var newfd = new Date(this.FromDate);
+    var newtd = new Date(this.ToDate);
+    var fdate = newfd.toISOString();
+    var tdate = newtd.toISOString();
+    return this.http.put('https://localhost:44301/PlanoviRada/editPlanrada/' + planif + '/' + this.CreatedBy + '/' + this.Status + '/' +
+      this.Company + '/' + this.TypeNaCemu + '/' + fdate + '/' + tdate + '/' + this.Address + '/' + this.Purpose + '/' +
+      this.Notes + '/' + this.Details + '/' + this.TypeRada + '/' + this.PhoneNo, null);
+  }
+
+  getPodesavanja() {
+    return this.http.get('https://localhost:44301/Podesavanja/getPodesavanja');
+  }
+
+  getPlanRada() {
+    //getone/{id}
+    return this.http.get('https://localhost:44301/PlanoviRada/getone/' + this.SelectedPlanRadaId);
+  }
+
+  getHistory() {
+    ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
+    console.log(this.SelectedPlanRadaId);
+    return this.http.get('https://localhost:44301/PlanoviRada/gethistory/' + this.SelectedPlanRadaId);
   }
 
   approveDocument(): void {
@@ -237,13 +379,15 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
     //TODO update db
   }
 
+  ValidatedColor = 'red';
   validateInstructions(): void {
     this.adresaElementa = "test" //TODO GET
                                   //TODO nalog za rad-plan rada-adrese
-    if (this.Address === this.adresaElementa) {
+    if (true) {
 
       for (var i = 0; i < this.instructions.length; i++) {
         this.instructions[i].validated = "VALIDATED";
+        this.ValidatedColor = 'green';
       }
     }
   }
@@ -263,25 +407,92 @@ export class NewPlanRadaComponent implements OnInit, AfterViewInit{
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      this.instructions.push({ id: "2a", text: result[0].text, executed: "UNEXECUTED", equipment: result[0].eqp, validated: "NOT VALIDATED" });
+      //this.instructions.push({ id: "2a", text: result[0].text, executed: "UNEXECUTED", equipment: result[0].eqp, validated: "NOT VALIDATED" });
       //TODO send to server and refresh collection -- get id
+      this.addInstruction(result[0].text, result[0].eqp).subscribe(
+        (res: any) => {
+          console.log(res);
+          alert('Uspesno dodata instrukcija.');
+        },
+        err => {
+          console.log("Err: " + err);
+          alert('Ne mogu da dodam instrukciju.');
+        }
+      )
     });
+
+    this.getInstructions().subscribe(
+      (res: any) => {
+        console.log(res);
+        this.instructions.slice(0, this.instructions.length);
+        res.forEach(x => this.instructions.push({ id: x.instructionID, text: x.text, executed: ("EXECUTED: " + x.executed), equipment: x.equipment, validated: ("VALIDATED: " + x.validated) }));
+      },
+      err => {
+        console.log("Err: " + err);
+      }
+    )
   }
-  
+
+  //addinstruction/{docid}/{text}/{equipment}
+  addInstruction(text,eq) {
+    return this.http.put('https://localhost:44301/PlanoviRada/addinstruction/' + this.SelectedPlanRadaId + '/' + text + '/' + eq,null);
+  }
+
+  getInstructions() {
+    return this.http.get('https://localhost:44301/PlanoviRada/getallinstructions/' + this.SelectedPlanRadaId );
+  }
+
+  fileImgFormData: any;
   onSelectFile(event) { // called each time file input changes
     if (event.target.files && event.target.files[0]) {
       this.uploading = true;
       var reader = new FileReader();
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      let fileToUpload = <File>event.target.files[0];
+      this.fileImgFormData = new FormData();
+      this.fileImgFormData.append('file', fileToUpload, fileToUpload.name);
 
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      var temp: string;
       reader.onload = (event) => { // called once readAsDataURL is completed
         this.url = event.target.result as string;
+        console.log('URL SLIKEEE:' + this.url);
+        temp = event.target.result as string;
         console.log(this.url);
         this.images.push(this.url);
-        this.uploading = false;
+       
         this.ngOnInit();
       }
+
+      this.uploadImage(temp).subscribe(
+        (res: any) => {
+          console.log(res);
+          alert('Uspesno uploadovano.');
+          console.log('URL SLIKE:' + temp);
+          this.uploading = false;
+        },
+        err => {
+          console.log("Err: " + err);
+          console.log('URL SLIKE:' + temp);
+          alert('Ne mogu da upload.');
+        }
+      )
+      
+    }
+  }
+
+  uploadImage(urlImg:string) {
+    var planid = localStorage.getItem('selectedPlan');
+    if (planid != '') {
+      console.log('URL SLIKE2:' + urlImg);
+      return this.http.post('https://localhost:44301/PlanoviRada/addimage/' + planid + '/' + urlImg, this.fileImgFormData);
+    }
+  }
+
+  getImages() {
+    var planid = localStorage.getItem('selectedPlan');
+    if (planid != '') {
+      return this.http.get('https://localhost:44301/PlanoviRada/getimages/' + planid);
     }
   }
 
@@ -431,6 +642,7 @@ export class InstructionDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
+  
 
   addInstruction(equipmentID): void {
     this.obj = [{ text: this.text, eqp: equipmentID }];

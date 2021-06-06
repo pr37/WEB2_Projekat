@@ -34,6 +34,7 @@ var UserProfileComponent = /** @class */ (function () {
             if (files.length === 0) {
                 return;
             }
+            _this.SendImage = true;
             var fileToUpload = files[0];
             _this.fileImgFormData = new FormData();
             _this.fileImgFormData.append('file', fileToUpload, fileToUpload.name);
@@ -46,6 +47,7 @@ var UserProfileComponent = /** @class */ (function () {
         };
         this.matcher = new MyErrorStateMatcher();
         this.uploading = false;
+        this.SendImage = false;
         this.userLoggedIn = this.isLoggedIn();
         this.loggedInId = localStorage.getItem('currentUser');
         this.ngOnInit();
@@ -112,6 +114,13 @@ var UserProfileComponent = /** @class */ (function () {
         return this.http.get('https://localhost:44301/Podesavanja/image/' + id);
     };
     UserProfileComponent.prototype.editUser = function () {
+        var isimg;
+        if (this.SendImage) {
+            isimg = 'send';
+        }
+        else {
+            isimg = 'not';
+        }
         return this.http.post('https://localhost:44301/Podesavanja/edit/' + this.loggedInId + '/' + this.Username + '/' + this.Email + '/' + this.Name + '/' + this.Lastname + '/' + this.DateBirth.toString() + '/' + this.Address + '/' + this.Role, this.fileImgFormData);
     };
     UserProfileComponent.prototype.DisposeChanges = function () {
@@ -136,6 +145,7 @@ var UserProfileComponent = /** @class */ (function () {
         if (event.target.files && event.target.files[0]) {
             this.uploading = true;
             var reader = new FileReader();
+            this.SendImage = true;
             reader.readAsDataURL(event.target.files[0]); // read file as data url
             reader.onload = function (event) {
                 _this.url = event.target.result;

@@ -22,17 +22,43 @@ namespace ActualServer.Controllers
         }
         [EnableCors("MyPolicy")]
         [HttpPut]
-        [Route("add/{createdby}/{status}/{datecreated}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}")]
-        public async Task<IActionResult> AddPlanRada(string createdby,string status,string datecreated, string company, string tipnacemu, string startdate, string enddate, string adresa, string svrha, string beleske, string detalji, string tiprada, string phoneno)
+        [Route("add/{userid}/{createdby}/{status}/{datecreated}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}")]
+        public async Task<IActionResult> AddPlanRada(string userid,string createdby,string status,string datecreated, string company, string tipnacemu, string startdate, string enddate, string adresa, string svrha, string beleske, string detalji, string tiprada, string phoneno)
         {
             int count = _context.PlanoviRadaTB.Count() + 1;
             string plID = count.ToString();
-            PlanRada pl = new PlanRada(plID, createdby, createdby, DateTime.Parse(datecreated), company,tipnacemu, DateTime.Parse(startdate), DateTime.Parse(enddate), tiprada, phoneno, "", "", "", adresa, svrha, detalji, beleske);
+            PlanRada pl = new PlanRada(plID, userid, createdby, DateTime.Parse(datecreated), company,tipnacemu, DateTime.Parse(startdate), DateTime.Parse(enddate), tiprada, phoneno, "", "", "", adresa, svrha, detalji, beleske);
             pl.Status = status;
+            pl.UserID = userid;
             _context.Add(pl);
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [EnableCors("MyPolicy")]
+        [HttpPut]
+        [Route("editPlanrada/{planid}/{createdby}/{status}/{company}/{tipnacemu}/{startdate}/{enddate}/{adresa}/{svrha}/{beleske}/{detalji}/{tiprada}/{phoneno}")]
+        public async Task<IActionResult> EditPlanRada(string planid,string createdby, string status, string company, string tipnacemu, string startdate, string enddate, string adresa, string svrha, string beleske, string detalji, string tiprada, string phoneno)
+        {
+
+            //PlanRada pl = new PlanRada(plID, createdby, createdby, DateTime.Parse(datecreated), company, tipnacemu, DateTime.Parse(startdate), DateTime.Parse(enddate), tiprada, phoneno, "", "", "", adresa, svrha, detalji, beleske);
+            PlanRada pl = _context.PlanoviRadaTB.Find(planid);
+            pl.Company = company;
+            pl.TipNaCemu = tipnacemu;
+            pl.StartDate = DateTime.Parse(startdate);
+            pl.EndDate = DateTime.Parse(enddate);
+            pl.TipRada = tiprada;
+            pl.PhoneNo = phoneno;
+            pl.Svrha = svrha;
+            pl.Detalji = detalji;
+            pl.Beleske = beleske;
+            pl.Status = status;
+            _context.Entry(pl).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Update(pl);
+            var upd = await _context.SaveChangesAsync();
+            return Ok();
+        }
+
         [EnableCors("MyPolicy")]
         [HttpPut]
         [Route("getone/{docid}/{state}")]
@@ -80,6 +106,14 @@ namespace ActualServer.Controllers
             _context.Add(inst);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        [Route("getallinstructions/{planid}")]
+        public async Task<ActionResult<IEnumerable<Instruction>>> GetInstrukcije(string planid)
+        {
+            return Ok(_context.InstrukcijeTB.Where(x => x.PlanRadaID.Equals(planid)));
         }
 
         [EnableCors("MyPolicy")]
@@ -133,24 +167,60 @@ namespace ActualServer.Controllers
             return Ok();
         }
 
-        [EnableCors("MyPolicy")]
-        [HttpPut]
-        [Route("copyimage/{planradaid}/{imageurl}")]
-        public async Task<IActionResult> AddImage(string planradaid,string imageurl)
-        {
+        //[EnableCors("MyPolicy")]
+        //[HttpPut]
+        //[Route("copyimage/{planradaid}/{imageurl}")]
+        //public async Task<IActionResult> CopyImage2(string planradaid,string imageurl)
+        //{
             
-                int count = _context.MultimedijeTB.Count() + 1;
-            MultimediaPlanRada mpl = new MultimediaPlanRada(planradaid,false,null,imageurl,count);
-            foreach (var file in Request.Form.Files)
-            {
-                MemoryStream ms = new MemoryStream();
-                file.CopyTo(ms);
-                mpl.Image = ms.ToArray();
+        //        int count = _context.MultimedijeTB.Count() + 1;
+        //    MultimediaPlanRada mpl = new MultimediaPlanRada(planradaid,false,null,imageurl,count);
+        //    foreach (var file in Request.Form.Files)
+        //    {
+        //        MemoryStream ms = new MemoryStream();
+        //        file.CopyTo(ms);
+        //        mpl.Image = ms.ToArray();
 
-            }
-            _context.Add(mpl);
+        //    }
+        //    _context.Add(mpl);
+        //    await _context.SaveChangesAsync();
+        //    return Ok();
+        //}
+
+        [EnableCors("MyPolicy")]
+        [HttpPost]
+        [Route("addimage/{planradaid}/{imgurl}")]
+        public async Task<IActionResult> AddImage(string planradaid,string imgurl)
+        {
+
+            int count = _context.MultimedijeTB.Count() + 1;
+            MultimediaPlanRada mpl = new MultimediaPlanRada(planradaid, false, null, imgurl, 0);
+            var file = Request.Form.Files[0];
+            MemoryStream ms = new MemoryStream();
+            file.CopyTo(ms);
+            mpl.Image = ms.ToArray();
+            _context.MultimedijeTB.Add(mpl);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        [Route("getimages/{planradaid}")]
+        public async Task<ActionResult<List<string>>> GetImages(string planradaid)
+        {
+            List<string> rv = new List<string>();
+            foreach(var m in _context.MultimedijeTB)
+            {
+                if (m.Deleted != true && m.PlanRadaID.Equals(planradaid))
+                {
+                    
+                    string temp = Convert.ToBase64String(m.Image, 0, m.Image.Length);
+                    string tmp2 = "data:image/jpeg;base64," + temp;
+                    rv.Add(tmp2);
+                }
+            }
+            return Ok(rv);
         }
 
         [EnableCors("MyPolicy")]

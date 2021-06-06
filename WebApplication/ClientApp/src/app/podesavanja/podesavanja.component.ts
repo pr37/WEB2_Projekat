@@ -16,7 +16,7 @@ import { split } from 'ts-node';
   styleUrls: ['./podesavanja.component.css']
 })
 
-export class PodesavanjaComponent implements OnInit{
+export class PodesavanjaComponent implements OnInit {
   isAdmin: boolean;
   hide: boolean;
   NewPassword: string;
@@ -64,9 +64,15 @@ export class PodesavanjaComponent implements OnInit{
     this.streets = [];
     this.getUlice().subscribe(
       (res: any) => {
+        var unique: string[];
         this.streets.splice(0, this.streets.length);
-        console.log(res);
         res.forEach(st => this.streets.push(st));
+        // res.forEach(st => this.streets.push(st));
+        var distinct = [];
+        distinct = this.streets.filter((n, i) => this.streets.indexOf(n) === i);
+        console.log('DISTINCT:' + distinct);
+        this.streets.splice(0, this.streets.length);
+        distinct.forEach(st => this.streets.push(st));
       },
       err => {
         console.log("Err: " + err);
@@ -113,6 +119,7 @@ export class PodesavanjaComponent implements OnInit{
           console.log(res);
           this.streets.splice(0, this.streets.length);
           res.forEach(st => this.streets.push(st));
+         
         },
         err => {
           console.log("Err: " + err);
@@ -287,7 +294,7 @@ export class PodesavanjaComponent implements OnInit{
     this.addPodesavanja().subscribe(
       (res: any) => {
         console.log(res);
-       
+        alert('Settings are changed.');
       },
       err => {
         console.log("Err: " + err);
