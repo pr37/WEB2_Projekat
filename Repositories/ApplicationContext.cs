@@ -22,5 +22,8 @@ namespace Repositories
         public DbSet<Models.Potrosac> PotrosaciTB { get; set; }
         public DbSet<Models.Poziv> PoziviTB { get; set; }
         public DbSet<Models.User> UsersTB { get; set; }
+        public DbSet<Models.Podesavanja> PodesavanjaTB { get; set; }
+
+
     }
 }

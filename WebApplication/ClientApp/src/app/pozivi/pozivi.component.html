@@ -27,7 +27,7 @@
   <div *ngIf="userLoggedIn">
     <mat-form-field class="example-full-width">
       <mat-label>Ime i Prezime</mat-label>
-      <input matInput disabled value="{{ImePrezimeUser}}">
+      <input matInput disabled [(ngModel)]="ImePrezimeUser">
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Problem</mat-label>
@@ -35,7 +35,7 @@
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Adresa</mat-label>
-      <input matInput disabled value="{{AdresaUser}}">
+      <input matInput disabled [(ngModel)]="AdresaUser">
     </mat-form-field>
     <div>
       <div class="example-button-row">

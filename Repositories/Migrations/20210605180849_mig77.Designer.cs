@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories;
 
 namespace Repositories.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210605180849_mig77")]
+    partial class mig77
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,33 +187,6 @@ namespace Repositories.Migrations
                     b.HasKey("PlanRadaID");
 
                     b.ToTable("PlanoviRadaTB");
-                });
-
-            modelBuilder.Entity("Models.Podesavanja", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("ErrorVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HideRequiredFields")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("InfoVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SuccessVisible")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WarningVisible")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PodesavanjaTB");
                 });
 
             modelBuilder.Entity("Models.Potrosac", b =>
