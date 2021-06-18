@@ -378,6 +378,20 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_izabrana);    
   }
 
+  obrisiOpremu(opremaId: string): void{
+    for(var i=0; i < OPREMA_izabrana.length; i++){
+      if(OPREMA_izabrana[i].id == opremaId){
+        OPREMA_izabrana.splice(i, 1);
+        i = OPREMA_izabrana.length;        
+      }    
+    }
+    this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_izabrana); 
+    
+    if(OPREMA_izabrana.length == 0){
+      this.AdresaINCIDENTA = "";
+    }
+  }
+
   AllOprema() {
     OPREMA_sva.splice(0, OPREMA_sva.length);
     this.getOpremu().subscribe(
@@ -443,14 +457,12 @@ export class ChoseDeviceDialog implements AfterViewInit{
   constructor(public dialogRef: MatDialogRef<ChoseDeviceDialog>, @Inject(MAT_DIALOG_DATA) public data: OpremaData) 
   {
     this.listaAdresa = data.ListaAdresa;    
-    this.dataSourceOprema.paginator = this.paginatorOprema;
-    this.dataSourceOprema.sort = this.sortOprema;
     this.adresa = data.IzabranaAdresa;
     this.applyFilter();
   }
 
   ngOnInit(): void {       
-    this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_sva);       
+    //this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_sva);       
   }
 
   @ViewChild(MatPaginator) paginatorOprema: MatPaginator;  
@@ -467,7 +479,7 @@ export class ChoseDeviceDialog implements AfterViewInit{
   applySearch(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSourceOprema.filter = filterValue;
+    this.dataSourceOprema.filter = filterValue;    
   }
   
   selectedType: string = "";
