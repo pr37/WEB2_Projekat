@@ -22,12 +22,12 @@ namespace ActualServer.Controllers
         
         [EnableCors("MyPolicy")]
         [HttpPut]
-        [Route("add/{razlog}/{uzrok}/{komentar}/{userId}")]
-        public async Task<IActionResult> AddPozivi1(string razlog, string uzrok, string komentar, string userId)
+        [Route("add/{razlog}/{uzrok}/{komentar}/{userId}/{adresaIncidenta}")]
+        public async Task<IActionResult> AddPozivi1(string razlog, string uzrok, string komentar, string userId, string adresaIncidenta)
         {
             int count = _context.Pozivi1TB.Count() + 1;
             string pid = count.ToString();
-            Poziv1 poziv = new Poziv1(pid, razlog, uzrok, komentar, userId);
+            Poziv1 poziv = new Poziv1(pid, razlog, uzrok, komentar, userId, adresaIncidenta);
             _context.Pozivi1TB.Add(poziv);
 
             await _context.SaveChangesAsync();
@@ -40,6 +40,14 @@ namespace ActualServer.Controllers
         public async Task<ActionResult<IEnumerable<Poziv1>>> Get()
         {
             return Ok(_context.Pozivi1TB);
+        }
+
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        [Route("getbyadresa/{adresaIncidenta}")]
+        public async Task<ActionResult<IEnumerable<Oprema>>> GetByAdresa(string adresaIncidenta)
+        {
+            return Ok(_context.Pozivi1TB.Where(x => x.AdresaIncidenta == adresaIncidenta));
         }
     }
 }

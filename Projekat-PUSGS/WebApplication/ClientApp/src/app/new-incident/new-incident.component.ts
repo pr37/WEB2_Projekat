@@ -64,7 +64,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   UzrokPoziva: string;      
   Komentar: string;
 
-  UserID: string = "";
+  UserID: string = "anon";
   UserIme: string;
   UserPrezime: string;
   UserAdresa: string;
@@ -296,7 +296,8 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
                                         razlog: not.razlog, 
                                         uzrok: not.uzrok, 
                                         komentar: not.komentar, 
-                                        idPotrosaca: not.idPotrosaca}));
+                                        idPotrosaca: not.idPotrosaca,
+                                        adresaIncidenta: not.idPotrosaca}));
         this.dataSourceCall = new MatTableDataSource<PozivTabela>(POZIVI);
         this.dataSourceCall.paginator = this.paginatorCall;
         this.dataSourceCall.sort = this.sortCall;
@@ -372,6 +373,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
         OPREMA_izabrana.push(OPREMA_sva[i])
         this.AdresaINCIDENTA = OPREMA_sva[i].adresa;
         i = OPREMA_sva.length;
+        this.podesiParametreNaOsnovuAdrese();
       }
     }
 
@@ -389,7 +391,14 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     
     if(OPREMA_izabrana.length == 0){
       this.AdresaINCIDENTA = "";
+      this.podesiParametreNaOsnovuAdrese()
     }
+  }
+
+  podesiParametreNaOsnovuAdrese():void{
+    //for()
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //this.IncidentPriority 
   }
 
   AllOprema() {
@@ -565,6 +574,7 @@ export interface PozivTabela {
   uzrok: string;      
   komentar: string;
   idPotrosaca: string;
+  adresaIncidenta: string;
 }
 
 export const POZIVI: PozivTabela[] = []
