@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body [hidden]="izabranaOpcija == true">    
+
+  <nav>
+    <a (click)=showBasic() style="margin-right: 5px;">Basic information</a>    
+    <a (click)=showDevices() style="margin-right: 5px;">Devices</a>
+    <a (click)=showResolution() style="margin-right: 5px;">Resolution</a>    
+    <a (click)=showCalls() style="margin-right: 5px;">Calls</a>        
+  </nav>
+
+  <br>
+  <!--------------------------------------------------------------------ShowBasic------------------------------------------------------------------------->
+  <div [hidden]="!(whatToShow === 'ShowBasic')">                         
+    <form class="example-form">
+
+      <div class="example-container">
+        <mat-form-field class="example-30-width">
+          <mat-label>Incident ID:</mat-label>
+          <input matInput disabled value="{{IncidentID}}">
+        </mat-form-field>
+
+        <mat-form-field class="example-30-width">
+          <mat-label>Priority:</mat-label>
+          <input matInput disabled value="{{IncidentPriority}}">
+        </mat-form-field>
+
+        <mat-form-field class="example-30-width">
+          <mat-label>Affected customers:</mat-label>
+          <input matInput name="affc" [(ngModel)]='AffCustomers'>
+        </mat-form-field>
+
+        <mat-form-field class="example-30-width">
+          <mat-label>Voltage [kV]:</mat-label>
+          <input matInput name="napon" [(ngModel)]='Voltage'>
+        </mat-form-field>        
+      </div>
+
+      <div class="example-container">
+        <mat-form-field appearance="fill" class="example-30-width">
+          <mat-label>Outage time:</mat-label>
+          <input matInput disabled [value]='CreatedOn'>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>ETA</mat-label>
+          <input matInput [matDatepicker]="picker1" name="eta" [(ngModel)]='ETA'>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>   
+        
+        <mat-form-field appearance="fill">
+          <mat-label>ETR</mat-label>
+          <input matInput [matDatepicker]="picker2" name="etr" [(ngModel)]='ETR'>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill">
+          <mat-label>ATA</mat-label>
+          <input matInput [matDatepicker]="picker3" name="ata" [(ngModel)]='ATA'>
+          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="example-container">
+        <mat-form-field appearance="fill" class="example-30-width">
+          <mat-label>Type</mat-label>
+          <mat-select [(value)]="Type">
+            <mat-option value="planirani">Planirani incident</mat-option>
+            <mat-option value="neplanirani">Neplanirani incident</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="example-30-width">
+          <mat-label>Status</mat-label>          
+          <input disabled matInput name="status" [(ngModel)]='Status'>
+        </mat-form-field>
+
+        <mat-form-field class="example-30-width">
+          <mat-label>Calls:</mat-label>          
+          <input matInput disabled [value]='Calls' disabled>
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill">
+          <mat-label>Sheduled time:</mat-label>
+          <input matInput [matDatepicker]="picker4" name="sheduled" [(ngModel)]='Sheduled'>
+          <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+          <mat-datepicker #picker4></mat-datepicker>
+        </mat-form-field>
+      </div>  
+      
+      <div class="example-container" style="padding-left: 55px;">
+        <input type="checkbox" name="confirmed" (change)="ConfirmedChange()">
+        <label style="padding-left:5px;color: rgb(177, 177, 177);">Confirmed</label>
+      </div>
+      <div style="padding-left: 55px;display: inline;">
+        <input type="checkbox" name="toMe" (change)="ToMeChange()">
+        <label style="padding-left:5px;color: rgb(177, 177, 177);">Assign to me</label>
+      </div>
+
+    </form>            
+    
+    <div>
+      <br>
+      <button mat-flat-button color="primary" (click)="Cancel()">Cancel</button>
+      <button mat-flat-button color="accent" (click)="Add()">Add</button>
+    </div>
+
+  </div>
+  <!--------------------------------------------------------------------/ShowBasic------------------------------------------------------------------------->
+  <!--------------------------------------------------------------------ShowDevices------------------------------------------------------------------------->
+  <div [hidden]="!(whatToShow === 'ShowDevices')"> 
+    <p>ShowDevices</p>
+  </div>
+  <!--------------------------------------------------------------------/ShowDevices------------------------------------------------------------------------->
+  <!--------------------------------------------------------------------ShowResolution------------------------------------------------------------------------->
+  <div [hidden]="!(whatToShow === 'ShowResolution')">     
+    <form>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Uzrok</mat-label>
+          <mat-select [(value)]="Uzrok" (selectionChange)="changeUzrok()">
+            <mat-option *ngFor="let option of listaUzroka" [value]="option">{{option}}</mat-option>                        
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Poduzrok</mat-label>
+          <mat-select [(value)]="Poduzrok">
+            <mat-option *ngFor="let option of listaPoduzroka" [value]="option">{{option}}</mat-option>                        
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Tip konstrukcije</mat-label>
+          <mat-select [(value)]="Konstrukcija">
+            <mat-option *ngFor="let option of listaTipKonstrukcije" [value]="option">{{option}}</mat-option>                        
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Materijal</mat-label>
+          <mat-select [(value)]="Materijal">
+            <mat-option *ngFor="let option of listaMaterijal" [value]="option">{{option}}</mat-option>                        
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>  
+  <!----------------------------------------------------------------/ShowResolution------------------------------------------------------------------------->
+  <!--------------------------------------------------------------------ShowCalls------------------------------------------------------------------------->
+  <div [hidden]="!(whatToShow === 'ShowCalls')"> 
+
+    <section>      
+      <div>
+        <button mat-raised-button (click)="goDoAddCall()">Add new</button>
+            
+        <mat-form-field appearance="legacy" style="padding-left:150px;width:450px;">
+          <mat-label></mat-label>
+          <input matInput (keyup)="applySearchCall($event.target.value)" placeholder="Placeholder">
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-hint>Enter search value</mat-hint>
+        </mat-form-field>
+              
+        <mat-form-field appearance="fill" style="padding-left:150px;width:400px">
+          <mat-label>Filter</mat-label>
+          <mat-select [(value)]="selectedRazlog" (selectionChange)="applyFilterRazlgCall()">
+            <mat-option value="">None</mat-option>
+            <mat-option value="Nema struje">Nema struje</mat-option>
+            <mat-option value="Postoji kvar">Postoji kvar</mat-option>
+            <mat-option value="Treperenje svetla">Treperenje svetla</mat-option>
+            <mat-option value="Povratak struje">Povratak struje</mat-option>
+            <mat-option value="Delimicna struja">Delimicna struja</mat-option>
+            <mat-option value="Problemi sa naponom">Problemi sa naponom</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </section>
+
+    <mat-divider></mat-divider>
+
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSourceCall" matSort>
+  
+        <ng-container matColumnDef="id">        
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width:60px;min-width:60px;"> Id </th>        
+          <td mat-cell *matCellDef="let element" style="max-width:60px;min-width:60px;"> {{element.id}} </td>
+        </ng-container>              
+
+        <ng-container matColumnDef="razlog">        
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width:60px;min-width:60px;"> Razlog </th>        
+          <td mat-cell *matCellDef="let element" style="max-width:60px;min-width:60px;"> {{element.razlog}} </td>
+        </ng-container>      
+
+        <ng-container matColumnDef="uzrok">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width:100px;min-width:100px;padding-left:10px;"> Uzrok </th>          
+          <td mat-cell *matCellDef="let element" style="max-width:100px;min-width:100px;padding-left:10px;;"> {{element.uzrok}} </td>        
+        </ng-container>
+        
+        <ng-container matColumnDef="komentar">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-left:14px;"> Komentar </th>                
+          <td mat-cell *matCellDef="let element" style="padding-left:14px;"> {{element.komentar}} </td>
+        </ng-container>              
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsCall"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsCall;"></tr>
+      </table>
+  
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+  </div>
+                <!---------------------------------------------------ShowCallsNew------------------------------------------------------->  
+  <div [hidden]="!(whatToShow === 'ShowCallsNew')">
+    <form>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Razlog</mat-label>
+          <mat-select [(value)]="Razlog">
+            <mat-option *ngFor="let option of listaRazloga" [value]="option">{{option}}</mat-option>                        
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Uzrok</mat-label>
+          <mat-select [(value)]="UzrokPoziva">
+            <mat-option *ngFor="let option of listaKvareva" [value]="option">{{option}}</mat-option>                        
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field style="width:500px">
+          <mat-label>Komentar:</mat-label>
+          <textarea matInput name="komentar"  [(ngModel)]='Komentar' style="color: rgb(204, 203, 203);"></textarea>
+        </mat-form-field>
+      </div>
+
+    <hr>
+    <div>
+      <button mat-raised-button (click)="ChoseUserDialog()">Select customer</button>      
+    </div>
+    <div style="padding-top: 20px;">
+      <mat-form-field class="example-30-width">
+        <mat-label>ID:</mat-label>
+        <input matInput disabled value="{{UserID}}">
+      </mat-form-field>
+      <mat-form-field class="example-30-width">
+        <mat-label>Ime:</mat-label>
+        <input matInput disabled value="{{UserIme}}">
+      </mat-form-field>
+      <mat-form-field class="example-30-width">
+        <mat-label>Prezime:</mat-label>
+        <input matInput disabled value="{{UserPrezime}}">
+      </mat-form-field>
+    </div>    
+    <div>
+      <mat-form-field class="example-30-width">
+        <mat-label>Adresa:</mat-label>
+        <input matInput disabled value="{{UserAdresa}}">
+      </mat-form-field>
+      <mat-form-field class="example-30-width">
+        <mat-label>Prioritet:</mat-label>
+        <input matInput disabled value="{{UserPrioritet}}">
+      </mat-form-field>
+    </div>   
+    <hr>
+
+    </form>    
+
+    <div>
+      <br>
+      <button mat-flat-button color="primary" (click)="CancelCall()">Cancel</button>
+      <button mat-flat-button color="accent" (click)="AddCall()">Add</button>
+    </div>
+  </div>
+                <!---------------------------------------------------/ShowCallsNew------------------------------------------------------>  
+  <!--------------------------------------------------------------------/ShowCalls------------------------------------------------------------------------->
+</body>
+</html>

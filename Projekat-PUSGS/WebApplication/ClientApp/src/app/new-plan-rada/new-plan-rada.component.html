@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body *ngIf="userLoggedIn">
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="side" opened>
+      
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showBasic()" color="accent">Basic information</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showHistory()" color="accent">History of state changes</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showMultimedia()" color="accent">Multimedia attachments</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showEquipment()" color="accent">Equipment</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showInstructions()" color="accent">Switching instructions</button>
+        </div>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div></div>
+      <div *ngIf="ShowBasic">
+        <form class="example-form">
+          <div class="example-container">
+            <mat-form-field>
+              <mat-label>Created by:</mat-label>
+              <input matInput disabled value="{{CreatedBy}}">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Tip rada</mat-label>
+              <mat-select [(value)]="TypeRada">
+                <mat-option value="Planirani">Planiran rad</mat-option>
+                <mat-option value="Neplaniran">Neplaniran rad</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+
+          <div class="example-container">
+            <mat-form-field class="example-30-width">
+              <mat-label>Status:</mat-label>
+              <input matInput disabled value="{{Status}}">
+            </mat-form-field>
+
+            <mat-form-field class="example-30-width">
+              <mat-label>Phone No:</mat-label>
+              <input matInput name="phone" [(ngModel)]='PhoneNo'>
+            </mat-form-field>
+          </div>
+
+
+          <div class="example-container">
+            <mat-form-field appearance="fill" class="example-30-width">
+              <mat-label>Date created on</mat-label>
+              <input matInput disabled [matDatepicker]="picker3" [value]="CreatedOn.value">
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="example-30-width">
+              <mat-label>Work Request ID:</mat-label>
+              <input matInput disabled value="{{WorkRequestID}}">
+            </mat-form-field>
+            <button mat-icon-button aria-label="Show work request">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+
+          <div class="example-container">
+            <mat-form-field class="example-30-width">
+              <mat-label>Company:</mat-label>
+              <input matInput name="company" [(ngModel)]='Company'>
+            </mat-form-field>
+            <mat-form-field class="example-30-width">
+              <mat-label>Incident ID:</mat-label>
+              <input matInput disabled value="{{IncidentID}}">
+            </mat-form-field>
+            <button mat-icon-button aria-label="Show incident">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+
+          </div>
+
+          <div class="example-container">
+            <mat-form-field appearance="fill" class="example-30-width">
+              <mat-label>Tip na cemu se radi?</mat-label>
+              <mat-select [(value)]="TypeNaCemu">
+                <mat-option value="NonEquipment">NonEquipment</mat-option>
+                <mat-option value="Equipment">Equipment</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-30-width">
+              <mat-label>Field crew:</mat-label>
+              <input matInput disabled value="{{crewID}}">
+            </mat-form-field>
+            <button mat-icon-button (click)="openDialog()" aria-label="Show field crew">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+
+          <div class="example-container">
+            <mat-form-field appearance="fill">
+              <mat-label>Start date</mat-label>
+              <input matInput [matDatepicker]="picker1" name="startdate" [(ngModel)]='FromDate'>
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>End date</mat-label>
+              <input matInput [matDatepicker]="picker2" name="enddate" [(ngModel)]='ToDate'>
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field class="example-360-width">
+            <mat-label>Address:</mat-label>
+            <input matInput name="addy" [(ngModel)]='Address'>
+          </mat-form-field>
+
+          <div class="example-container">
+            <mat-form-field>
+              <mat-label>Svrha:</mat-label>
+              <textarea matInput [matAutocomplete]="auto" [formControl]="control" name="purpose" [(ngModel)]='Purpose'></textarea>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let svrha of filteredSvrhe | async" [value]="svrha">
+                  {{svrha}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Detalji:</mat-label>
+              <textarea matInput name="details"  [(ngModel)]='Details'></textarea>
+            </mat-form-field>
+            <mat-form-field *ngIf="HideFields">
+              <mat-label>Beleske:</mat-label>
+              <textarea matInput name="notes"  [(ngModel)]='Notes'></textarea>
+            </mat-form-field>
+          </div>
+
+        </form>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="addNewWorkPlan()" color="accent">Add new work plan</button>
+          <button mat-raised-button class="button-full-width" (click)="editWorkPlan()" color="accent">Edit work plan</button>
+        </div>
+      </div>
+
+      <div *ngIf="ShowHistory">
+        <mat-card class="example-card">
+          <mat-card-title>Change document state</mat-card-title>
+          <mat-card-subtitle>Change it by approving it or denying it.</mat-card-subtitle>
+          <mat-card-actions>
+            <button mat-button (click)="approveDocument(); openSnackBar('Document is now APPROVED', 'OK');">APPROVE</button>
+            <button mat-button (click)="denyDocument(); openSnackBar('Document is now DENIED', 'OK');">DENY</button>
+            <button mat-button (click)="cancelDocument(); openSnackBar('Document is now CANCELED', 'OK');">CANCEL</button>
+          </mat-card-actions>
+          </mat-card>
+          <mat-card class="example-card">
+            <mat-card-title>Table of history changes</mat-card-title>
+          </mat-card>
+
+
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="UserID">
+                <th mat-header-cell *matHeaderCellDef> UserID </th>
+                <td mat-cell *matCellDef="let element"> {{element.UserID}} </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="ChangedDate">
+                <th mat-header-cell *matHeaderCellDef> ChangedDate </th>
+                <td mat-cell *matCellDef="let element"> {{element.ChangedDate | date:'shortDate'}} </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+
+      </div>
+
+      <div *ngIf="ShowMultimedia">
+        <mat-card>
+          <input type='file' (change)="onSelectFile($event)">
+          <mat-progress-bar *ngIf="uploading" mode="indeterminate" class="example-30-width"></mat-progress-bar>
+        </mat-card>
+        <img mat-card-image *ngFor="let image of images" (click)="handleImage(image)" src="{{image}}" alt="Image not loaded.">
+      </div>
+
+      <div *ngIf="ShowEquipment">
+        <mat-card-title>State of equipment: {{equipmentState}}</mat-card-title>
+        <form class="example-form">
+          <mat-form-field appearance="fill">
+            <mat-label>Select equipment</mat-label>
+            <mat-select [(value)]="equipmentID">
+              <mat-option [value]="">None</mat-option>
+              <mat-option *ngFor="let eqt of equipments" [value]="eqt">{{eqt}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="example-button-row">
+            <button mat-raised-button class="button-full-width" (click)="addEquipment()" color="accent">Add</button>
+            <button mat-raised-button class="button-full-width" (click)="removeEquipment()" color="accent">Remove</button>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="ShowInstructions">
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="addNewInstructionDialog()" color="accent">Add new instruction</button>
+          <button mat-raised-button class="button-full-width" (click)="deleteAllInstructions()" color="accent">Delete all instructions</button>
+          <button mat-raised-button class="button-full-width" (click)="validateInstructions()" color="accent">Validate</button>
+        </div>
+
+        <mat-card *ngFor="let instr of instructions" [ngStyle]="{color:ValidatedColor}">ID: {{instr.id}} --- {{instr.text}} ----- {{instr.equipment}} ----- {{instr.validated}} ----- {{instr.executed}}
+        <button mat-raised-button  (click)="executeInstruction(instr.id)" color="accent">Execute</button>
+        <button mat-raised-button  (click)="deleteInstruction(instr.id)" color="accent">Delete</button>
+        </mat-card>
+
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+ 
+</body>
+</html>

@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Image</h2>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-select  [(value)]="workPlanID">
+      <mat-option [value]="test">None</mat-option>
+      <mat-option [value]="test">2</mat-option>
+      <mat-option *ngFor="let opt of data.options" [value]="opt">{{opt}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <div class="example-button-row">
+    <button mat-raised-button color="accent">
+      <a href="{{data.url}}" download type="application/octet-stream">Download</a>
+    </button>
+      <button mat-raised-button color="accent" (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button color="accent" (click)="deleteImage(data.url,data.images)">Delete</button>
+      <button mat-raised-button color="accent" (click)="copyImage(opt)" cdkFocusInitial>Copy</button>
+  </div>
+</div>

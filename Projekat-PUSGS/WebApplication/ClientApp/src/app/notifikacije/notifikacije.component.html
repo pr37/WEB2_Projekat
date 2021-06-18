@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body *ngIf="userLoggedIn">
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="side" opened>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showAll()" color="accent">All notifications</button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showUnread()" color="accent">Unread notifications <mat-icon>feedback</mat-icon></button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showError()" *ngIf="ErrorsVisible" color="accent">Errors <mat-icon>error</mat-icon></button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showInfo()" *ngIf="InfoVisible" color="accent">Info <mat-icon>notification_important</mat-icon></button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showSuccess()"  *ngIf="SuccessVisible" color="accent">Success <mat-icon>done_all</mat-icon></button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="showWarning()"  *ngIf="WarningVisible" color="accent">Warning <mat-icon>warning</mat-icon></button>
+        </div>
+      </div>
+      <div>
+        <div class="example-button-row">
+          <button mat-raised-button class="button-full-width" (click)="markAllRead()" color="purple">Mark all read</button>
+        </div>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content class="example-sidenav-content">
+      <mat-card *ngFor="let notif of unreadNotifications" [ngStyle]="{color:notif.color}" (click)="markRead(notif.id)">
+        <mat-icon *ngIf="notif.icon == 'warning'">warning</mat-icon>
+        <mat-icon *ngIf="notif.icon == 'done_all'">done_all</mat-icon>
+        <mat-icon *ngIf="notif.icon == 'notification_important'">notification_important</mat-icon>
+        <mat-icon *ngIf="notif.icon == 'error'">error</mat-icon>
+        ----- {{notif.text}}
+        ----- {{notif.timestamp  | date:'medium'}}
+        <button mat-raised-button *ngIf="notif.tied" (click)="routeTo(notif.tiedTo)" color="accent">Open</button>
+      </mat-card>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</body>
+</html>

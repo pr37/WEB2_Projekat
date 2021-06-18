@@ -1,0 +1,62 @@
+<header>
+  <nav
+    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+  >
+    <div class="container">
+      <a class="navbar-brand" [routerLink]="['/']">Pocetna</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target=".navbar-collapse"
+        aria-label="Toggle navigation"
+        [attr.aria-expanded]="isExpanded"
+        (click)="toggle()"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+        [ngClass]="{ show: isExpanded }"
+      >
+        <ul class="navbar-nav flex-grow">
+          <li class="nav-item"
+              [routerLinkActive]="['link-active']"
+              [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/incidenti']">Incidenti</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/elementi-mreze']">Elementi mreze</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/pozivi']">Pozivi</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/user-profile']">Moj profil</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/planovi-rada']">Planovi rada</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/potrosaci']">Potrosaci</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/notifikacije']">Notifikacije</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/podesavanja']">Podesavanja</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <mat-button-toggle value="italic" *ngIf="userLoggedIn" [routerLink]="['/']" (click)="logout()">Log out</mat-button-toggle>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <mat-button-toggle value="italic" *ngIf="!userLoggedIn" [routerLink]="['/']" (click)="login()">Log in(mock)</mat-button-toggle>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
