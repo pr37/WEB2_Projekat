@@ -70,6 +70,8 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   UserAdresa: string;
   UserPrioritet: string;
 
+  listaAdresa = new Array<string>();
+
   userLoggedIn: boolean;
   isLoggedIn() {
     return true;
@@ -89,8 +91,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   listaRazloga = new Array<string>();
   listaKvareva = new Array<string>();  
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private http: HttpClient, private backendService: BackendServiceService) {
-    //if (this.userLoggedIn) 
-    
+    //if (this.userLoggedIn)     
       this.getNewIncidentId().subscribe(
         (res: any) => {          
           this.IncidentID = res;              
@@ -129,7 +130,33 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     this.listaKvareva.push("istopljen uredjaj");
     this.listaKvareva.push("prekinut kontakt");    
 
-    this.whatToShow = 'ShowBasic';       
+    this.whatToShow = 'ShowBasic';
+    
+    
+    this.listaAdresa.push("");
+    this.getAdrese();    
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+    this.AllOprema()
+  }
+  
+  getAdrese() {    
+    this.getAdresee().subscribe(
+      (res: any) => {
+        console.log(res);
+        res.forEach(not => ADRESE.push({ ulica: not.ulica, prioritet: not.prioritet}));
+        res.forEach(not => this.listaAdresa.push(not.ulica));
+        this.ngOnInit();
+        this.ngAfterViewInit();
+      },
+      err => {
+        console.log("Err: " + err);
+        alert(err);
+      }
+    )
+  }
+
+  getAdresee() {
+    return this.http.get('https://localhost:44301/Adresa/getall');
   }
 
   getNewIncidentId(){
@@ -317,24 +344,72 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     }
   }
 
-  AdresaINCIDENTA: string = "";
+
+  AdresaINCIDENTA: string = "";  
   choseDeviceDialog(): void{
     if(this.AdresaINCIDENTA == ""){
-      
+      this.AllOprema();        
     }else{
+      this.OpremaSaAdresom();
+    }    
+  
+    this.dataSourceOpremaSva = new MatTableDataSource<OpremaTabela>(OPREMA_sva);        
 
-    }
-    const dialogRef = this.dialog.open(ChoseDeviceDialog, {data: { UserTabela: this.dataSourceOpremaSva}});
+    const dialogRef = this.dialog.open(ChoseDeviceDialog, {data: { OpremaTabela: this.dataSourceOpremaSva,
+                                                                  ListaAdresa: this.listaAdresa}});
 
     dialogRef.afterClosed().subscribe(result => {       
       this.pouniPodatkeUsera(result);       
     });  
   }
 
+  AllOprema() {
+    OPREMA_sva.splice(0, OPREMA_sva.length);
+    this.getOpremu().subscribe(
+      (res: any) => {        
+        console.log(res);
+        res.forEach(not => OPREMA_sva.push({ id: not.id, 
+                                        name: not.name, 
+                                        type: not.type, 
+                                        adresa: not.adresa}));                                              
+      },
+      err => {
+        console.log("Err: " + err);
+        alert(err);
+      }
+    )
+  }
+
+  getOpremu() {
+    return this.http.get('https://localhost:44301/Oprema/getall');
+  }
+
+  OpremaSaAdresom() {
+    OPREMA_sva.splice(0, OPREMA_sva.length);
+    this.getOpremuSaAdresom().subscribe(
+      (res: any) => {        
+        console.log(res);
+        res.forEach(not => OPREMA_sva.push({ id: not.id, 
+                                        name: not.name, 
+                                        type: not.type, 
+                                        adresa: not.adresa}));                                              
+      },
+      err => {
+        console.log("Err: " + err);
+        alert(err);
+      }
+    )
+  }
+
+  getOpremuSaAdresom() {
+    return this.http.get('https://localhost:44301/Oprema/getbyadresa/' + this.AdresaINCIDENTA);
+  }
+
 }
 ////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface OpremaData {  
-  OpremaTabela: MatTableDataSource<OpremaTabela>;
+  OpremaTabela: MatTableDataSource<OpremaTabela>;  
+  ListaAdresa: string[];
   opremaId: string;
 }
 
@@ -343,39 +418,71 @@ export interface OpremaData {
   templateUrl: 'chose-device-dialog.html',
   styleUrls: ['./new-incident.component.css']
 })
-export class ChoseDeviceDialog{    
+export class ChoseDeviceDialog implements AfterViewInit{    
   dataSourceOprema = new MatTableDataSource<OpremaTabela>();       
   displayedColumnsOpreme: string[] = ['id', 'name', 'type', 'adresa'];
+  listaAdresa: string[];
 
   constructor(public dialogRef: MatDialogRef<ChoseDeviceDialog>, @Inject(MAT_DIALOG_DATA) public data: OpremaData) 
   {
-    this.dataSourceOprema = data.OpremaTabela;    
+    this.listaAdresa = data.ListaAdresa;    
+    this.dataSourceOprema.paginator = this.paginatorOprema;
+    this.dataSourceOprema.sort = this.sortOprema;
   }
 
   ngOnInit(): void {       
-
+    this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_sva);       
   }
 
   @ViewChild(MatPaginator) paginatorOprema: MatPaginator;  
   @ViewChild(MatSort) sortOprema: MatSort;  
   ngAfterViewInit() {
     this.dataSourceOprema.paginator = this.paginatorOprema;
-    this.dataSourceOprema.sort = this.sortOprema;    
+    this.dataSourceOprema.sort = this.sortOprema; 
+
+    this.applySearch("");
+    this.applySearch("p");
+    this.applySearch("");
   }    
 
   onNoClick(): void {
     this.dialogRef.close();
   }  
   
-  applySearchUser(filterValue: string) {
+  applySearch(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSourceOprema.filter = filterValue;
   }
+  
+  selectedType: string = "";
+  selectedAdresa: string = "";
+  applyFilter() {    
+    OPREMA_Filtrirana.splice(0, OPREMA_Filtrirana.length);
+    for(var i=0; i<OPREMA_sva.length; i++){
+      if(this.selectedType != "" && this.selectedAdresa != ""){      
+        if(OPREMA_sva[i].type == this.selectedType && OPREMA_sva[i].adresa == this.selectedAdresa){
+          OPREMA_Filtrirana.push(OPREMA_sva[i]);
+        }
+      }else if (this.selectedType != "") {
+        if(OPREMA_sva[i].type == this.selectedType){
+          OPREMA_Filtrirana.push(OPREMA_sva[i]);
+        }
+      } else if(this.selectedAdresa != ""){
+        if(OPREMA_sva[i].adresa == this.selectedAdresa){
+          OPREMA_Filtrirana.push(OPREMA_sva[i]);
+        }
+      }else{
+        OPREMA_Filtrirana.push(OPREMA_sva[i]);
+      }
+    }    
+
+    this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_Filtrirana);           
+    this.ngAfterViewInit(); 
+  }    
 }
 ////////////////////////////////////////////////////////////////////////CHOSE USER DATA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////
-export interface UserData {
-  //UserKolona: Array<string>;
+export interface UserData {  
   UserTabela: MatTableDataSource<UserTabela>;
   userId: string;
 }
@@ -402,7 +509,11 @@ export class ChoseUserDialog implements OnInit, AfterViewInit{
   @ViewChild(MatSort) sortUser: MatSort;  
   ngAfterViewInit() {
     this.dataSourceUser.paginator = this.paginatorUser;
-    this.dataSourceUser.sort = this.sortUser;    
+    this.dataSourceUser.sort = this.sortUser;  
+    
+    OPREMA_sva.forEach(element => {
+      console.log(element.adresa);
+    });  
   }    
 
   onNoClick(): void {
@@ -454,3 +565,11 @@ export interface OpremaTabela {
 
 export const OPREMA_izabrana: OpremaTabela[] = []
 export const OPREMA_sva: OpremaTabela[] = [] 
+export const OPREMA_Filtrirana: OpremaTabela[] = [] 
+
+export interface Adresa {
+  ulica: string;
+  prioritet: string;        
+}
+
+export const ADRESE: Adresa[] = []  

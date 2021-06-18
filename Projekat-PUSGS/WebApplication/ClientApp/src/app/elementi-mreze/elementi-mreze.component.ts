@@ -93,7 +93,6 @@ export class ElementiMrezeComponent implements OnInit, AfterViewInit {
       }else{
         OPREMA_Filtrirana.push(OPREMA[i]);
       }
-
     }    
 
     this.filtriraniElementi = new MatTableDataSource<Oprema>(OPREMA_Filtrirana);           

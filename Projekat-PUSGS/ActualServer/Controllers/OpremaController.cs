@@ -56,6 +56,13 @@ namespace ActualServer.Controllers
         {
             return Ok(_context.OpremaTB.Where(x => x.Adresa != "obrisan"));
         }
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        [Route("getbyadresa/{adresa}")]
+        public async Task<ActionResult<IEnumerable<Oprema>>> GetByAdresa(string adresa)
+        {
+            return Ok(_context.OpremaTB.Where(x => x.Adresa != "obrisan").Where(x => x.Adresa == adresa));
+        }
 
         [EnableCors("MyPolicy")]
         [HttpGet]
