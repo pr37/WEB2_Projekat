@@ -33,6 +33,10 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
 
   dataSourceUser = new MatTableDataSource<UserTabela>();
 
+  displayedColumnsOpreme: string[] = ['id', 'name', 'type', 'adresa'];
+  dataSourceOprema = new MatTableDataSource<OpremaTabela>();
+  dataSourceOpremaSva = new MatTableDataSource<OpremaTabela>();
+
   whatToShow: string;  
   IncidentID: string;
   AffCustomers: string;
@@ -163,6 +167,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {         
     this.dataSourceCall = new MatTableDataSource<PozivTabela>(POZIVI); 
     this.dataSourceUser = new MatTableDataSource<UserTabela>(KORISNICI);
+    this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_izabrana);
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;  
@@ -312,8 +317,63 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     }
   }
 
+  AdresaINCIDENTA: string = "";
+  choseDeviceDialog(): void{
+    if(this.AdresaINCIDENTA == ""){
+      
+    }else{
+
+    }
+    const dialogRef = this.dialog.open(ChoseDeviceDialog, {data: { UserTabela: this.dataSourceOpremaSva}});
+
+    dialogRef.afterClosed().subscribe(result => {       
+      this.pouniPodatkeUsera(result);       
+    });  
+  }
+
+}
+////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface OpremaData {  
+  OpremaTabela: MatTableDataSource<OpremaTabela>;
+  opremaId: string;
 }
 
+@Component({
+  selector: 'chose-device-dialog',
+  templateUrl: 'chose-device-dialog.html',
+  styleUrls: ['./new-incident.component.css']
+})
+export class ChoseDeviceDialog{    
+  dataSourceOprema = new MatTableDataSource<OpremaTabela>();       
+  displayedColumnsOpreme: string[] = ['id', 'name', 'type', 'adresa'];
+
+  constructor(public dialogRef: MatDialogRef<ChoseDeviceDialog>, @Inject(MAT_DIALOG_DATA) public data: OpremaData) 
+  {
+    this.dataSourceOprema = data.OpremaTabela;    
+  }
+
+  ngOnInit(): void {       
+
+  }
+
+  @ViewChild(MatPaginator) paginatorOprema: MatPaginator;  
+  @ViewChild(MatSort) sortOprema: MatSort;  
+  ngAfterViewInit() {
+    this.dataSourceOprema.paginator = this.paginatorOprema;
+    this.dataSourceOprema.sort = this.sortOprema;    
+  }    
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }  
+  
+  applySearchUser(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSourceOprema.filter = filterValue;
+  }
+}
+////////////////////////////////////////////////////////////////////////CHOSE USER DATA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface UserData {
   //UserKolona: Array<string>;
   UserTabela: MatTableDataSource<UserTabela>;
@@ -355,13 +415,7 @@ export class ChoseUserDialog implements OnInit, AfterViewInit{
     this.dataSourceUser.filter = filterValue;
   }
 }
-
-
-
-
-
-
-
+////////////////////////////////////////////////////////////////////////MODELS/////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface PozivTabela {
   id: string;
   razlog: string;
@@ -370,15 +424,7 @@ export interface PozivTabela {
   idPotrosaca: string;
 }
 
-export const POZIVI: PozivTabela[] = [    
-  /*{ id: '1', razlog: 'Nema struje', uzrok: 'otkaz opreme', komentar: 'heheh', idPotrosaca: 'idPotrosaca'},
-  { id: '2', razlog: 'Treperenje svetla', uzrok: 'ljudski faktor', komentar: 'heheh', idPotrosaca: 'idPotrosaca'},
-  { id: '3', razlog: 'Treperenje svetla', uzrok: 'vreme', komentar: 'heheh', idPotrosaca: 'idPotrosaca'},
-  { id: '4', razlog: 'Nema struje', uzrok: 'ljudski faktor', komentar: 'heheh', idPotrosaca: 'idPotrosaca'},  
-  { id: '5', razlog: 'Problemi sa naponom', uzrok: 'vreme', komentar: 'heheh', idPotrosaca: 'idPotrosaca'},
-  { id: '6', razlog: 'Problemi sa naponom', uzrok: 'vreme', komentar: 'heheh', idPotrosaca: 'idPotrosaca'},
-  { id: '7', razlog: 'Problemi sa naponom', uzrok: 'vreme', komentar: 'heheh', idPotrosaca: 'idPotrosaca'},*/
-]
+export const POZIVI: PozivTabela[] = []
 
 export interface UserTabela {
   id: string;
@@ -398,3 +444,13 @@ export const KORISNICI: UserTabela[] = [
   { id: '7', ime: 'ime7', prezime: 'prezime7', adresa: 'adresa7', prioritet: 'prioritet7'},  
   { id: '84412', ime: 'ime84412', prezime: 'prezime84412', adresa: 'adresa84412', prioritet: 'prioritet84412'},  
 ]
+
+export interface OpremaTabela {
+  id: number;
+  name: string;
+  type: string;    
+  adresa: string;  
+}
+
+export const OPREMA_izabrana: OpremaTabela[] = []
+export const OPREMA_sva: OpremaTabela[] = [] 

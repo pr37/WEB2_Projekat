@@ -24,7 +24,7 @@ import { DemoMaterialModule } from './material-module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { BackendServiceService } from './backend-service.service';
 import { PregledIncidenataComponent } from './pregled-incidenata/pregled-incidenata.component';
-import { NewIncidentComponent, ChoseUserDialog } from './new-incident/new-incident.component';
+import { NewIncidentComponent, ChoseUserDialog, ChoseDeviceDialog } from './new-incident/new-incident.component';
 import { ElementiMrezeComponent } from './elementi-mreze/elementi-mreze.component';
 
 ElementiMrezeComponent
@@ -49,7 +49,8 @@ ElementiMrezeComponent
     PregledIncidenataComponent,
     NewIncidentComponent,
     ChoseUserDialog,
-    ElementiMrezeComponent
+    ElementiMrezeComponent,
+    ChoseDeviceDialog
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
