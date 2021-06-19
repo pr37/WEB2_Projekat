@@ -118,7 +118,7 @@
   <div [hidden]="!(whatToShow === 'ShowDevices')"> 
     
     <div class="example-button-row">
-      <button mat-raised-button (click)="choseDeviceDialog()">Chose device</button>
+      <button [hidden]="confirmedOprema === true" mat-raised-button (click)="choseDeviceDialog()">Chose device</button>
     </div>
     <br>
     <div class="mat-elevation-z8">
@@ -150,7 +150,14 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumnsOpreme;"></tr>
       </table>        
     </div>
-  
+    <div>
+      <br>
+      <button mat-flat-button (click)="ConfirmDevices()" style="background-color: blue;">Confirm</button>
+    </div>
+    <div>
+      <p [hidden]="confirmedOprema === true" style="color: red;">IZABERI OPREMU VEZANU ZA INCIDENT</p>
+      <p [hidden]="confirmedOprema === false" style="color: yellow;">Confirm je izvrsen: onemogucene su izmene.</p>
+    </div>
   </div>
   <!--------------------------------------------------------------------/ShowDevices------------------------------------------------------------------------->
   <!--------------------------------------------------------------------ShowResolution------------------------------------------------------------------------->
@@ -261,6 +268,7 @@
           <mat-select [(value)]="Razlog">
             <mat-option *ngFor="let option of listaRazloga" [value]="option">{{option}}</mat-option>                        
           </mat-select>
+          <mat-hint [hidden]="okCallRazlog === false" style="color: red;">Razlog is required.</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -268,6 +276,7 @@
           <mat-select [(value)]="UzrokPoziva">
             <mat-option *ngFor="let option of listaKvareva" [value]="option">{{option}}</mat-option>                        
           </mat-select>
+          <mat-hint [hidden]="okCallUzrok === false" style="color: red;">Uzrok is required.</mat-hint>
         </mat-form-field>
       </div>
 
@@ -275,6 +284,7 @@
         <mat-form-field style="width:500px">
           <mat-label>Komentar:</mat-label>
           <textarea matInput name="komentar"  [(ngModel)]='Komentar' style="color: rgb(204, 203, 203);"></textarea>
+          <mat-hint [hidden]="okCallKomentar === false" style="color: red;">Komentar is required.</mat-hint>
         </mat-form-field>
       </div>
 
@@ -312,9 +322,12 @@
 
     <div>
       <br>
-      <button mat-flat-button color="primary" (click)="CancelCall()">Cancel</button>
-      <button mat-flat-button color="accent" (click)="AddCall()">Add</button>
+      <button mat-flat-button (click)="CancelCall()" style="background-color: red;">Cancel</button>      
+      <button mat-flat-button (click)="AddCall()" style="background-color: blue;">Add</button>
     </div>
+    <dic>
+      <p [hidden]="okIzabranaAdresa === false" style="color: red;">IZABERI OPREMU DA BI SE USTANOVILA ADRESA!</p>
+    </dic>
   </div>
                 <!---------------------------------------------------/ShowCallsNew------------------------------------------------------>  
   <!--------------------------------------------------------------------/ShowCalls------------------------------------------------------------------------->

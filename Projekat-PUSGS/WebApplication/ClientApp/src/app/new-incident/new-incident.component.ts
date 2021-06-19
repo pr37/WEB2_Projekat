@@ -60,8 +60,8 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
 
   prozorNewCall: boolean = false;
   
-  Razlog: string;
-  UzrokPoziva: string;      
+  Razlog: string = "";
+  UzrokPoziva: string = "";      
   Komentar: string = "";
 
   UserID: string = "anon";
@@ -221,7 +221,9 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     this.AllCalls();    
     this.applySearchCall('');
   }
-
+  CancelCall(): void{
+    this.whatToShow = 'ShowCalls';
+  }
   goDoAddCall(): void{
     this.whatToShow = 'ShowCallsNew';
   }
@@ -272,15 +274,17 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   }  
 
   AddCall(): void{
-    this.addNewCall().subscribe(
-      (res: any) => {                
-        alert('Uspesno dodavanje poziva.');
-      },
-      err => {
-        console.log("Err: " + err);
-        alert('Ne mogu da dodam poziv.');
-      }
-    )
+    if(this.fieldValidationCall()){
+      this.addNewCall().subscribe(
+        (res: any) => {                
+          alert('Uspesno dodavanje poziva.');
+        },
+        err => {
+          console.log("Err: " + err);
+          alert('Ne mogu da dodam poziv.');
+        }
+      )
+    }
   }
 
   addNewCall() {    
@@ -443,6 +447,52 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     return this.http.get('https://localhost:44301/Oprema/getbyadresa/' + this.AdresaINCIDENTA);
   }
 
+  okCallRazlog: boolean = false;
+  okCallUzrok: boolean = false; 
+  okCallKomentar: boolean = false; 
+  okIzabranaAdresa: boolean = false;
+  fieldValidationCall(): boolean {  
+    var ok = true;
+    if(this.Razlog == ""){
+      ok = false;
+      this.okCallRazlog = true;
+    }
+    else{
+      this.okCallRazlog = false;
+    }
+    if(this.UzrokPoziva == ""){      
+      ok = false;
+      this.okCallUzrok = true;
+    }
+    else{
+      this.okCallUzrok = false;
+    }
+    if(this.Komentar == ""){      
+      ok = false;
+      this.okCallKomentar = true;
+    }
+    else{
+      this.okCallKomentar = false;
+    }
+    if(this.AdresaINCIDENTA == ""){      
+      ok = false;
+      this.okIzabranaAdresa = true;
+    }
+    else{
+      this.okIzabranaAdresa = false;
+    }
+
+     return ok;
+   }
+
+   confirmedOprema: boolean = false;
+   ConfirmDevices(): void{
+    if(OPREMA_izabrana.length == 0){
+      this.confirmedOprema = false;
+    }else{
+      this.confirmedOprema = true;
+    }
+   }
 }
 ////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface OpremaData {  
