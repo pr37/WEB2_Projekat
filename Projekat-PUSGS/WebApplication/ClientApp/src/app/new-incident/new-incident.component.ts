@@ -249,7 +249,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     this.addNew().subscribe(
       (res: any) => {
         console.log(res);
-        alert('Uspesno dodate osnovne informacije incidenta');
+        //alert('Uspesno dodate osnovne informacije incidenta');
       },
       err => {
         console.log("Err: " + err);
@@ -624,11 +624,31 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     }
     this.confirmedOsnovniInfo = ok;
    }
-
+   
+   NoNumberAffCust: boolean = false;
+   NoNumberVoltage: boolean = false;
    confirmedOsnovniInfo: boolean = false;
    ConfirmOsnovniInfo(): void{
     this.fieldValidationOsnovniInfo();
-   }
+
+    if(this.confirmedOsnovniInfo){
+      var ok = true;      
+      if(isNaN(Number(this.AffCustomers))){
+        ok = false;
+        this.NoNumberAffCust = true;      
+      }else{
+        this.NoNumberAffCust = false;
+      }
+      if(isNaN(Number(this.Voltage))){
+        ok = false;
+        this.NoNumberVoltage = true;      
+      }else{
+        this.NoNumberVoltage = false;
+      }
+      
+      this.confirmedOsnovniInfo = ok;
+    }
+  }   
 }
 ////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface OpremaData {  

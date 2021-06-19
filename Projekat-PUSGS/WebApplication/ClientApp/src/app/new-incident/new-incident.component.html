@@ -77,7 +77,7 @@
         <mat-form-field class="example-30-width">
           <mat-label>Affected customers:</mat-label>
           <input matInput name="affc" [(ngModel)]='AffCustomers'>
-          <mat-hint [hidden]="okInfoAC === false" style="color: red;">Aff. customers is required.</mat-hint>
+          <mat-hint [hidden]="okInfoAC === false" style="color: red;">Aff. customers is required.</mat-hint>          
         </mat-form-field>
 
         <mat-form-field class="example-30-width">
@@ -117,7 +117,11 @@
       <button [hidden]="confirmedOsnovniInfo === true" mat-flat-button (click)="ConfirmOsnovniInfo()" style="background-color: blue;">Confirm</button>
       <b [hidden]="confirmedOsnovniInfo === false" style="color: yellow;">Confirm je izvrsen: onemogucene su izmene.</b>
     </div>
-
+    <div>
+      <br>
+      <p [hidden]="NoNumberAffCust === false" style="color: red;">Affected customers must be a number!</p>
+      <p [hidden]="NoNumberVoltage === false" style="color: red;">Voltage must be a number!</p>
+    </div>
   </div>
   <!--------------------------------------------------------------------/ShowBasic------------------------------------------------------------------------->
   <!--------------------------------------------------------------------ShowDevices------------------------------------------------------------------------->
