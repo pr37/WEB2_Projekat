@@ -14,6 +14,7 @@ namespace Models
             Uzrok = uzrok;
             Komentar = komentar;
             UserId = userId;
+            AdresaIncidenta = adresaIncidenta;
         }
         [Key]
         public string Id { get; set; }        

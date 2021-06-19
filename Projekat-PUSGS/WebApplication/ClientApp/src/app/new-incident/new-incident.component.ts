@@ -62,7 +62,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   
   Razlog: string;
   UzrokPoziva: string;      
-  Komentar: string;
+  Komentar: string = "";
 
   UserID: string = "anon";
   UserIme: string;
@@ -284,7 +284,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   }
 
   addNewCall() {    
-    return this.http.put('https://localhost:44301/Pozivi1/add/' + this.Razlog + '/' + this.UzrokPoziva + '/' + this.Komentar + '/' + this.UserID, null);
+    return this.http.put('https://localhost:44301/Pozivi1/add/' + this.Razlog + '/' + this.UzrokPoziva + '/' + this.Komentar + '/' + this.UserID + '/' + this.AdresaINCIDENTA, null);
   }
 
   AllCalls() {
