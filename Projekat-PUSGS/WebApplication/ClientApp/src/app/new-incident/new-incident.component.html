@@ -152,11 +152,12 @@
     </div>
     <div>
       <br>
-      <button mat-flat-button (click)="ConfirmDevices()" style="background-color: blue;">Confirm</button>
+      <button [hidden]="confirmedOprema === true" mat-flat-button (click)="ConfirmDevices()" style="background-color: blue;">Confirm</button>
     </div>
     <div>
+      <br>
       <p [hidden]="confirmedOprema === true" style="color: red;">IZABERI OPREMU VEZANU ZA INCIDENT</p>
-      <p [hidden]="confirmedOprema === false" style="color: yellow;">Confirm je izvrsen: onemogucene su izmene.</p>
+      <b [hidden]="confirmedOprema === false" style="color: yellow;">Confirm je izvrsen: onemogucene su izmene.</b>
     </div>
   </div>
   <!--------------------------------------------------------------------/ShowDevices------------------------------------------------------------------------->
@@ -325,9 +326,9 @@
       <button mat-flat-button (click)="CancelCall()" style="background-color: red;">Cancel</button>      
       <button mat-flat-button (click)="AddCall()" style="background-color: blue;">Add</button>
     </div>
-    <dic>
-      <p [hidden]="okIzabranaAdresa === false" style="color: red;">IZABERI OPREMU DA BI SE USTANOVILA ADRESA!</p>
-    </dic>
+    <div>
+      <p [hidden]="confirmedOprema === true" style="color: red;">POTVRDI OPREMU DA BI SE USTANOVILA ADRESA!</p>
+    </div>
   </div>
                 <!---------------------------------------------------/ShowCallsNew------------------------------------------------------>  
   <!--------------------------------------------------------------------/ShowCalls------------------------------------------------------------------------->

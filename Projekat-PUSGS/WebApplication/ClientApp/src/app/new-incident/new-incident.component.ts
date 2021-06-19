@@ -219,6 +219,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   showCalls(): void{
     this.whatToShow = 'ShowCalls';    
     this.AllCalls();    
+    //this.CallsByAdresa();
     this.applySearchCall('');
   }
   CancelCall(): void{
@@ -273,11 +274,14 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     ,null);        
   }  
 
+  confirmedCall: boolean = false;
   AddCall(): void{
     if(this.fieldValidationCall()){
       this.addNewCall().subscribe(
         (res: any) => {                
           alert('Uspesno dodavanje poziva.');
+          this.confirmedCall = true;
+          this.showCalls();
         },
         err => {
           console.log("Err: " + err);
@@ -293,28 +297,36 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
 
   AllCalls() {
     POZIVI.splice(0, POZIVI.length);
-    this.getCalls().subscribe(
-      (res: any) => {
-        console.log(res);
-        res.forEach(not => POZIVI.push({ id: not.id, 
-                                        razlog: not.razlog, 
-                                        uzrok: not.uzrok, 
-                                        komentar: not.komentar, 
-                                        idPotrosaca: not.idPotrosaca,
-                                        adresaIncidenta: not.idPotrosaca}));
-        this.dataSourceCall = new MatTableDataSource<PozivTabela>(POZIVI);
-        this.dataSourceCall.paginator = this.paginatorCall;
-        this.dataSourceCall.sort = this.sortCall;
-      },
-      err => {
-        console.log("Err: " + err);
-        alert(err);
-      }
-    )
+    if(this.AdresaINCIDENTA != "")
+    {
+      //this.getCalls().subscribe( ////////////////////////////////////////////////////////////////////////////////////
+      this.getCallsByAdresa().subscribe(
+        (res: any) => {
+          console.log(res);
+          res.forEach(not => POZIVI.push({ id: not.id, 
+                                          razlog: not.razlog, 
+                                          uzrok: not.uzrok, 
+                                          komentar: not.komentar, 
+                                          idPotrosaca: not.idPotrosaca,
+                                          adresaIncidenta: not.idPotrosaca}));
+          this.dataSourceCall = new MatTableDataSource<PozivTabela>(POZIVI);
+          this.dataSourceCall.paginator = this.paginatorCall;
+          this.dataSourceCall.sort = this.sortCall;
+        },
+        err => {
+          console.log("Err: " + err);
+          alert(err);
+        }
+      )
+    }      
   }
 
   getCalls() {
     return this.http.get('https://localhost:44301/Pozivi1/getall');
+  }
+
+  getCallsByAdresa() {
+    return this.http.get('https://localhost:44301/Pozivi1/getbyadresa/' + this.AdresaINCIDENTA);
   }
 
   ConfirmedChange(): void{    
@@ -385,17 +397,19 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   }
 
   obrisiOpremu(opremaId: string): void{
-    for(var i=0; i < OPREMA_izabrana.length; i++){
-      if(OPREMA_izabrana[i].id == opremaId){
-        OPREMA_izabrana.splice(i, 1);
-        i = OPREMA_izabrana.length;        
-      }    
-    }
-    this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_izabrana); 
-    
-    if(OPREMA_izabrana.length == 0){
-      this.AdresaINCIDENTA = "";
-      this.podesiParametreNaOsnovuAdrese()
+    if(!this.confirmedOprema){
+      for(var i=0; i < OPREMA_izabrana.length; i++){
+        if(OPREMA_izabrana[i].id == opremaId){
+          OPREMA_izabrana.splice(i, 1);
+          i = OPREMA_izabrana.length;        
+        }    
+      }
+      this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_izabrana); 
+      
+      if(OPREMA_izabrana.length == 0){
+        this.AdresaINCIDENTA = "";
+        this.podesiParametreNaOsnovuAdrese()
+      }
     }
   }
 
@@ -449,8 +463,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
 
   okCallRazlog: boolean = false;
   okCallUzrok: boolean = false; 
-  okCallKomentar: boolean = false; 
-  okIzabranaAdresa: boolean = false;
+  okCallKomentar: boolean = false;   
   fieldValidationCall(): boolean {  
     var ok = true;
     if(this.Razlog == ""){
@@ -474,12 +487,8 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     else{
       this.okCallKomentar = false;
     }
-    if(this.AdresaINCIDENTA == ""){      
+    if(!this.confirmedOprema){
       ok = false;
-      this.okIzabranaAdresa = true;
-    }
-    else{
-      this.okIzabranaAdresa = false;
     }
 
      return ok;
