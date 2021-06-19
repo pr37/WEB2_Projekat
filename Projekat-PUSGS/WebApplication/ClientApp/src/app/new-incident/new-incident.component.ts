@@ -117,7 +117,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
 
     this.userLoggedIn = this.isLoggedIn();   
     //this.IncidentID = 'tempId';
-    this.IncidentPriority = 'tempPrio';
+    this.IncidentPriority = 'temp';
 
     this.listaRazloga.push("Nema struje");
     this.listaRazloga.push("Postoji kvar");
@@ -299,7 +299,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     POZIVI.splice(0, POZIVI.length);
     if(this.AdresaINCIDENTA != "")
     {
-      //this.getCalls().subscribe( ////////////////////////////////////////////////////////////////////////////////////
+      //this.getCalls().subscribe( ////////////////////////////////////////////////////////////////////////////////////umesto svih, samo one koji su u vezi sa adresom opreme
       this.getCallsByAdresa().subscribe(
         (res: any) => {
           console.log(res);
@@ -311,14 +311,15 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
                                           adresaIncidenta: not.idPotrosaca}));
           this.dataSourceCall = new MatTableDataSource<PozivTabela>(POZIVI);
           this.dataSourceCall.paginator = this.paginatorCall;
-          this.dataSourceCall.sort = this.sortCall;
+          this.dataSourceCall.sort = this.sortCall;          
+          this.Calls = POZIVI.length.toString();
         },
         err => {
           console.log("Err: " + err);
           alert(err);
         }
       )
-    }      
+    }           
   }
 
   getCalls() {
@@ -414,9 +415,18 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   }
 
   podesiParametreNaOsnovuAdrese():void{
-    //for()
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //this.IncidentPriority 
+    if(this.AdresaINCIDENTA == ""){
+      this.Calls = 'temp';
+      this.IncidentPriority = 'temp';
+    }else{
+      this.AllCalls();
+      for(var i = 0; i<ADRESE.length; i++){
+        if(ADRESE[i].ulica == this.AdresaINCIDENTA){
+          this.IncidentPriority = ADRESE[i].prioritet;
+          i = ADRESE.length;
+        }
+      }
+    }
   }
 
   AllOprema() {
