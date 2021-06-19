@@ -277,6 +277,21 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     ,null);        
   }  
 
+  AddResolution(): void{                
+    this.addNewResolution().subscribe(
+      (res: any) => {                
+      },
+      err => {
+        console.log("Err: " + err);
+        alert('Ne mogu da dodam resolution.');
+      }
+    )    
+  }
+
+  addNewResolution() {    
+    return this.http.put('https://localhost:44301/Resolution/add/' + this.IncidentID + '/' + this.Uzrok + '/' + this.Poduzrok + '/' + this.Konstrukcija + '/' + this.Materijal, null);
+  }
+
   confirmedCall: boolean = false;
   AddCall(): void{
     if(this.fieldValidationCall()){

@@ -28,5 +28,6 @@ namespace Repositories
         public DbSet<Models.IncidentOsnovInfo> IncidentOsnovInfoTB { get; set; }
         public DbSet<Models.Adresa> AdresaTB { get; set; }
         public DbSet<Models.Oprema> OpremaTB { get; set; }
+        public DbSet<Models.Resolution> ResolutionTB { get; set; }
     }
 }
