@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, OnInit, Inject } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, OnInit, Inject} from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
@@ -54,9 +54,9 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   ToMe: boolean = false;
 
   Uzrok: string = "";
-  Poduzrok: string;
-  Konstrukcija: string;
-  Materijal: string;
+  Poduzrok: string = "";
+  Konstrukcija: string = "";
+  Materijal: string = "";
 
   prozorNewCall: boolean = false;
   
@@ -163,9 +163,8 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     return this.http.get('https://localhost:44301/Incident/getnewid');
   }
 
-  changeUzrok(): void{
-    console.log('click: ' + this.Uzrok);
-
+  changeUzrok(): void{    
+    this.Poduzrok = "";
     if(this.Uzrok === 'vreme')  
     {
       this.listaPoduzroka = [];
@@ -214,7 +213,11 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     this.whatToShow = 'ShowDevices';  
   }
   showResolution(): void{
-    this.whatToShow = 'ShowResolution';
+    if(!this.confirmedResulution){
+      this.whatToShow = 'ShowResolution';
+    }else{
+      this.whatToShow = 'ShowConfirmedResolution';
+    }    
   }
   showCalls(): void{
     this.whatToShow = 'ShowCalls';    
@@ -503,14 +506,53 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
 
      return ok;
    }
-
-   confirmedOprema: boolean = false;
+   
+   confirmedOprema: boolean = false;  
    ConfirmDevices(): void{
     if(OPREMA_izabrana.length == 0){
       this.confirmedOprema = false;
     }else{
       this.confirmedOprema = true;
     }
+   }
+   
+   okResolutionUzrok: boolean = false;   
+   okResolutionPoduzrok: boolean = false;
+   okResolutionKonstrukcija: boolean = false;
+   okResolutionMaterijal: boolean = false;
+   confirmedResulution: boolean = false;
+   ConfirmResolution(): void{    
+    var ok = true; 
+
+    if(this.Uzrok == ""){
+      ok = false;      
+      this.okResolutionUzrok = true;
+    }else{
+      this.okResolutionUzrok = false;
+    }
+    if(this.Poduzrok == ""){
+      ok = false;      
+      this.okResolutionPoduzrok = true;
+    }else{
+      this.okResolutionPoduzrok = false;
+    }
+    if(this.Konstrukcija == ""){
+      ok = false;      
+      this.okResolutionKonstrukcija = true;
+    }else{
+      this.okResolutionKonstrukcija = false;
+    }
+    if(this.Materijal == ""){
+      ok = false;      
+      this.okResolutionMaterijal = true;
+    }else{
+      this.okResolutionMaterijal = false;
+    }
+
+    this.confirmedResulution = ok;
+    if(this.confirmedResulution){
+      this.whatToShow = 'ShowConfirmedResolution';
+    }    
    }
 }
 ////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////

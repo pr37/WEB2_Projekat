@@ -167,9 +167,10 @@
       <div>
         <mat-form-field appearance="fill">
           <mat-label>Uzrok</mat-label>
-          <mat-select [(value)]="Uzrok" (selectionChange)="changeUzrok()">
+          <mat-select id="ResolutionUzrok" [(value)]="Uzrok" (selectionChange)="changeUzrok()">
             <mat-option *ngFor="let option of listaUzroka" [value]="option">{{option}}</mat-option>                        
           </mat-select>
+          <mat-hint [hidden]="okResolutionUzrok === false" style="color: red;">Uzrok is required.</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -177,6 +178,7 @@
           <mat-select [(value)]="Poduzrok">
             <mat-option *ngFor="let option of listaPoduzroka" [value]="option">{{option}}</mat-option>                        
           </mat-select>
+          <mat-hint [hidden]="okResolutionPoduzrok === false" style="color: red;">Poduzrok is required.</mat-hint>
         </mat-form-field>
       </div>
 
@@ -186,6 +188,7 @@
           <mat-select [(value)]="Konstrukcija">
             <mat-option *ngFor="let option of listaTipKonstrukcije" [value]="option">{{option}}</mat-option>                        
           </mat-select>
+          <mat-hint [hidden]="okResolutionKonstrukcija === false" style="color: red;">Konstrukcija is required.</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -193,11 +196,52 @@
           <mat-select [(value)]="Materijal">
             <mat-option *ngFor="let option of listaMaterijal" [value]="option">{{option}}</mat-option>                        
           </mat-select>
+          <mat-hint [hidden]="okResolutionMaterijal === false" style="color: red;">Materijal is required.</mat-hint>
         </mat-form-field>
       </div>
     </form>
+
+    <div>
+      <br>
+      <button [hidden]="confirmedResulution === true" mat-flat-button (click)="ConfirmResolution()" style="background-color: blue;">Confirm</button>
+      <b [hidden]="confirmedResulution === false" style="color: yellow;">Confirm je izvrsen: onemogucene su izmene.</b>
+    </div>                   
+    
+  </div>    
+        <!--------------------------------------------------/ConfirmedShowResolution-------------------------------------------------------------->
+  <div [hidden]="!(whatToShow === 'ShowConfirmedResolution')">         
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Uzrok</mat-label>
+          <input matInput disabled value="{{Uzrok}}">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Poduzrok</mat-label>
+          <input matInput disabled value="{{Poduzrok}}">
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Tip konstrukcije</mat-label>
+          <input matInput disabled value="{{Konstrukcija}}">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Materijal</mat-label>
+          <input matInput disabled value="{{Materijal}}">
+        </mat-form-field>
+      </div>
+
+    <div>
+      <br>      
+      <b style="color: yellow;">Confirm je izvrsen: onemogucene su izmene.</b>
+    </div>                   
+    
   </div>  
-  <!----------------------------------------------------------------/ShowResolution------------------------------------------------------------------------->
+          <!--------------------------------------------------/ConfirmedShowResolution-------------------------------------------------------------->
+  <!----------------------------------------------------------------/ShowResolution------------------------------------------------------------------------->  
   <!--------------------------------------------------------------------ShowCalls------------------------------------------------------------------------->
   <div [hidden]="!(whatToShow === 'ShowCalls')"> 
 
