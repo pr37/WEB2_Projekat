@@ -335,6 +335,11 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
           this.dataSourceCall.paginator = this.paginatorCall;
           this.dataSourceCall.sort = this.sortCall;          
           this.Calls = POZIVI.length.toString();
+          if(POZIVI.length == 0){
+            this.finishCall = false;
+          }else{
+            this.finishCall = true;
+          }
         },
         err => {
           console.log("Err: " + err);
@@ -431,6 +436,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
       
       if(OPREMA_izabrana.length == 0){
         this.AdresaINCIDENTA = "";
+        this.finishCall = false;
         this.podesiParametreNaOsnovuAdrese()
       }
     }
@@ -666,19 +672,16 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   strATA: string;
   strETR: string;
   
-  finishInfo: boolean = false;
-  finishOprema: boolean = false;
-  finishResolution: boolean = false;
   finishCall: boolean = false;
-  finish(): void{
-    this.finishInfo = this.confirmedOsnovniInfo;
-    this.finishOprema = this.confirmedOprema;
-    this.finishResolution = this.confirmedResulution;
-    if(POZIVI.length == 0){
-      this.finishCall = false;
-    }else{
-      this.finishCall = true;
+  finish(): void{    
+    if(this.confirmedOsnovniInfo && this.confirmedOprema && this.confirmedResulution && this.finishCall){
+      console.log('BRAVO');
+      this.clear();
     }
+  }
+
+  clear(): void{
+
   }
 }
 ////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////

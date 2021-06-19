@@ -479,14 +479,15 @@
                 <!---------------------------------------------------/ShowCallsNew------------------------------------------------------>  
   <!--------------------------------------------------------------------/ShowCalls------------------------------------------------------------------------->
   <hr>
-  <div>    
+  <div>
+    <button mat-flat-button (click)="clear()" style="background-color: goldenrod;width:150px;font-size:26px; padding:10px;margin-right: 15px;">CLEAR</button>          
     <button mat-flat-button (click)="finish()" style="background-color: green;width:150px;font-size:26px; padding:10px;">FINISH</button>      
   </div>
   <div>
     <br>
-    <p [hidden]="finishInfo === true" style="color: chocolate;">Osnovne informacije moraju biti potvrdjene</p>
-    <p [hidden]="finishOprema === true" style="color: chocolate;">Oprema mora biti potvrdjena</p>
-    <p [hidden]="finishResolution === true" style="color: chocolate;">Resolution mora biti potvrdjena</p>
+    <p [hidden]="confirmedOsnovniInfo === true" style="color: chocolate;">Osnovne informacije moraju biti potvrdjene</p>
+    <p [hidden]="confirmedOprema === true" style="color: chocolate;">Oprema mora biti potvrdjena</p>
+    <p [hidden]="confirmedResulution === true" style="color: chocolate;">Resolution mora biti potvrdjena</p>
     <p [hidden]="finishCall === true" style="color: chocolate;">Mora postojati barem 1 poziv vezan za incidet</p>
   </div>
 </body>
