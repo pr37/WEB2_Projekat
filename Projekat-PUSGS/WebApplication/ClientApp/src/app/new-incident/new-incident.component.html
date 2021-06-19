@@ -17,7 +17,6 @@
   <!--------------------------------------------------------------------ShowBasic------------------------------------------------------------------------->
   <div [hidden]="!(whatToShow === 'ShowBasic')">                         
     <form class="example-form">
-
       <div class="example-container">
         <mat-form-field class="example-30-width">
           <mat-label>Incident ID:</mat-label>
@@ -30,69 +29,76 @@
         </mat-form-field>
 
         <mat-form-field class="example-30-width">
-          <mat-label>Affected customers:</mat-label>
-          <input matInput name="affc" [(ngModel)]='AffCustomers'>
+          <mat-label>Calls:</mat-label>          
+          <input matInput disabled [value]='Calls' disabled>
         </mat-form-field>
-
-        <mat-form-field class="example-30-width">
-          <mat-label>Voltage [kV]:</mat-label>
-          <input matInput name="napon" [(ngModel)]='Voltage'>
-        </mat-form-field>        
-      </div>
-
-      <div class="example-container">
+      
         <mat-form-field appearance="fill" class="example-30-width">
           <mat-label>Outage time:</mat-label>
           <input matInput disabled [value]='CreatedOn'>
         </mat-form-field>
-  
+      </div>
+
+      <div class="example-container">  
+        <mat-form-field appearance="fill">
+          <mat-label>Sheduled time:</mat-label>
+          <input matInput [matDatepicker]="picker4" name="sheduled" [(ngModel)]='Sheduled'>
+          <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+          <mat-datepicker #picker4></mat-datepicker>
+          <mat-hint [hidden]="okInfoSheduledTime === false" style="color: red;">Sheduled time is required.</mat-hint>
+        </mat-form-field>
+
         <mat-form-field appearance="fill">
           <mat-label>ETA</mat-label>
           <input matInput [matDatepicker]="picker1" name="eta" [(ngModel)]='ETA'>
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
+          <mat-hint [hidden]="okInfoETA === false" style="color: red;">ETA is required.</mat-hint>
         </mat-form-field>   
-        
-        <mat-form-field appearance="fill">
-          <mat-label>ETR</mat-label>
-          <input matInput [matDatepicker]="picker2" name="etr" [(ngModel)]='ETR'>
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field>
         
         <mat-form-field appearance="fill">
           <mat-label>ATA</mat-label>
           <input matInput [matDatepicker]="picker3" name="ata" [(ngModel)]='ATA'>
           <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
           <mat-datepicker #picker3></mat-datepicker>
+          <mat-hint [hidden]="okInfoATA === false" style="color: red;">ATA is required.</mat-hint>
         </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>ETR</mat-label>
+          <input matInput [matDatepicker]="picker2" name="etr" [(ngModel)]='ETR'>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          <mat-hint [hidden]="okInfoETR === false" style="color: red;">ETR is required.</mat-hint>
+        </mat-form-field>     
       </div>
 
       <div class="example-container">
+        <mat-form-field class="example-30-width">
+          <mat-label>Affected customers:</mat-label>
+          <input matInput name="affc" [(ngModel)]='AffCustomers'>
+          <mat-hint [hidden]="okInfoAC === false" style="color: red;">Aff. customers is required.</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="example-30-width">
+          <mat-label>Voltage [kV]:</mat-label>
+          <input matInput name="napon" [(ngModel)]='Voltage'>
+          <mat-hint [hidden]="okInfoVoltage === false" style="color: red;">Voltage is required.</mat-hint>
+        </mat-form-field>  
+
         <mat-form-field appearance="fill" class="example-30-width">
           <mat-label>Type</mat-label>
           <mat-select [(value)]="Type">
             <mat-option value="planirani">Planirani incident</mat-option>
             <mat-option value="neplanirani">Neplanirani incident</mat-option>
           </mat-select>
+          <mat-hint [hidden]="okInfoType === false" style="color: red;">Type is required.</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="example-30-width">
           <mat-label>Status</mat-label>          
           <input disabled matInput name="status" [(ngModel)]='Status'>
-        </mat-form-field>
-
-        <mat-form-field class="example-30-width">
-          <mat-label>Calls:</mat-label>          
-          <input matInput disabled [value]='Calls' disabled>
-        </mat-form-field>
-        
-        <mat-form-field appearance="fill">
-          <mat-label>Sheduled time:</mat-label>
-          <input matInput [matDatepicker]="picker4" name="sheduled" [(ngModel)]='Sheduled'>
-          <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-          <mat-datepicker #picker4></mat-datepicker>
-        </mat-form-field>
+        </mat-form-field>      
       </div>  
       
       <div class="example-container" style="padding-left: 55px;">
@@ -108,8 +114,8 @@
     
     <div>
       <br>
-      <button mat-flat-button color="primary" (click)="Cancel()">Cancel</button>
-      <button mat-flat-button color="accent" (click)="Add()">Add</button>
+      <button [hidden]="confirmedOsnovniInfo === true" mat-flat-button (click)="ConfirmOsnovniInfo()" style="background-color: blue;">Confirm</button>
+      <b [hidden]="confirmedOsnovniInfo === false" style="color: yellow;">Confirm je izvrsen: onemogucene su izmene.</b>
     </div>
 
   </div>
@@ -376,5 +382,9 @@
   </div>
                 <!---------------------------------------------------/ShowCallsNew------------------------------------------------------>  
   <!--------------------------------------------------------------------/ShowCalls------------------------------------------------------------------------->
+  <hr>
+  <div>    
+    <button mat-flat-button (click)="finish()" style="background-color: green;width:150px;font-size:26px; padding:10px;">FINISH</button>      
+  </div>
 </body>
 </html>

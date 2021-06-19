@@ -39,15 +39,15 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
 
   whatToShow: string;  
   IncidentID: string;
-  AffCustomers: string;
-  Voltage: string;  
+  AffCustomers: string = "";
+  Voltage: string = "";  
   IncidentPriority: string;
   CreatedOn: string;   
   ETA: Date;
   ETR: Date;
   ATA: Date;
   Sheduled: Date;
-  Type: string;
+  Type: string = "";
   Status: string = 'DRAFT';
   Calls: string = 'temp';
   Confirmed: boolean = false;
@@ -113,7 +113,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     this.listaMaterijal.push("plastika");
     this.listaMaterijal.push("staklo");  
 
-    this.CreatedOn = new Date().toLocaleDateString();    
+    this.CreatedOn = new Date().toDateString();    
 
     this.userLoggedIn = this.isLoggedIn();   
     //this.IncidentID = 'tempId';
@@ -568,6 +568,66 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     if(this.confirmedResulution){
       this.whatToShow = 'ShowConfirmedResolution';
     }    
+   }
+
+   okInfoSheduledTime: boolean = false;
+   okInfoETA: boolean = false;
+   okInfoATA: boolean = false;
+   okInfoETR: boolean = false;
+   okInfoAC: boolean = false;
+   okInfoVoltage: boolean = false;
+   okInfoType: boolean = false;
+   fieldValidationOsnovniInfo(): void{
+    var ok = true; 
+
+    if(this.Sheduled == undefined){
+      ok = false;
+      this.okInfoSheduledTime = true;
+    }else{
+      this.okInfoSheduledTime = false;
+    }
+    if(this.ETA == undefined){
+      ok = false;
+      this.okInfoETA = true;
+    }else{
+      this.okInfoETA = false;
+    }
+    if(this.ATA == undefined){
+      ok = false;
+      this.okInfoATA = true;
+    }else{
+      this.okInfoATA = false;
+    }
+    if(this.ETR == undefined){
+      ok = false;
+      this.okInfoETR = true;
+    }else{
+      this.okInfoETR = false;
+    }
+    if(this.AffCustomers == ""){
+      ok = false;
+      this.okInfoAC = true;
+    }else{
+      this.okInfoAC = false;
+    }
+    if(this.Voltage == ""){
+      ok = false;
+      this.okInfoVoltage = true;
+    }else{
+      this.okInfoVoltage = false;
+    }
+    if(this.Type == ""){
+      ok = false;
+      this.okInfoType = true;
+    }else{
+      this.okInfoType = false;
+    }
+    this.confirmedOsnovniInfo = ok;
+   }
+
+   confirmedOsnovniInfo: boolean = false;
+   ConfirmOsnovniInfo(): void{
+    this.fieldValidationOsnovniInfo();
    }
 }
 ////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////
