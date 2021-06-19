@@ -207,7 +207,11 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   }  
 
   showBasic(): void{
-    this.whatToShow = 'ShowBasic';      
+    if(!this.confirmedOsnovniInfo){
+      this.whatToShow = 'ShowBasic'; 
+    }else{
+      this.whatToShow = 'ShowConfirmedBasic'; 
+    }
   }
   showDevices(): void{
     this.whatToShow = 'ShowDevices';  
@@ -622,7 +626,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
     }else{
       this.okInfoType = false;
     }
-    this.confirmedOsnovniInfo = ok;
+    this.confirmedOsnovniInfo = ok;    
    }
    
    NoNumberAffCust: boolean = false;
@@ -647,8 +651,35 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
       }
       
       this.confirmedOsnovniInfo = ok;
+      if(this.confirmedOsnovniInfo){
+        this.whatToShow = 'ShowConfirmedBasic'
+      
+        this.strSheduled = this.Sheduled.toDateString();
+        this.strETA = this.ETA.toDateString();
+        this.strATA = this.ATA.toDateString();          
+        this.strETR = this.ETR.toDateString();
+      }
+    }   
+  }
+  strSheduled: string;
+  strETA: string;
+  strATA: string;
+  strETR: string;
+  
+  finishInfo: boolean = false;
+  finishOprema: boolean = false;
+  finishResolution: boolean = false;
+  finishCall: boolean = false;
+  finish(): void{
+    this.finishInfo = this.confirmedOsnovniInfo;
+    this.finishOprema = this.confirmedOprema;
+    this.finishResolution = this.confirmedResulution;
+    if(POZIVI.length == 0){
+      this.finishCall = false;
+    }else{
+      this.finishCall = true;
     }
-  }   
+  }
 }
 ////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface OpremaData {  

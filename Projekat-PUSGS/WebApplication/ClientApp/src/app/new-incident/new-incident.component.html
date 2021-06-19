@@ -123,6 +123,98 @@
       <p [hidden]="NoNumberVoltage === false" style="color: red;">Voltage must be a number!</p>
     </div>
   </div>
+          <!-----------------------------------------------ShowConfirmedBasic-------------------------------------------------------->
+  <div [hidden]="!(whatToShow === 'ShowConfirmedBasic')">     
+    <!--
+    <mat-form-field appearance="fill">
+      <mat-label>Uzrok</mat-label>
+      <input matInput disabled value="{{Uzrok}}">
+    </mat-form-field>      
+    -->
+    <div class="example-container">
+      <mat-form-field class="example-30-width">
+        <mat-label>Incident ID:</mat-label>
+        <input matInput disabled value="{{IncidentID}}">        
+      </mat-form-field>
+
+      <mat-form-field class="example-30-width">
+        <mat-label>Priority:</mat-label>
+        <input matInput disabled value="{{IncidentPriority}}">
+      </mat-form-field>
+
+      <mat-form-field class="example-30-width">
+        <mat-label>Calls:</mat-label>          
+        <input matInput disabled [value]='Calls'>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill" class="example-30-width">
+        <mat-label>Outage time:</mat-label>
+        <input matInput disabled [value]='CreatedOn'>
+      </mat-form-field>
+    </div>
+
+    <div class="example-container">  
+      <mat-form-field appearance="fill">
+        <mat-label>Sheduled time:</mat-label>
+        <input matInput disabled [value]='strSheduled'>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>ETA</mat-label>
+        <input matInput disabled [value]='strETA'>
+      </mat-form-field>   
+      
+      <mat-form-field appearance="fill">
+        <mat-label>ATA</mat-label>
+        <input matInput disabled [value]='strATA'>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>ETR</mat-label>
+        <input matInput disabled [value]='strETR'>
+      </mat-form-field>     
+    </div>
+
+    <div class="example-container">
+      <mat-form-field class="example-30-width">
+        <mat-label>Affected customers:</mat-label>
+        <input matInput disabled [value]='AffCustomers'>        
+      </mat-form-field>
+
+      <mat-form-field class="example-30-width">
+        <mat-label>Voltage [kV]:</mat-label>
+        <input matInput disabled [value]='Voltage'>
+      </mat-form-field>  
+
+      <mat-form-field appearance="fill" class="example-30-width">
+        <mat-label>Type</mat-label>
+        <input matInput disabled [value]='Type'>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="example-30-width">
+        <mat-label>Status</mat-label>          
+        <input matInput disabled [value]='Status'>        
+      </mat-form-field>      
+    </div>  
+    
+    <div class="example-container">
+      <mat-form-field appearance="fill" class="example-30-width">
+        <mat-label>Confirmed</mat-label>     
+        <input matInput disabled [value]='Confirmed'>          
+    </mat-form-field>
+    </div>
+    <div class="example-container">
+      <mat-form-field appearance="fill" class="example-30-width">
+        <mat-label>Assign to me</mat-label>     
+        <input matInput disabled [value]='ToMe'>       
+      </mat-form-field>
+    </div>
+    <div>
+      <br>      
+      <b [hidden]="confirmedOsnovniInfo === false" style="color: yellow;">Confirm je izvrsen: onemogucene su izmene.</b>
+    </div>
+  </div>
+          <!-----------------------------------------------/ShowConfirmedBasic-------------------------------------------------------->
   <!--------------------------------------------------------------------/ShowBasic------------------------------------------------------------------------->
   <!--------------------------------------------------------------------ShowDevices------------------------------------------------------------------------->
   <div [hidden]="!(whatToShow === 'ShowDevices')"> 
@@ -389,6 +481,13 @@
   <hr>
   <div>    
     <button mat-flat-button (click)="finish()" style="background-color: green;width:150px;font-size:26px; padding:10px;">FINISH</button>      
+  </div>
+  <div>
+    <br>
+    <p [hidden]="finishInfo === true" style="color: chocolate;">Osnovne informacije moraju biti potvrdjene</p>
+    <p [hidden]="finishOprema === true" style="color: chocolate;">Oprema mora biti potvrdjena</p>
+    <p [hidden]="finishResolution === true" style="color: chocolate;">Resolution mora biti potvrdjena</p>
+    <p [hidden]="finishCall === true" style="color: chocolate;">Mora postojati barem 1 poziv vezan za incidet</p>
   </div>
 </body>
 </html>
