@@ -56,9 +56,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   Uzrok: string = "";
   Poduzrok: string = "";
   Konstrukcija: string = "";
-  Materijal: string = "";
-
-  prozorNewCall: boolean = false;
+  Materijal: string = "";  
   
   Razlog: string = "";
   UzrokPoziva: string = "";      
@@ -160,7 +158,7 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   }
 
   getNewIncidentId(){
-    return this.http.get('https://localhost:44301/Incident/getnewid');
+    return this.http.get('https://localhost:44301/FullIncident/getnewid');
   }
 
   changeUzrok(): void{    
@@ -257,13 +255,13 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
       },
       err => {
         console.log("Err: " + err);
-        alert('Ne mogu da dodam osnovne informacije incidenta.');
+        alert('Ne mogu da dodam incident.');
       }
     )    
   }
 
   addNew() {                
-    return this.http.put('https://localhost:44301/Incident/addOsnovniInfo/' + this.IncidentID + '/' + 
+    return this.http.put('https://localhost:44301/FullIncident/addfullincident/' + this.IncidentID + '/' + 
                                                               this.AffCustomers + '/' + 
                                                               this.Voltage + '/' + 
                                                               this.IncidentPriority + '/' +
@@ -276,7 +274,12 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
                                                               this.Status + '/' +
                                                               this.Calls + '/' +
                                                               String(this.Confirmed) + '/' +
-                                                              String(this.ToMe)
+                                                              String(this.ToMe) + '/' +
+                                                              this.DevicesNames + '/' +
+                                                              this.Uzrok + '/' +
+                                                              this.Poduzrok + '/' +
+                                                              this.Konstrukcija + '/' +
+                                                              this.Materijal
     
     ,null);        
   }  
@@ -533,11 +536,15 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
    }
    
    confirmedOprema: boolean = false;  
+   DevicesNames: string = "";
    ConfirmDevices(): void{
     if(OPREMA_izabrana.length == 0){
       this.confirmedOprema = false;
     }else{
       this.confirmedOprema = true;
+      OPREMA_izabrana.forEach(element => {
+        this.DevicesNames += element.name + " ";
+      });
     }
    }
    
@@ -673,15 +680,13 @@ export class NewIncidentComponent implements OnInit, AfterViewInit {
   strETR: string;
   
   finishCall: boolean = false;
-  finish(): void{    
-    if(this.confirmedOsnovniInfo && this.confirmedOprema && this.confirmedResulution && this.finishCall){
-      console.log('BRAVO');
-      this.clear();
+  mainWindow: string = 'START';
+  finish(): void{        
+    if(this.confirmedOsnovniInfo && this.confirmedOprema && this.confirmedResulution && this.finishCall){   
+      this.Add();   
+      this.mainWindow = 'END';
+      OPREMA_izabrana.splice(0, OPREMA_izabrana.length);
     }
-  }
-
-  clear(): void{
-
   }
 }
 ////////////////////////////////////////////////////////////////////////OPREMA DIALOG/////////////////////////////////////////////////////////////////////////////////////////////////////

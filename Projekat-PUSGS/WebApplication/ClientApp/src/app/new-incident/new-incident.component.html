@@ -14,6 +14,7 @@
   </nav>
 
   <br>
+  <div [hidden]="!(mainWindow === 'START')">
   <!--------------------------------------------------------------------ShowBasic------------------------------------------------------------------------->
   <div [hidden]="!(whatToShow === 'ShowBasic')">                         
     <form class="example-form">
@@ -468,8 +469,7 @@
     </form>    
 
     <div>
-      <br>
-      <button mat-flat-button (click)="CancelCall()" style="background-color: red;">Cancel</button>      
+      <br>           
       <button mat-flat-button (click)="AddCall()" style="background-color: blue;">Add</button>
     </div>
     <div>
@@ -479,8 +479,7 @@
                 <!---------------------------------------------------/ShowCallsNew------------------------------------------------------>  
   <!--------------------------------------------------------------------/ShowCalls------------------------------------------------------------------------->
   <hr>
-  <div>
-    <button mat-flat-button (click)="clear()" style="background-color: goldenrod;width:150px;font-size:26px; padding:10px;margin-right: 15px;">CLEAR</button>          
+  <div>    
     <button mat-flat-button (click)="finish()" style="background-color: green;width:150px;font-size:26px; padding:10px;">FINISH</button>      
   </div>
   <div>
@@ -490,5 +489,10 @@
     <p [hidden]="confirmedResulution === true" style="color: chocolate;">Resolution mora biti potvrdjena</p>
     <p [hidden]="finishCall === true" style="color: chocolate;">Mora postojati barem 1 poziv vezan za incidet</p>
   </div>
+</div>
+<br>
+<div [hidden]="!(mainWindow === 'END')">  
+  <p style="font-size: 32px;color: green;text-align: center;">Incident zabelezen.</p>  
+</div>
 </body>
 </html>
