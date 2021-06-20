@@ -17,8 +17,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./pregled-incidenata.component.css']
 })
 export class PregledIncidenataComponent implements AfterViewInit, OnInit{  
-  displayedColumns: string[] = ['id', 'startDate', 'phoneNum', 'status', 'adresa'];
-  dataSource = new MatTableDataSource<IncidentiTabela>(INCIDENTI);
+  displayedColumns: string[] = ['id', 'incidentPriority', 'calls', 'affCustomers', 'voltage', 'type', 'status', 'createdOn', 'sheduled', 'devicesNames', 'uzrok', 'poduzrok', 'konstrukcija', 'materijal'];
+  dataSource = new MatTableDataSource<IncidentiTabela>();  
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<IncidentiTabela>(INCIDENTI);
@@ -39,27 +39,82 @@ export class PregledIncidenataComponent implements AfterViewInit, OnInit{
     this.userLoggedIn = this.isLoggedIn();
     if (this.userLoggedIn) {
       this.ngOnInit();
-      /*
-      this.getPlanovi().subscribe(
-        (res: any) => {
-          console.log(res);
-          ELEMENT_DATA.splice(0, ELEMENT_DATA.length);
-          res.forEach(not => ELEMENT_DATA.push({ ID: not.planRadaID, StartDate: not.startDate, PhoneNo: not.phoneNo, Status: not.status, Address: not.address, Company: not.company, Type: not.tipRada }));
-          this.ngOnInit();
+      this.getIncidente('all');
+      this.ngAfterViewInit();
+    }    
+  }
+
+  getIncidente(whatToShow: string) {    
+    INCIDENTI.splice(0, INCIDENTI.length);
+    if(whatToShow == 'all'){
+      this.getAllIncidente().subscribe(
+        (res: any) => {          
+          res.forEach(not => INCIDENTI.push({incidentID: not.incidentID,          
+                                            affCustomers: not.affCustomers, 
+                                            voltage: not.voltage, 
+                                            incidentPriority: not.incidentPriority, 
+                                            createdOn: not.createdOn, 
+                                            eTA: not.eTA, 
+                                            eTR: not.eTR, 
+                                            aTA: not.aTA, 
+                                            sheduled: not.sheduled, 
+                                            type: not.type, 
+                                            status: not.status, 
+                                            calls: not.calls, 
+                                            confirmed: not.confirmed, 
+                                            toMe: not.toMe, 
+                                            devicesNames: not.devicesNames, 
+                                            uzrok: not.uzrok, 
+                                            poduzrok: not.poduzrok, 
+                                            konstrukcija: not.konstrukcija, 
+                                            materijal: not.materijal}));                 
+          res.forEach(not => console.log(not.createdOn + " " + not.eTA + " " + not.eTR + " " + not.aTA));
+          this.ngAfterViewInit();
         },
         err => {
           console.log("Err: " + err);
           alert(err);
         }
       )
-      */
+    }
+    else if(whatToShow == 'mine'){
+      this.getMineIncidente().subscribe(
+        (res: any) => {          
+          res.forEach(not => INCIDENTI.push({incidentID: not.incidentID,          
+            affCustomers: not.affCustomers, 
+            voltage: not.voltage, 
+            incidentPriority: not.incidentPriority, 
+            createdOn: not.createdOn, 
+            eTA: not.eTA, 
+            eTR: not.eTR, 
+            aTA: not.aTA, 
+            sheduled: not.sheduled, 
+            type: not.type, 
+            status: not.status, 
+            calls: not.calls, 
+            confirmed: not.confirmed, 
+            toMe: not.toMe, 
+            devicesNames: not.devicesNames, 
+            uzrok: not.uzrok, 
+            poduzrok: not.poduzrok, 
+            konstrukcija: not.konstrukcija, 
+            materijal: not.materijal}));                           
+          this.ngAfterViewInit();
+        },
+        err => {
+          console.log("Err: " + err);
+          alert(err);
+        }
+      )
     }    
   }
 
-  getMineIncidente(): void {          
+  getAllIncidente() {   
+    return this.http.get('https://localhost:44301/FullIncident/getall');
   }
 
-  getAllIncidente(): void {      
+  getMineIncidente() {   
+    return this.http.get('https://localhost:44301/FullIncident/getmain');
   }
 
   setFilter(): void{
@@ -91,24 +146,25 @@ export class PregledIncidenataComponent implements AfterViewInit, OnInit{
 }
 
 export interface IncidentiTabela {
-  id: number;
-  startDate: string;
-  phoneNum: number;
+  incidentID: string;
+  affCustomers: string; 
+  voltage: string;
+  incidentPriority: string;
+  createdOn: string;
+  eTA: string;
+  eTR: string;
+  aTA: string;
+  sheduled: string;
+  type: string;
   status: string;
-  adresa: string;
+  calls: string;
+  confirmed: string;
+  toMe: string;
+  devicesNames: string;
+  uzrok: string;
+  poduzrok: string;
+  konstrukcija: string;
+  materijal: string;
 }
 
-export const INCIDENTI: IncidentiTabela[] = [  
-  { id: 12, startDate: '1996, 11, 17', phoneNum: 4850189118, status: 'DRAFT', adresa: 'Ive Andrica 213Ive Andrica 213Ive Andrica 213Ive Andrica 213Ive Andrica 213Ive Andrica 213Ive Andrica 213Ive Andrica 213Ive Andrica 213Ive Andrica 213Ive Andrica 213'},  
-  { id: 13, startDate: '1997, 11, 17', phoneNum: 4850189118, status: 'REPLACED', adresa: 'Ive Andrica 213'},  
-  { id: 14, startDate: '1998, 11, 17', phoneNum: 4850189118, status: 'OBSOLETE', adresa: 'Ive Andrica 213'},    
-  { id: 16, startDate: '1996, 11, 17', phoneNum: 4850189118, status: 'OK', adresa: 'Ive Andrica 213'},  
-  { id: 17, startDate: '1997, 11, 17', phoneNum: 4850189118, status: 'DRAFT', adresa: 'Ive Andrica 213'},  
-  { id: 18, startDate: '1998, 11, 17', phoneNum: 4850189118, status: 'APPROVED', adresa: 'Ive Andrica 213'},    
-  { id: 20, startDate: '1996, 11, 17', phoneNum: 4850189118, status: 'TEMPORARY', adresa: 'Ive Andrica 213'},  
-  { id: 21, startDate: '1997, 11, 17', phoneNum: 48501891184850189118485018911848501891184850189118485018911848501891184850189118485018911848501891184850189118485018911848501891184850189118, status: 'Zabelezen', adresa: 'Ive Andrica 213'},  
-  { id: 22, startDate: '1998, 11, 17', phoneNum: 4850189118, status: 'TEMPORARY', adresa: 'Ive Andrica 213'},    
-  { id: 24, startDate: '1996, 11, 17', phoneNum: 4850189118, status: 'OBSOLETE', adresa: 'Ive Andrica 213'},  
-  { id: 25, startDate: '1997, 11, 17', phoneNum: 4850189118, status: 'OK', adresa: 'Ive Andrica 213'},  
-  { id: 26, startDate: '1998, 11, 17', phoneNum: 4850189118, status: 'OK', adresa: 'Ive Andrica 213'},  
-]
+export const INCIDENTI: IncidentiTabela[] = []

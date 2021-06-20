@@ -61,5 +61,20 @@ namespace ActualServer.Controllers
         {
             return Ok((_context.IncidentTB.Count() + 1).ToString());
         }
+
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        [Route("getall")]
+        public async Task<ActionResult<IEnumerable<Incident>>> GetAll()
+        {
+            return Ok(_context.IncidentTB);
+        }
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        [Route("getmain")]
+        public async Task<ActionResult<IEnumerable<Incident>>> GetByMine()
+        {
+            return Ok(_context.IncidentTB.Where(x => x.ToMe == "true"));
+        }
     }
 }
