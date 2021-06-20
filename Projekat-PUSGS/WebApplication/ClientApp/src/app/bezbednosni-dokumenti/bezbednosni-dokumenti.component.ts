@@ -18,9 +18,18 @@ import { BackendServiceService } from '../backend-service.service';
 })
 
 export class BezbednosniDokumentiComponent implements OnInit, AfterViewInit{
-
+  Type: string;
+  PlanRada: string = 'temp';
+  Status: string = 'DRAFT'
+  Username: string = 'temp';
+  Ekipa: string = 'temp';
+  Detalji: string = "";
+  Beleske: string = "";
+  TelBroj: string = "";
+  CreatedOn: string = new Date().toUTCString();
+  
   mainWindow: string = 'START';
-  whatToShow: string = "ShowBasic"
+  whatToShow: string = "ShowBasic";  
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private http: HttpClient, private backendService: BackendServiceService) {
     
   }

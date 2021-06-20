@@ -10,19 +10,55 @@
     <div [hidden]="!(whatToShow === 'ShowBasic')">          
         <form class="example-form">
             <div class="example-container">
+                <mat-form-field class="example-30-width">
+                    <mat-label>Napravio je:</mat-label>
+                    <input matInput disabled value="{{Username}}">
+                </mat-form-field> 
+
+                <mat-form-field class="example-30-width">
+                    <mat-label>Napravljen u:</mat-label>
+                    <input matInput disabled [value]='CreatedOn'>
+                </mat-form-field>
+
+                <mat-form-field class="example-30-width">
+                    <mat-label>Status</mat-label>
+                    <input matInput disabled value="{{Status}}">
+                </mat-form-field>       
+            </div>            
+            <div class="example-container">
+                <mat-form-field class="example-30-width">
+                    <mat-label>Plan rada:</mat-label>
+                    <input matInput disabled value="{{PlanRada}}">
+                </mat-form-field> 
+                
+                <mat-form-field class="example-30-width">
+                    <mat-label>Ekipa:</mat-label>
+                    <input matInput disabled value="{{Ekipa}}">
+                </mat-form-field> 
+
                 <mat-form-field appearance="fill" class="example-30-width">
                     <mat-label>Type</mat-label>
                     <mat-select [(value)]="Type">
                     <mat-option value="planirani">Planirani rad</mat-option>
                     <mat-option value="neplanirani">Neplanirani rad</mat-option>
-                    </mat-select>
-                    <!--<mat-hint [hidden]="okInfoType === false" style="color: red;">Type is required.</mat-hint>-->
+                    </mat-select>                    
+                </mat-form-field>  
+            </div>
+            <div class="example-container">
+                <mat-form-field class="example-30-width">
+                    <mat-label>Detalji</mat-label>
+                    <input matInput [(ngModel)]="Detalji" name="detalji">                
                 </mat-form-field>
 
                 <mat-form-field class="example-30-width">
-                    <mat-label>Plan rada:</mat-label>
-                    <input matInput disabled value="temp">
-                  </mat-form-field>
+                    <mat-label>Beleske</mat-label>
+                    <input matInput [(ngModel)]="Beleske" name="beleske">                
+                </mat-form-field>
+                
+                <mat-form-field class="example-30-width">
+                    <mat-label>TelBroj</mat-label>
+                    <input matInput [(ngModel)]="TelBroj" name="telBroj">                
+                </mat-form-field>
             </div>
         </form>            
     </div>
