@@ -30,5 +30,6 @@ namespace Repositories
         public DbSet<Models.Oprema> OpremaTB { get; set; }
         public DbSet<Models.Resolution> ResolutionTB { get; set; }
         public DbSet<Models.Incident> IncidentTB { get; set; }
+        public DbSet<Models.BezbednosniDokumentiOsnovniInfo> BezbednosniDokumentiOsnovniInfoTB { get; set; }
     }
 }

@@ -27,7 +27,7 @@ export class BezbednosniDokumentiComponent implements OnInit, AfterViewInit{
   Beleske: string = "";
   TelBroj: string = "";
   CreatedOn: string = new Date().toUTCString();
-  
+
   mainWindow: string = 'START';
   whatToShow: string = "ShowBasic";  
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private http: HttpClient, private backendService: BackendServiceService) {
@@ -54,4 +54,45 @@ export class BezbednosniDokumentiComponent implements OnInit, AfterViewInit{
   showDevices(): void{
     this.whatToShow = 'ShowDevices';
   }
+
+
+  finish(): void{
+    this.AddOnsnovniInfo();
+  }
+
+  AddOnsnovniInfo(): void{
+    //if(this.fieldValidationCall()){
+    if(true){
+      this.AddOnsnovniInfoo().subscribe(
+        (res: any) => {                          
+          //this.confirmedCall = true;          
+        },
+        err => {
+          console.log("Err: " + err);
+          alert('Ne mogu da dodam poziv.');
+        }
+      )
+    }
+  }
+
+  AddOnsnovniInfoo() {    
+    return this.http.put('https://localhost:44301/BezbednosniDokumentiInfo/add/' 
+    + this.Type + '/' + this.PlanRada + '/' + this.Status + '/' + this.Username + '/' + this.Ekipa + '/'
+    + this.Detalji + '/' + this.Beleske + '/' + this.TelBroj + '/' + this.CreatedOn
+    , null);
+  }
+}
+
+export const BD_osnovni_info: BezbednosniDokumentiOsnovniInfoTabela[] = []
+
+export interface BezbednosniDokumentiOsnovniInfoTabela {  
+  type: string; 
+  planRada: string; 
+  status: string; 
+  username: string; 
+  ekipa: string; 
+  detalji: string; 
+  beleske: string;
+  telBroj: string; 
+  createdOn: string;
 }

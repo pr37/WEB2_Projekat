@@ -30,7 +30,7 @@
                     <mat-label>Plan rada:</mat-label>
                     <input matInput disabled value="{{PlanRada}}">
                 </mat-form-field> 
-                
+
                 <mat-form-field class="example-30-width">
                     <mat-label>Ekipa:</mat-label>
                     <input matInput disabled value="{{Ekipa}}">
@@ -63,6 +63,10 @@
         </form>            
     </div>
     <!--------------------------------------------------------------------/ShowBasic------------------------------------------------------------------------->
+    <hr>
+    <div>    
+      <button mat-flat-button (click)="finish()" style="background-color: green;width:150px;font-size:26px; padding:10px;">FINISH</button>      
+    </div>
 </div>
 
 <div [hidden]="!(mainWindow === 'END')">

@@ -34,6 +34,7 @@
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/bezbednosni-dokumenti']">Bezbednosni dokumenti</a>
           </li>
+          <!--
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/pozivi']">Pozivi</a>
           </li>
@@ -52,6 +53,7 @@
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/podesavanja']">Podesavanja</a>
           </li>
+          -->
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <mat-button-toggle value="italic" *ngIf="userLoggedIn" [routerLink]="['/']" (click)="logout()">Log out</mat-button-toggle>
           </li>
