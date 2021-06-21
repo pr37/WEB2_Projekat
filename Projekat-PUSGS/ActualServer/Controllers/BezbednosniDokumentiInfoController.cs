@@ -33,5 +33,13 @@ namespace ActualServer.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        [Route("getall")]
+        public async Task<ActionResult<IEnumerable<BezbednosniDokumentiOsnovniInfo>>> Get()
+        {
+            return Ok(_context.BezbednosniDokumentiOsnovniInfoTB);
+        }
     }
 }

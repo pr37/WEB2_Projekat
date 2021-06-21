@@ -27,7 +27,7 @@ import { PregledIncidenataComponent } from './pregled-incidenata/pregled-inciden
 import { NewIncidentComponent, ChoseUserDialog, ChoseDeviceDialog } from './new-incident/new-incident.component';
 import { ElementiMrezeComponent } from './elementi-mreze/elementi-mreze.component';
 import { BezbednosniDokumentiComponent, ChoseDeviceDialogg } from './bezbednosni-dokumenti/bezbednosni-dokumenti.component';
-
+import { PregledBezbednosnihDokumenata } from './pregled-bezbednosnih-dokumenata/pregled-bezbednosnih-dokumenata.component';
 
 
 ElementiMrezeComponent
@@ -55,7 +55,8 @@ ElementiMrezeComponent
     ElementiMrezeComponent,
     ChoseDeviceDialog,
     BezbednosniDokumentiComponent,
-    ChoseDeviceDialogg
+    ChoseDeviceDialogg,
+    PregledBezbednosnihDokumenata
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -76,7 +77,8 @@ ElementiMrezeComponent
       { path: 'incidenti', component: PregledIncidenataComponent },
       { path: 'new-incident', component: NewIncidentComponent },   
       { path: 'elementi-mreze', component: ElementiMrezeComponent },     
-      { path: 'bezbednosni-dokumenti', component: BezbednosniDokumentiComponent },            
+      { path: 'bezbednosni-dokumenti', component: BezbednosniDokumentiComponent }, 
+      { path: 'pregled-dokumenata', component: PregledBezbednosnihDokumenata },       
     ]),
     BrowserAnimationsModule,
     DemoMaterialModule,

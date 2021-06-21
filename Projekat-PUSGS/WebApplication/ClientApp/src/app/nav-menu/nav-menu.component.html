@@ -23,16 +23,16 @@
           <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/incidenti']">Incidenti</a>
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/incidenti']">Incidenti</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/elementi-mreze']">Elementi mreze</a>
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/elementi-mreze']">Elementi mreze</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/bezbednosni-dokumenti']">Bezbednosni dokumenti</a>
+            <a class="nav-link text-dark" *ngIf="userLoggedIn" [routerLink]="['/pregled-dokumenata']">Bezbednosni dokumenti</a>
           </li>
           <!--
           <li class="nav-item" [routerLinkActive]="['link-active']">
