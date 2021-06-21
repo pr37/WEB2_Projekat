@@ -26,7 +26,7 @@ import { BackendServiceService } from './backend-service.service';
 import { PregledIncidenataComponent } from './pregled-incidenata/pregled-incidenata.component';
 import { NewIncidentComponent, ChoseUserDialog, ChoseDeviceDialog } from './new-incident/new-incident.component';
 import { ElementiMrezeComponent } from './elementi-mreze/elementi-mreze.component';
-import { BezbednosniDokumentiComponent } from './bezbednosni-dokumenti/bezbednosni-dokumenti.component';
+import { BezbednosniDokumentiComponent, ChoseDeviceDialogg } from './bezbednosni-dokumenti/bezbednosni-dokumenti.component';
 
 
 
@@ -54,7 +54,8 @@ ElementiMrezeComponent
     ChoseUserDialog,
     ElementiMrezeComponent,
     ChoseDeviceDialog,
-    BezbednosniDokumentiComponent
+    BezbednosniDokumentiComponent,
+    ChoseDeviceDialogg
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

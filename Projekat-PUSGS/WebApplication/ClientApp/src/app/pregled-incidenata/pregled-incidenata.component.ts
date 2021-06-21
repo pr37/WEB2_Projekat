@@ -67,8 +67,7 @@ export class PregledIncidenataComponent implements AfterViewInit, OnInit{
                                             uzrok: not.uzrok, 
                                             poduzrok: not.poduzrok, 
                                             konstrukcija: not.konstrukcija, 
-                                            materijal: not.materijal}));                 
-          res.forEach(not => console.log(not.createdOn + " " + not.eTA + " " + not.eTR + " " + not.aTA));
+                                            materijal: not.materijal}));                           
           this.ngAfterViewInit();
         },
         err => {
