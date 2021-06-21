@@ -37,7 +37,9 @@ export class BezbednosniDokumentiComponent implements OnInit, AfterViewInit{
   whatToShow: string = "ShowBasic";  
   constructor(public dialog: MatDialog, private _snackBar: MatSnackBar, private http: HttpClient, private backendService: BackendServiceService) {
     this.AllOprema()
+    this.History = 'Dokument je napravljen: ' + this.CreatedOn;
   }
+  History: string;
 
   ngOnInit() {
     this.dataSourceOprema = new MatTableDataSource<OpremaTabela>(OPREMA_izabrana);
@@ -54,16 +56,24 @@ export class BezbednosniDokumentiComponent implements OnInit, AfterViewInit{
     this.whatToShow = 'ShowHistory';
   }
   showInstruction(): void{
-    this.whatToShow = 'ShowInstruction';
+    this.whatToShow = 'ShowChecklist';
   }
   showDevices(): void{
     this.whatToShow = 'ShowDevices';
   }
-
-
+  
   finish(): void{
     this.AddOnsnovniInfo();
   }
+
+  Check1: boolean = false;
+  check1(){ this.Check1 != this.Check1 }
+  Check2: boolean = false;
+  check2(){ this.Check2 != this.Check2 }
+  Check3: boolean = false;
+  check3(){ this.Check3 != this.Check3 }
+  Check4: boolean = false;
+  check4(){ this.Check4 != this.Check4 }
 
   AddOnsnovniInfo(): void{
     //if(this.fieldValidationCall()){

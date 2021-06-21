@@ -1,8 +1,8 @@
 <nav>
     <a (click)=showBasic() style="margin-right: 5px;">Basic information</a>    
-    <a (click)=showHistory() style="margin-right: 5px;">Changes history</a>
-    <a (click)=showInstruction() style="margin-right: 5px;">Work instructions</a>    
+    <a (click)=showHistory() style="margin-right: 5px;">Changes history</a>    
     <a (click)=showDevices() style="margin-right: 5px;">Devices</a>        
+    <a (click)=showInstruction() style="margin-right: 5px;">Work instructions</a>    
 </nav>
 <br>
 <div [hidden]="!(mainWindow === 'START')">
@@ -63,6 +63,9 @@
         </form>            
     </div>
     <!--------------------------------------------------------------------/ShowBasic------------------------------------------------------------------------->
+    <div [hidden]="!(whatToShow === 'ShowHistory')"> 
+      <input matInput disabled value="{{History}}">      
+    </div>
     <!--------------------------------------------------------------------ShowDevices------------------------------------------------------------------------->
     <div [hidden]="!(whatToShow === 'ShowDevices')"> 
     
@@ -110,6 +113,26 @@
         </div>
       </div>
     <!--------------------------------------------------------------------/ShowDevices------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------ShowChecklist------------------------------------------------------------------------->
+    <div [hidden]="!(whatToShow === 'ShowChecklist')">
+      <div class="example-container" style="padding-left: 55px;">
+        <input type="checkbox" name="confirmed" (change)="check1()">
+        <label style="padding-left:5px;color: rgb(177, 177, 177);">All work operations completed?</label>
+      </div>
+      <div style="padding-left: 55px;">
+        <input type="checkbox" name="toMe" (change)="check2()">
+        <label style="padding-left:5px;color: rgb(177, 177, 177);">All tags removed?</label>
+      </div>
+      <div style="padding-left: 55px;">
+        <input type="checkbox" name="toMe" (change)="check3()">
+        <label style="padding-left:5px;color: rgb(177, 177, 177);">Grounding removed?</label>
+      </div>
+      <div style="padding-left: 55px;">
+        <input type="checkbox" name="toMe" (change)="check4()">
+        <label style="padding-left:5px;color: rgb(177, 177, 177);">Ready for service?</label>
+      </div>
+    </div>
+    <!--------------------------------------------------------------------/ShowChecklist------------------------------------------------------------------------->
     <hr>
     <div>    
       <button mat-flat-button (click)="finish()" style="background-color: green;width:150px;font-size:26px; padding:10px;">FINISH</button>      
