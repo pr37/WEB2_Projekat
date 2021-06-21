@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./pregled-bezbednosnih-dokumenata.component.css']
 })
 export class PregledBezbednosnihDokumenata implements AfterViewInit, OnInit{  
-    displayedColumns: string[] = ['id'];
+    displayedColumns: string[] = ['type', 'planRada', 'status', 'username', 'ekipa', 'detalji', 'beleske', 'telBroj', 'createdOn', 'devicesNames', 'check1', 'check2', 'check3', 'check4'];
     dataSource = new MatTableDataSource<BezbednosniDokumentTabela>();
 
     constructor(private http: HttpClient, private backendService: BackendServiceService, private router: Router) {        
