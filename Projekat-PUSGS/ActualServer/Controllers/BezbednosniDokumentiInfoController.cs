@@ -22,12 +22,12 @@ namespace ActualServer.Controllers
 
         [EnableCors("MyPolicy")]
         [HttpPut]
-        [Route("add/{type}/{planRada}/{status}/{username}/{ekipa}/{detalji}/{beleske}/{telBroj}/{createdOn}")]
-        public async Task<IActionResult> Add(string type, string planRada, string status, string username, string ekipa, string detalji, string beleske, string telBroj, string createdOn)
+        [Route("add/{type}/{planRada}/{status}/{username}/{ekipa}/{detalji}/{beleske}/{telBroj}/{createdOn}/{devicesNames}/{check1}/{check2}/{check3}/{check4}")]
+        public async Task<IActionResult> Add(string type, string planRada, string status, string username, string ekipa, string detalji, string beleske, string telBroj, string createdOn, string devicesNames, string check1, string check2, string check3, string check4, string evaluating, string approved, string discard)
         {
             int count = _context.BezbednosniDokumentiOsnovniInfoTB.Count() + 1;
             string pid = count.ToString();
-            BezbednosniDokumentiOsnovniInfo info = new BezbednosniDokumentiOsnovniInfo(pid, type, planRada, status, username, ekipa, detalji, beleske, telBroj, createdOn);
+            BezbednosniDokumentiOsnovniInfo info = new BezbednosniDokumentiOsnovniInfo(pid, type, planRada, status, username, ekipa, detalji, beleske, telBroj, createdOn, devicesNames, check1, check2, check3, check4, "temp", "temp", "temp");
             _context.BezbednosniDokumentiOsnovniInfoTB.Add(info);
 
             await _context.SaveChangesAsync();

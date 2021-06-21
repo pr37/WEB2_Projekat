@@ -67,13 +67,13 @@ export class BezbednosniDokumentiComponent implements OnInit, AfterViewInit{
   }
 
   Check1: boolean = false;
-  check1(){ this.Check1 != this.Check1 }
+  check1(){ this.Check1 = !this.Check1 }
   Check2: boolean = false;
-  check2(){ this.Check2 != this.Check2 }
+  check2(){ this.Check2 = !this.Check2 }
   Check3: boolean = false;
-  check3(){ this.Check3 != this.Check3 }
+  check3(){ this.Check3 = !this.Check3 }
   Check4: boolean = false;
-  check4(){ this.Check4 != this.Check4 }
+  check4(){ this.Check4 = !this.Check4 }
 
   AddOnsnovniInfo(): void{
     //if(this.fieldValidationCall()){
@@ -84,7 +84,7 @@ export class BezbednosniDokumentiComponent implements OnInit, AfterViewInit{
         },
         err => {
           console.log("Err: " + err);
-          alert('Ne mogu da dodam poziv.');
+          alert('Ne mogu da dodam bezbednosni dokument.');
         }
       )
     }
@@ -93,7 +93,12 @@ export class BezbednosniDokumentiComponent implements OnInit, AfterViewInit{
   AddOnsnovniInfoo() {    
     return this.http.put('https://localhost:44301/BezbednosniDokumentiInfo/add/' 
     + this.Type + '/' + this.PlanRada + '/' + this.Status + '/' + this.Username + '/' + this.Ekipa + '/'
-    + this.Detalji + '/' + this.Beleske + '/' + this.TelBroj + '/' + this.CreatedOn
+    + this.Detalji + '/' + this.Beleske + '/' + this.TelBroj + '/' 
+    + this.CreatedOn + '/'
+    //+ 'temp' + '/'
+    + this.DevicesNames + '/'
+    //+ 'temp' + '/'
+    + String(this.Check1) + '/' + String(this.Check2) + '/' + String(this.Check3) + '/' + String(this.Check4)
     , null);
   }
   ///////////////////////////---------------DEVICE___DIALOG----------------/////////////////////////
